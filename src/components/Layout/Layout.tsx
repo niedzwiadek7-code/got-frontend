@@ -17,7 +17,7 @@ const Layout = (props: Props) => (
         className={`${Styles.sidebar} collapse d-lg-block bg-white`}
       >
         <div className="position-sticky">
-          <div className="list-group list-group-flush mx-3 mt-4">
+          <div className="list-group list-group-flush mx-2 mt-4">
             {
                 Object.entries(props.paths).map(([name, page]) => (
                   <NavItem.Component

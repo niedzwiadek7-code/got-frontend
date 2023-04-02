@@ -12,12 +12,26 @@ const NavItem = (props: Props) => (
   <NavLink
     to={props.page.link}
     className={({ isActive }) => [
-      'rounded', 'border-0', 'list-group-item', 'py-2', Styles.link, 'text-center',
+      'rounded', 'border-0', 'list-group-item', 'py-2', Styles.link,
       isActive ? Styles.active : null,
     ].filter(Boolean).join(' ')}
     aria-current="true"
   >
-    <span>{ props.name }</span>
+    <div
+      className="row align-items-center"
+    >
+      <div
+        className="col-3"
+        style={{ fontSize: '1.3rem' }}
+      >
+        {props.page?.icon}
+      </div>
+      <span
+        className="col-9"
+      >
+        { props.name }
+      </span>
+    </div>
   </NavLink>
 )
 

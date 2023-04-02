@@ -4,7 +4,7 @@
 enum Names {
   MANAGE_MAP = 'Zarządzanie mapą',
   BADGES = 'Odznaki',
-  TOURS = 'Wycieczki do zatwierdzenia'
+  LEADERS = 'Zarządzanie przodownikami'
 }
 
 export default Names
