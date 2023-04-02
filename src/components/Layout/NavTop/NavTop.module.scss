@@ -1,0 +1,8 @@
+@import "src/assets/scss/vars";
+
+.item {
+  &:hover {
+    background-color: rgba($main-color, .7);
+    color: $secondary-color;
+  }
+}

@@ -1,0 +1,18 @@
+@import "src/assets/scss/vars";
+
+.link {
+  &:hover {
+    color: $text-color;
+  }
+
+  &.active {
+    background-color: $main-color;
+    color: $secondary-color;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $main-color;
+      color: $secondary-color;
+    }
+  }
+}
