@@ -1,5 +1,6 @@
 import React from 'react'
-import defines from '@/utils/defines'
+// TODO: Import path should use '@/.'
+import defines from '../../src/utils/defines'
 import ManageMap from './ManageMap'
 import Badges from './Badges'
 import Tours from './Tours'
@@ -11,11 +12,11 @@ export default {
     component: <ManageMap.Component />,
   },
   [defines.Paths.BADGES]: {
-    link: '/manage-map',
+    link: '/badges',
     component: <Badges.Component />,
   },
   [defines.Paths.TOURS]: {
-    link: '/manage-map',
+    link: '/tours',
     component: <Tours.Component />,
   },
 } as Record<string, PageInterface>
