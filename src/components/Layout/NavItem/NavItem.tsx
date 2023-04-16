@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import PageInterface from '@/pages/PageInterface'
 import Styles from './NavItem.module.scss'
 
@@ -38,6 +39,7 @@ const createNavItem = (name: string, page: PageInterface) => (
 const createPanelItem = (name: string, page: PageInterface) => (
   <NavLink
     to={page.link}
+    key={uuidv4()}
     className={({ isActive }) => [
       'ms-4', 'rounded', 'border-0', 'list-group-item', 'py-2', Styles.link,
       isActive ? Styles.active : null,
