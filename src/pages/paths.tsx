@@ -13,6 +13,7 @@ export default {
     link: '/manage-map',
     icon: <FontAwesomeIcon icon={faMap} />,
     component: <ManageMap.Component />,
+    panels: ManageMap.Panels,
   },
   [defines.Paths.BADGES]: {
     link: '/badges',
