@@ -4,6 +4,7 @@
 enum Names {
   MANAGE_MAP = 'Zarządzanie mapą',
   TERRAIN_POINT = 'Punkt',
+  SECTION = 'Odcinek',
 
   BADGES = 'Odznaki',
   LEADERS = 'Zarządzanie przodownikami'
