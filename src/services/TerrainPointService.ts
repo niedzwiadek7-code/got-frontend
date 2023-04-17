@@ -1,5 +1,5 @@
 import TerrainPoint from '@/models/TerrainPoint'
-import ApiService, { ApiResponse } from './ApiService'
+import ApiService from './ApiService'
 
 class TerrainPointService {
   private terrainPointUrl = '/terrain-points'
@@ -7,9 +7,7 @@ class TerrainPointService {
   private apiService = ApiService.getInstance()
 
   public async getTerrainPoints(): Promise<TerrainPoint[]> {
-    const response = await this.apiService.get<ApiResponse<TerrainPoint[]>>(this.terrainPointUrl)
-    // TODO: improve types
-    return response as any as Promise<TerrainPoint[]>
+    return this.apiService.get<TerrainPoint[]>(this.terrainPointUrl)
   }
 }
 
