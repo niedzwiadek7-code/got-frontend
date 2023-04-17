@@ -20,6 +20,11 @@ export default {
   [defines.Paths.MOUNTAIN_GROUP]: {
     link: '/mountain-group/list',
     icon: <FontAwesomeIcon icon={faMountainSun} />,
-    component: <MountainGroup.Component />,
+    component: <MountainGroup.List.Component />,
+  },
+  [defines.Paths.EDIT_MOUNTAIN_GROUP]: {
+    link: '/mountain-group/edit/:id',
+    component: <MountainGroup.Edit.Component />,
+    hideInMenu: true,
   },
 } as Record<string, PageInterface>

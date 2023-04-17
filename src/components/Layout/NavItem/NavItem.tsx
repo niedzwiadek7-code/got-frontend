@@ -70,7 +70,7 @@ const NavItem: React.FC<Props> = (props) => (
     {
       props.page.panels
       && Object.entries(props.page.panels).map(
-        ([name, panel]) => createPanelItem(name, panel),
+        ([name, panel]) => !panel?.hideInMenu && createPanelItem(name, panel),
       )
     }
     <div className="mb-2" />

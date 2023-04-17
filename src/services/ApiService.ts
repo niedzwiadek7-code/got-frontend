@@ -14,8 +14,25 @@ class ApiService {
 
   public async get<T>(endpoint: string, data?:any): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`
-    const response = await axios.get<T>(url, { params: data })
+    const response = await axios.get<T>(url, data)
     return response.data
+  }
+
+  public async post<T>(endpoint: string, data?: any): Promise<T> {
+    const url = `${this.baseUrl}${endpoint}`
+    const response = await axios.post<T>(url, data)
+    return response.data
+  }
+
+  public async put<T>(endpoint: string, data?: any): Promise<T> {
+    const url = `${this.baseUrl}${endpoint}`
+    try {
+      const response = await axios.put<T>(url, data)
+      return response.data
+    } catch (err) {
+      console.log(err)
+      throw new Error()
+    }
   }
 
   public static getInstance(): ApiService {

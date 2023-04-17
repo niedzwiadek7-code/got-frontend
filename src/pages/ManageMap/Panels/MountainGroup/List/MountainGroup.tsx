@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 // TODO: Import path should use '@/.'
-import MountainGroupService from '../../../../services/MountainGroupService'
+import MountainGroupService from '../../../../../services/MountainGroupService'
 import MountainGroup from '@/models/MountainGroup'
 import MountainRow from './MountainRow'
 import MountainRangeRow from './MountainRangeRow'

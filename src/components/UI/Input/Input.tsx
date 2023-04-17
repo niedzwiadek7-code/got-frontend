@@ -9,6 +9,7 @@ type Props = {
   // TODO: improve data type
   data: any,
   errorMessage?: (string | undefined),
+  default?: (string | number),
 }
 
 const Input: React.FC<Props> = (props) => (
@@ -19,6 +20,7 @@ const Input: React.FC<Props> = (props) => (
       className={`${Styles.container} mb-1`}
     >
       <Form.Control
+        defaultValue={props?.default ? props.default : ''}
         type={props.type}
         placeholder={props.label}
         {...props.data}
@@ -32,6 +34,7 @@ const Input: React.FC<Props> = (props) => (
 
 Input.defaultProps = {
   errorMessage: undefined,
+  default: undefined,
 }
 
 export default Input

@@ -21,6 +21,14 @@ class MountainGroupService {
 
     return mountains
   }
+
+  public async getOneMountainGroup(id: string): Promise<(MountainGroup | undefined)> {
+    return this.apiService.get<MountainGroup>(`${this.mountainGroupUrl}/${id}`)
+  }
+
+  public async editMountainGroup(id: string, data: any): Promise<MountainGroup> {
+    return this.apiService.put<MountainGroup>(`${this.mountainGroupUrl}/${id}`, data)
+  }
 }
 
 export default MountainGroupService
