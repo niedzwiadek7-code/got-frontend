@@ -10,7 +10,7 @@ const MountainRangeRow: React.FC<Props> = (props) => (
   <tr
     className="align-middle"
   >
-    <th className="w-25" />
+    <th />
     <th
       scope="row"
       className="fw-normal"
@@ -19,10 +19,18 @@ const MountainRangeRow: React.FC<Props> = (props) => (
     </th>
     <th className="text-center">
       <Button
-        variant="success"
+        variant="secondary"
         href={`/mountain-range/${props.mountain.id}`}
       >
         Przeglądaj
+      </Button>
+    </th>
+    <th className="text-center">
+      <Button
+        variant="primary"
+        href={`/mountain-range/edit/${props.mountain.id}`}
+      >
+        Edytuj
       </Button>
     </th>
     <th className="text-center">

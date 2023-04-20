@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 // TODO: Import path should use '@/.'
+// import { Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import MountainGroupService from '../../../../../services/MountainGroupService'
 import MountainGroup from '@/models/MountainGroup'
 import MountainRow from './MountainRow'
@@ -28,21 +30,6 @@ const MountainGroupComponent: React.FC<Props> = () => {
       <table
         className="table"
       >
-        <thead>
-          <tr>
-            <th scope="col">
-              Grupa górska
-            </th>
-
-            <th scope="col">
-              Pasmo górskie
-            </th>
-
-            <th scope="col" className="text-center" />
-
-            <th scope="col" className="text-center" />
-          </tr>
-        </thead>
         <tbody>
           {mountainGroups.map((mountainGroup) => (
             <>
@@ -50,6 +37,21 @@ const MountainGroupComponent: React.FC<Props> = () => {
                 key={uuidv4()}
                 mountain={mountainGroup}
               />
+
+              <tr>
+                <th />
+                <th
+                  colSpan={4}
+                >
+                  <Button
+                    variant="outline-success"
+                    href={`/mountain-range/add/${mountainGroup.id}`}
+                    className="w-100"
+                  >
+                    Dodaj pasmo górskie
+                  </Button>
+                </th>
+              </tr>
 
               {
                 mountainGroup.mountainRange.map((mountainRange) => (

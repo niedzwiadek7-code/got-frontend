@@ -16,7 +16,8 @@ const MountainRow: React.FC<Props> = (props) => (
     >
       {props.mountain.name}
     </th>
-    <th className="w-25" />
+    <th />
+    <th />
     <th className="text-center">
       <Button
         variant="primary"
