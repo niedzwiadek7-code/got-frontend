@@ -7,6 +7,7 @@ enum Names {
   SECTION = 'Odcinek',
   MOUNTAIN_GROUP = 'Grupa górska',
   EDIT_MOUNTAIN_GROUP = 'Edycja grupy górskiej',
+  DELETE_MOUNTAIN_GROUP = 'Usunięcie grupy górskiej',
 
   BADGES = 'Odznaki',
   LEADERS = 'Zarządzanie przodownikami'

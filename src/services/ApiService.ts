@@ -35,6 +35,17 @@ class ApiService {
     }
   }
 
+  public async delete<T>(endpoint: string, data?: any): Promise<T> {
+    const url = `${this.baseUrl}${endpoint}`
+    try {
+      const response = await axios.delete<T>(url, data)
+      return response.data
+    } catch (err) {
+      console.log(err)
+      throw new Error()
+    }
+  }
+
   public static getInstance(): ApiService {
     if (!ApiService.instance) {
       ApiService.instance = new ApiService()

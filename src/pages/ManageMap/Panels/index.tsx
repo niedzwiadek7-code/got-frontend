@@ -27,4 +27,9 @@ export default {
     component: <MountainGroup.Edit.Component />,
     hideInMenu: true,
   },
+  [defines.Paths.DELETE_MOUNTAIN_GROUP]: {
+    link: '/mountain-group/delete/:id',
+    component: <MountainGroup.Delete.Component />,
+    hideInMenu: true,
+  },
 } as Record<string, PageInterface>

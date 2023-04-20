@@ -26,8 +26,12 @@ class MountainGroupService {
     return this.apiService.get<MountainGroup>(`${this.mountainGroupUrl}/${id}`)
   }
 
-  public async editMountainGroup(id: string, data: any): Promise<MountainGroup> {
+  public async editMountainGroup(id: string, data?: any): Promise<MountainGroup> {
     return this.apiService.put<MountainGroup>(`${this.mountainGroupUrl}/${id}`, data)
+  }
+
+  public async deleteMountainGroup(id: string, data?: any): Promise<MountainGroup> {
+    return this.apiService.delete<MountainGroup>(`${this.mountainGroupUrl}/${id}`, data)
   }
 }
 
