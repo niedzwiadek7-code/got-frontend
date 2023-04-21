@@ -4,7 +4,7 @@ import { faLocationDot, faMountainSun } from '@fortawesome/free-solid-svg-icons'
 import TerrainPoint from './TerrainPoint'
 import MountainGroup from './MountainGroup'
 import MountainRange from './MountainRange'
-import Section from './Section/Create'
+import Section from './Section'
 import defines from '../../../utils/defines'
 import PageInterface from '@/pages/PageInterface'
 
@@ -21,7 +21,11 @@ export default {
   },
   [defines.Paths.SECTION]: {
     link: '/section/add',
-    component: <Section.Component />,
+    component: <Section.Create.Component />,
+  },
+  [defines.Paths.SECTION]: {
+    link: '/section/delete/:id',
+    component: <Section.Delete.Component />,
   },
   [defines.Paths.MOUNTAIN_GROUP]: {
     link: '/mountain-group/list',
@@ -51,6 +55,11 @@ export default {
   [defines.Paths.EDIT_MOUNTAIN_RANGE]: {
     link: '/mountain-range/edit/:id',
     component: <MountainRange.Edit.Component />,
+    hideInMenu: true,
+  },
+  [defines.Paths.DELETE_MOUNTAIN_RANGE]: {
+    link: '/mountain-range/delete/:id',
+    component: <MountainRange.Delete.Component />,
     hideInMenu: true,
   },
 } as Record<string, PageInterface>

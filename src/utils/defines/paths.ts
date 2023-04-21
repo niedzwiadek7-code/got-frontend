@@ -6,9 +6,11 @@ enum Names {
   TERRAIN_POINT = 'Punkt',
   TERRAIN_POINT_EDIT = 'Edycja punktu',
   SECTION = 'Odcinek',
+  DELETE_SECTION = 'Usuwanie odcinka',
   MOUNTAIN_GROUP = 'Grupa górska',
   EDIT_MOUNTAIN_GROUP = 'Edycja grupy górskiej',
   DELETE_MOUNTAIN_GROUP = 'Usunięcie grupy górskiej',
+  DELETE_MOUNTAIN_RANGE = 'Usuwanie pasma górskiego',
   MOUNTAIN_RANGE = 'Pasmo górskie',
 
   ADD_MOUNTAIN_RANGE = 'Dodanie grupy górskiej',

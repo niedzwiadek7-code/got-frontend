@@ -121,7 +121,7 @@ const List: React.FC<Props> = () => {
                         <th className="text-center">
                           <Button
                             variant="danger"
-                            href={`/mountain-range/delete/${section.id}`}
+                            href={`/section/delete/${section.id}`}
                           >
                             Usuń
                           </Button>

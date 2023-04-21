@@ -20,6 +20,16 @@ class SectionService {
   public async createSection(data?: any): Promise<(Section)> {
     return this.apiService.post<Section>(`${this.sectionUrl}`, data)
   }
+
+  public async deleteSection(sectionId : string): Promise<Section> {
+    const response = await this.apiService.delete<ApiResponse<Section>>(`${this.sectionUrl}/${sectionId}`)
+    return response as any as Promise<Section>
+  }
+
+  public async getOneSection(sectionId : string): Promise<Section> {
+    const response = await this.apiService.get<ApiResponse<Section>>(`${this.sectionUrl}/${sectionId}`)
+    return response as any as Promise<Section>
+  }
 }
 
 export default SectionService
