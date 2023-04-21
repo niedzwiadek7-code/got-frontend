@@ -4,6 +4,7 @@
 enum Names {
   MANAGE_MAP = 'Zarządzanie mapą',
   TERRAIN_POINT = 'Punkt',
+  TERRAIN_POINT_EDIT = 'Edycja punktu',
   SECTION = 'Odcinek',
   MOUNTAIN_GROUP = 'Grupa górska',
   EDIT_MOUNTAIN_GROUP = 'Edycja grupy górskiej',

@@ -7,6 +7,7 @@ interface Props {
   // TODO: improve data type
   data: any,
   errorMessage?: (string | undefined),
+  default?: string,
 }
 
 const TextArea: React.FC<Props> = (props) => (
@@ -19,6 +20,7 @@ const TextArea: React.FC<Props> = (props) => (
       <Form.Control
         as="textarea"
         placeholder={props.label}
+        defaultValue={props.default}
         style={{ height: props.height }}
         {...props.data}
       />
@@ -31,6 +33,7 @@ const TextArea: React.FC<Props> = (props) => (
 
 TextArea.defaultProps = {
   errorMessage: undefined,
+  default: '',
 }
 
 export default TextArea

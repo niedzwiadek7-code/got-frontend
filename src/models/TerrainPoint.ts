@@ -2,7 +2,7 @@ interface TerrainPoint {
     id : number,
     name : string,
     description : string,
-    seaLevelHeight : number,
+    sea_level_height : number,
     latitude : string,
     longitude : string,
     created_at : string,

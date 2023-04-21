@@ -10,8 +10,16 @@ class TerrainPointService {
     return this.apiService.get<TerrainPoint[]>(this.terrainPointUrl)
   }
 
+  public async getTerrainPoint(id: string): Promise<TerrainPoint> {
+    return this.apiService.get<TerrainPoint>(`${this.terrainPointUrl}/${id}`)
+  }
+
   public async createTerrainPoint(data?: any): Promise<(TerrainPoint)> {
     return this.apiService.post<TerrainPoint>(`${this.terrainPointUrl}`, data)
+  }
+
+  public async editTerrainPoint(id: string, data?: any): Promise<(TerrainPoint)> {
+    return this.apiService.put<TerrainPoint>(`${this.terrainPointUrl}/${id}`, data)
   }
 }
 

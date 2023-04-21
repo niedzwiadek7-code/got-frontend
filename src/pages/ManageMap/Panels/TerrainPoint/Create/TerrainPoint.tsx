@@ -37,7 +37,7 @@ const TerrainPoint: React.FC<Props> = () => {
       progress: undefined,
       theme: 'light',
     })
-    navigate(`/terrain-point/edit/${terrainPoint.id}`)
+    navigate(`/terrain-points/edit/${terrainPoint.id}`)
   }
 
   const ErrorMessageMap = new Map([

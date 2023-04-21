@@ -14,6 +14,11 @@ export default {
     icon: <FontAwesomeIcon icon={faLocationDot} />,
     component: <TerrainPoint.Create.Component />,
   },
+  [defines.Paths.TERRAIN_POINT_EDIT]: {
+    link: '/terrain-points/edit/:id',
+    component: <TerrainPoint.Edit.Component />,
+    hideInMenu: true,
+  },
   [defines.Paths.SECTION]: {
     link: '/section/add',
     component: <Section.Component />,
