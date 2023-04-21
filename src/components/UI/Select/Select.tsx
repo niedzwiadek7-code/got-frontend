@@ -8,6 +8,7 @@ type Props = {
   // TODO: improve data type
   data: any,
   errorMessage?: (string | undefined),
+  default?: (string | number)
 }
 
 const Select: React.FC<Props> = (props) => (
@@ -25,6 +26,7 @@ const Select: React.FC<Props> = (props) => (
             <option
               key={uuidv4()}
               value={key}
+              selected={key.toString() === props.default}
             >
               {value}
             </option>
@@ -41,6 +43,7 @@ const Select: React.FC<Props> = (props) => (
 
 Select.defaultProps = {
   errorMessage: undefined,
+  default: '',
 }
 
 export default Select
