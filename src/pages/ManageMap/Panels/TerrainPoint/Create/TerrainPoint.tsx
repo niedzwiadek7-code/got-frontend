@@ -1,15 +1,18 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { toast } from 'react-toastify'
 // TODO: Import path should use '@/.'
-import * as Input from '../../../../components/UI/Input'
-import TextArea from '../../../../components/UI/TextArea'
-import { Errors } from '../../../../utils/defines'
+import { useNavigate } from 'react-router-dom'
+import * as Input from '../../../../../components/UI/Input'
+import TextArea from '../../../../../components/UI/TextArea'
+import { Errors } from '../../../../../utils/defines'
+import TerrainPointService from '../../../../../services/TerrainPointService'
 
 type Inputs = {
   name: string,
   description: string,
-  seaLevelHeight: number,
+  sea_level_height: number,
   latitude: string,
   longitude: string
 }
@@ -17,10 +20,25 @@ type Inputs = {
 interface Props {}
 
 const TerrainPoint: React.FC<Props> = () => {
+  const navigate = useNavigate()
   const {
     register, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = (data) => alert(JSON.stringify(data))
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const terrainPointService = new TerrainPointService()
+    const terrainPoint = await terrainPointService.createTerrainPoint(data)
+    toast.success('Dodanie nowego punktu przebiegło pomyślnie', {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    })
+    navigate(`/terrain-point/edit/${terrainPoint.id}`)
+  }
 
   const ErrorMessageMap = new Map([
     [Errors.REQUIRED, {
@@ -56,8 +74,8 @@ const TerrainPoint: React.FC<Props> = () => {
           <Input.Component
             label="Wysokość nad poziomem morza"
             type={Input.Type.NUMBER}
-            data={register('seaLevelHeight', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-            errorMessage={errors?.seaLevelHeight?.message || undefined}
+            data={register('sea_level_height', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+            errorMessage={errors?.sea_level_height?.message || undefined}
           />
         </div>
 

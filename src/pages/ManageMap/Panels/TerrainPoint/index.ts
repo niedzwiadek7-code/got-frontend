@@ -1,5 +1,5 @@
-import TerrainPoint from './TerrainPoint'
+import Create from './Create'
 
 export default {
-  Component: TerrainPoint,
+  Create,
 }

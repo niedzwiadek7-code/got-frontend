@@ -12,7 +12,7 @@ export default {
   [defines.Paths.TERRAIN_POINT]: {
     link: '/terrain-points/add',
     icon: <FontAwesomeIcon icon={faLocationDot} />,
-    component: <TerrainPoint.Component />,
+    component: <TerrainPoint.Create.Component />,
   },
   [defines.Paths.SECTION]: {
     link: '/section/add',

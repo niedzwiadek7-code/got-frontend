@@ -9,6 +9,10 @@ class TerrainPointService {
   public async getTerrainPoints(): Promise<TerrainPoint[]> {
     return this.apiService.get<TerrainPoint[]>(this.terrainPointUrl)
   }
+
+  public async createTerrainPoint(data?: any): Promise<(TerrainPoint)> {
+    return this.apiService.post<TerrainPoint>(`${this.terrainPointUrl}`, data)
+  }
 }
 
 export default TerrainPointService
