@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faMountainSun } from '@fortawesome/free-solid-svg-icons'
 import TerrainPoint from './TerrainPoint'
 import MountainGroup from './MountainGroup'
+import MountainRange from './MountainRange'
 import Section from './Section'
 import defines from '../../../utils/defines'
 import PageInterface from '@/pages/PageInterface'
@@ -30,6 +31,11 @@ export default {
   [defines.Paths.DELETE_MOUNTAIN_GROUP]: {
     link: '/mountain-group/delete/:id',
     component: <MountainGroup.Delete.Component />,
+    hideInMenu: true,
+  },
+  [defines.Paths.MOUNTAIN_RANGE]: {
+    link: '/mountain-range/:id',
+    component: <MountainRange.List.Component />,
     hideInMenu: true,
   },
 } as Record<string, PageInterface>

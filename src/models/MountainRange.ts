@@ -1,9 +1,12 @@
+import MountainGroup from '@/models/MountainGroup'
 import Section from '@/models/Section'
 
 class MountainRange {
   id : number
 
   name : string
+
+  mountain_group?: MountainGroup
 
   mountain_group_id : number
 
