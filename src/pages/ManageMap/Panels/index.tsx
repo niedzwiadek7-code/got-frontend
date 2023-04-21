@@ -4,7 +4,7 @@ import { faLocationDot, faMountainSun } from '@fortawesome/free-solid-svg-icons'
 import TerrainPoint from './TerrainPoint'
 import MountainGroup from './MountainGroup'
 import MountainRange from './MountainRange'
-import Section from './Section'
+import Section from './Section/Create'
 import defines from '../../../utils/defines'
 import PageInterface from '@/pages/PageInterface'
 

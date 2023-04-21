@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button } from 'react-bootstrap'
-import * as Input from '../../../../components/UI/Input'
-import TextArea from '../../../../components/UI/TextArea'
-import Select from '../../../../components/UI/Select'
-import { Errors } from '../../../../utils/defines'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+import * as Input from '../../../../../components/UI/Input'
+import TextArea from '../../../../../components/UI/TextArea'
+import Select from '../../../../../components/UI/Select'
+import TerrainPointService from '../../../../../services/TerrainPointService'
+import { Errors } from '../../../../../utils/defines'
+import SectionService from '../../../../../services/SectionService'
+import MountainRangeService from '../../../../../services/MountainRangeService'
 
 type Inputs = {
   name: string,
@@ -20,10 +25,70 @@ type Inputs = {
 interface Props {}
 
 const Section: React.FC<Props> = () => {
+  const navigate = useNavigate()
+  const [allPoints, setAllPoints] = useState<Record<number, string>>({})
+  const [allMountainRanges, setAllMountainRanges] = useState<Record<number, string>>({})
+
   const {
     register, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = (data) => alert(JSON.stringify(data))
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const sectionService = new SectionService()
+
+    const transformedData = {
+      name: data.name,
+      description: data.description,
+      mountain_range_id: data.mountainRange,
+      badge_points_a_to_b: data.badgePoints_AtoB,
+      badge_points_b_to_a: data.badgePoints_BtoA,
+      terrain_point_a_id: data.terrainPoint_A,
+      terrain_point_b_id: data.terrainPoint_B,
+    }
+
+    const section = await sectionService.createSection(transformedData)
+
+    toast.success('Dodanie nowego odcinka przebiegło pomyślnie', {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    })
+
+    navigate(`/section/edit/${section.id}`)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const terrainPointsService = new TerrainPointService()
+      const terrainPoints = await terrainPointsService.getTerrainPoints()
+      const allPointsTemp: Record<number, string> = {}
+
+      terrainPoints.forEach((terrainPoint) => {
+        allPointsTemp[terrainPoint.id] = terrainPoint.name
+      })
+
+      setAllPoints(
+        allPointsTemp,
+      )
+
+      const mountainRangeService = new MountainRangeService()
+      const mountainRanges = await mountainRangeService.getMountainRanges()
+      const allMountainRangesTemp: Record<number, string> = {}
+
+      mountainRanges.forEach((mountainRange) => {
+        allMountainRangesTemp[mountainRange.id] = mountainRange.name
+      })
+
+      setAllMountainRanges(
+        allMountainRangesTemp,
+      )
+    }
+    fetchData()
+  }, [])
 
   const ErrorMessageMap = new Map([
     [Errors.REQUIRED, {
@@ -58,10 +123,7 @@ const Section: React.FC<Props> = () => {
         <div className="mb-3">
           <Select.Component
             label="Wybierz pasmo górskie"
-            options={{
-              1: 'name',
-              2: 'another name',
-            }}
+            options={allMountainRanges}
             data={register('mountainRange', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
             errorMessage={errors?.mountainRange?.message || undefined}
           />
@@ -88,10 +150,7 @@ const Section: React.FC<Props> = () => {
         <div className="mb-3">
           <Select.Component
             label="Wybierz punkt A"
-            options={{
-              1: 'point A',
-              2: 'point B',
-            }}
+            options={allPoints}
             data={register('terrainPoint_A', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
             errorMessage={errors?.terrainPoint_A?.message || undefined}
           />
@@ -100,10 +159,7 @@ const Section: React.FC<Props> = () => {
         <div className="mb-3">
           <Select.Component
             label="Wybierz punkt B"
-            options={{
-              1: 'point A',
-              2: 'point B',
-            }}
+            options={allPoints}
             data={register('terrainPoint_B', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
             errorMessage={errors?.terrainPoint_B?.message || undefined}
           />

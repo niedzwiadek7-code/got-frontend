@@ -1,5 +1,5 @@
-import Section from './Section'
+import Create from './Create'
 
 export default {
-  Component: Section,
+  Create,
 }

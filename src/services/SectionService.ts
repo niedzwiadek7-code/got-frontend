@@ -16,6 +16,10 @@ class SectionService {
     const response = await this.apiService.get<ApiResponse<TerrainPoint[]>>(`${this.sectionUrl}/${sectionId}/terrain-points`)
     return response as any as Promise<TerrainPoint[]>
   }
+
+  public async createSection(data?: any): Promise<(Section)> {
+    return this.apiService.post<Section>(`${this.sectionUrl}`, data)
+  }
 }
 
 export default SectionService
