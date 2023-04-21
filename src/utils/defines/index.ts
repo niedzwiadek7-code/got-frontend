@@ -5,6 +5,5 @@ export * from './Errors'
 
 export default {
   Paths,
-  Error,
   GlobalFunctions,
 }
