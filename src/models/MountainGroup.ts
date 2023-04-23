@@ -1,7 +1,7 @@
 import MountainRange from '@/models/MountainRange'
 
 class MountainGroup {
-  id: bigint
+  id: number
 
   name: string
 
@@ -11,7 +11,7 @@ class MountainGroup {
 
   mountainRange: Array<MountainRange>
 
-  constructor(id: bigint, name: string, created: string, updated: string) {
+  constructor(id: number, name: string, created: string, updated: string) {
     this.id = id
     this.name = name
     this.created_at = created

@@ -43,4 +43,9 @@ export default {
     component: <MountainRange.List.Component />,
     hideInMenu: true,
   },
+  [defines.Paths.ADD_MOUNTAIN_RANGE]: {
+    link: '/mountain-range/add/:id',
+    component: <MountainRange.Create.Component />,
+    hideInMenu: true,
+  },
 } as Record<string, PageInterface>

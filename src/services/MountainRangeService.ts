@@ -35,8 +35,19 @@ class MountainRangeService {
   }
 
   public async getSections(mountainRangeId: string): Promise<Section[]> {
-    const response = await this.apiService.get<ApiResponse<Section[]>>(`${this.mountainRangeUrl}/${mountainRangeId}/sections`)
-    return response as any as Promise<Section[]>
+    return this.apiService.get<Section[]>(`${this.mountainRangeUrl}/${mountainRangeId}/sections`)
+  }
+
+  public async addMountainRange(data?: any): Promise<MountainRange> {
+    return this.apiService.post<MountainRange>(`${this.mountainRangeUrl}`, data)
+  }
+
+  public async editMountainRange(id: string, data?: any): Promise<MountainRange> {
+    return this.apiService.put<MountainRange>(`${this.mountainRangeUrl}/${id}`, data)
+  }
+
+  public async deleteMountainRange(id: string, data?: any): Promise<MountainRange> {
+    return this.apiService.delete<MountainRange>(`${this.mountainRangeUrl}/${id}`, data)
   }
 }
 

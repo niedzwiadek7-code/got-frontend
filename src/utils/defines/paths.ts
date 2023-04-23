@@ -11,6 +11,8 @@ enum Names {
   DELETE_MOUNTAIN_GROUP = 'Usunięcie grupy górskiej',
   MOUNTAIN_RANGE = 'Pasmo górskie',
 
+  ADD_MOUNTAIN_RANGE = 'Dodanie grupy górskiej',
+
   BADGES = 'Odznaki',
   LEADERS = 'Zarządzanie przodownikami'
 }
