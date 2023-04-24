@@ -29,7 +29,9 @@ class MountainRangeService {
     mountain.sections = await this.getSections(mountainRangeId)
 
     const mountainGroupService = new MountainGroupService()
-    mountain.mountain_group = await mountainGroupService.getOneMountainGroup(mountain.id.toString())
+    mountain.mountain_group = await mountainGroupService.getOneMountainGroup(
+      mountain.mountain_group_id.toString(),
+    )
 
     return mountain
   }

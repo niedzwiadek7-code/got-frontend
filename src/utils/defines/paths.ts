@@ -12,6 +12,7 @@ enum Names {
   MOUNTAIN_RANGE = 'Pasmo górskie',
 
   ADD_MOUNTAIN_RANGE = 'Dodanie grupy górskiej',
+  EDIT_MOUNTAIN_RANGE = 'Edycja grupy górskiej',
 
   BADGES = 'Odznaki',
   LEADERS = 'Zarządzanie przodownikami'
