@@ -26,7 +26,7 @@ const Select: React.FC<Props> = (props) => (
             <option
               key={uuidv4()}
               value={key}
-              selected={key.toString() === props.default}
+              selected={key.toString() === props.default?.toString()}
             >
               {value}
             </option>
