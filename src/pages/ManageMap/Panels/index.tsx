@@ -5,81 +5,81 @@ import TerrainPoint from './TerrainPoint'
 import MountainGroup from './MountainGroup'
 import MountainRange from './MountainRange'
 import Section from './Section'
-import defines from '../../../utils/defines'
+import { PathLinkMap, PathNames } from '../../../utils/defines'
 import PageInterface from '@/pages/PageInterface'
 
 export default {
-  [defines.Paths.TERRAIN_POINT]: {
-    link: '/terrain-points/add',
+  [PathNames.TERRAIN_POINT_ADD]: {
+    link: PathLinkMap.get(PathNames.TERRAIN_POINT_ADD),
     icon: <FontAwesomeIcon icon={faLocationDot} />,
     component: <TerrainPoint.Create.Component />,
   },
-  [defines.Paths.TERRAIN_POINT_EDIT]: {
-    link: '/terrain-points/edit/:id',
+  [PathNames.TERRAIN_POINT_EDIT]: {
+    link: PathLinkMap.get(PathNames.TERRAIN_POINT_EDIT),
     component: <TerrainPoint.Edit.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.TERRAIN_POINT_DELETE]: {
-    link: '/terrain-points/delete/:id',
+  [PathNames.TERRAIN_POINT_DELETE]: {
+    link: PathLinkMap.get(PathNames.TERRAIN_POINT_DELETE),
     component: <TerrainPoint.Delete.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.SECTION_LIST]: {
-    link: '/section/:id',
+  [PathNames.SECTION]: {
+    link: PathLinkMap.get(PathNames.SECTION),
     component: <Section.List.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.SECTION]: {
-    link: '/section/add',
+  [PathNames.SECTION_ADD]: {
+    link: PathLinkMap.get(PathNames.SECTION_ADD),
     component: <Section.Create.Component />,
   },
-  [defines.Paths.EDIT_SECTION]: {
-    link: '/section/edit/:id',
+  [PathNames.SECTION_EDIT]: {
+    link: PathLinkMap.get(PathNames.SECTION_EDIT),
     component: <Section.Edit.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.DELETE_SECTION]: {
-    link: '/section/delete/:id',
+  [PathNames.SECTION_DELETE]: {
+    link: PathLinkMap.get(PathNames.SECTION_DELETE),
     component: <Section.Delete.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.MOUNTAIN_GROUP]: {
-    link: '/mountain-group/list',
+  [PathNames.MOUNTAIN_GROUP]: {
+    link: PathLinkMap.get(PathNames.MOUNTAIN_GROUP),
     icon: <FontAwesomeIcon icon={faMountainSun} />,
     component: <MountainGroup.List.Component />,
   },
-  [defines.Paths.ADD_MOUNTAIN_GROUP]: {
-    link: '/mountain-group/add',
+  [PathNames.MOUNTAIN_GROUP_ADD]: {
+    link: PathLinkMap.get(PathNames.MOUNTAIN_GROUP_ADD),
     component: <MountainGroup.Add.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.EDIT_MOUNTAIN_GROUP]: {
-    link: '/mountain-group/edit/:id',
+  [PathNames.MOUNTAIN_GROUP_EDIT]: {
+    link: PathLinkMap.get(PathNames.MOUNTAIN_GROUP_EDIT),
     component: <MountainGroup.Edit.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.DELETE_MOUNTAIN_GROUP]: {
-    link: '/mountain-group/delete/:id',
+  [PathNames.MOUNTAIN_GROUP_DELETE]: {
+    link: PathLinkMap.get(PathNames.MOUNTAIN_GROUP_DELETE),
     component: <MountainGroup.Delete.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.MOUNTAIN_RANGE]: {
-    link: '/mountain-range/:id',
+  [PathNames.MOUNTAIN_RANGE]: {
+    link: PathLinkMap.get(PathNames.MOUNTAIN_RANGE),
     component: <MountainRange.List.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.ADD_MOUNTAIN_RANGE]: {
-    link: '/mountain-range/add/:id',
+  [PathNames.MOUNTAIN_RANGE_ADD]: {
+    link: PathLinkMap.get(PathNames.MOUNTAIN_RANGE_ADD),
     component: <MountainRange.Create.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.EDIT_MOUNTAIN_RANGE]: {
-    link: '/mountain-range/edit/:id',
+  [PathNames.MOUNTAIN_RANGE_EDIT]: {
+    link: PathLinkMap.get(PathNames.MOUNTAIN_RANGE_EDIT),
     component: <MountainRange.Edit.Component />,
     hideInMenu: true,
   },
-  [defines.Paths.DELETE_MOUNTAIN_RANGE]: {
-    link: '/mountain-range/delete/:id',
+  [PathNames.MOUNTAIN_RANGE_DELETE]: {
+    link: PathLinkMap.get(PathNames.MOUNTAIN_RANGE_DELETE),
     component: <MountainRange.Delete.Component />,
     hideInMenu: true,
   },

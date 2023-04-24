@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import MountainGroup from '../../../../../models/MountainGroup'
 import MountainGroupService from '../../../../../services/MountainGroupService'
-import defines from '../../../../../utils/defines'
+import { getPath, GlobalFunctions, PathNames } from '../../../../../utils/defines'
 
 type Props = {}
 
@@ -28,9 +28,9 @@ const Delete: React.FC<Props> = () => {
         progress: undefined,
         theme: 'light',
       })
-      await defines.GlobalFunctions.wait(500)
+      await GlobalFunctions.wait(500)
       // TODO: should use global paths
-      navigate('/mountain-group/list')
+      navigate(PathNames.MOUNTAIN_GROUP)
     }
   }
 
@@ -49,7 +49,7 @@ const Delete: React.FC<Props> = () => {
 
   if (loading) {
     return (
-      <div className="w-50 mt-3 text-center">
+      <div className="mt-3 text-center">
         <Spinner
           animation="border"
           role="status"
@@ -87,7 +87,7 @@ const Delete: React.FC<Props> = () => {
         <Button
           className="me-2"
           // TODO: should use global paths
-          href="/mountain-group/list"
+          href={getPath(PathNames.MOUNTAIN_GROUP)}
           variant="primary"
         >
           Powrót

@@ -8,7 +8,7 @@ import * as Input from '../../../../../components/UI/Input'
 import TextArea from '../../../../../components/UI/TextArea'
 import Select from '../../../../../components/UI/Select'
 import TerrainPointService from '../../../../../services/TerrainPointService'
-import { Errors } from '../../../../../utils/defines'
+import { Errors, PathNames, getPath } from '../../../../../utils/defines'
 import SectionService from '../../../../../services/SectionService'
 import MountainRangeService from '../../../../../services/MountainRangeService'
 import Section from '@/models/Section'
@@ -109,7 +109,7 @@ const Edit: React.FC<Props> = () => {
 
   if (loading) {
     return (
-      <div className="w-50 mt-3 text-center">
+      <div className="mt-3 text-center">
         <Spinner
           animation="border"
           role="status"
@@ -202,7 +202,9 @@ const Edit: React.FC<Props> = () => {
               <Button
                 type="submit"
                 variant="primary"
-                href={`/mountain-range/${section.mountain_range_id}`}
+                href={getPath(PathNames.MOUNTAIN_RANGE, {
+                  id: section.mountain_range_id,
+                })}
                 className="me-3"
               >
                 Powrót
@@ -225,7 +227,7 @@ const Edit: React.FC<Props> = () => {
               <Button
                 type="submit"
                 variant="primary"
-                href="/mountain-group/list"
+                href={getPath(PathNames.MOUNTAIN_GROUP)}
               >
                 Powrót
               </Button>

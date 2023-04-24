@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
 import { toast } from 'react-toastify'
-import defines from '../../../../../utils/defines'
+import { getPath, GlobalFunctions, PathNames } from '../../../../../utils/defines'
 import TerrainPoint from '../../../../../models/TerrainPoint'
 import TerrainPointService from '../../../../../services/TerrainPointService'
 
@@ -41,9 +41,9 @@ const Delete: React.FC<Props> = () => {
           theme: 'light',
         })
       }
-      await defines.GlobalFunctions.wait(500)
+      await GlobalFunctions.wait(500)
       // TODO: should use global paths
-      navigate('/mountain-group/list')
+      navigate(getPath(PathNames.MOUNTAIN_GROUP))
     }
   }
 
@@ -58,11 +58,11 @@ const Delete: React.FC<Props> = () => {
       setLoading(false)
     }
     fetchData()
-  }, [])
+  }, [id])
 
   if (loading) {
     return (
-      <div className="w-50 mt-3 text-center">
+      <div className="mt-3 text-center">
         <Spinner
           animation="border"
           role="status"
@@ -100,7 +100,7 @@ const Delete: React.FC<Props> = () => {
         <Button
           className="me-2"
           // TODO: should use global paths
-          href="/mountain-group/list"
+          href={getPath(PathNames.MOUNTAIN_GROUP)}
           variant="primary"
         >
           Powrót

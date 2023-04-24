@@ -71,7 +71,7 @@ const Edit: React.FC<Props> = () => {
 
   if (loading) {
     return (
-      <div className="w-50 mt-3 text-center">
+      <div className="mt-3 text-center">
         <Spinner
           animation="border"
           role="status"

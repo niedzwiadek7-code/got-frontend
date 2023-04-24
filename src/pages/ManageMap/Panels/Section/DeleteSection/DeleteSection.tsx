@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import Section from '../../../../../models/Section'
-import defines from '../../../../../utils/defines'
+import { GlobalFunctions, getPath, PathNames } from '../../../../../utils/defines'
 import SectionService from '../../../../../services/SectionService'
 
 type Props = {}
@@ -28,9 +28,11 @@ const DeleteSection: React.FC<Props> = () => {
         progress: undefined,
         theme: 'light',
       })
-      await defines.GlobalFunctions.wait(500)
+      await GlobalFunctions.wait(500)
       // TODO: should use global paths
-      navigate(`/mountain-range/${section?.mountain_range_id}`)
+      navigate(getPath(PathNames.MOUNTAIN_RANGE, {
+        id: section?.mountain_range_id,
+      }))
     }
   }
 
@@ -49,7 +51,7 @@ const DeleteSection: React.FC<Props> = () => {
 
   if (loading) {
     return (
-      <div className="w-50 mt-3 text-center">
+      <div className="mt-3 text-center">
         <Spinner
           animation="border"
           role="status"
@@ -87,7 +89,7 @@ const DeleteSection: React.FC<Props> = () => {
         <Button
           className="me-2"
           // TODO: should use global paths
-          href="/mountain-group/list"
+          href={getPath(PathNames.MOUNTAIN_GROUP)}
           variant="primary"
         >
           Powrót

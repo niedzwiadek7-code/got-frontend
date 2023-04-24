@@ -4,9 +4,9 @@ import { Button } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as Input from '../../../../../components/UI/Input'
-import { Errors } from '../../../../../utils/defines'
 import MountainGroupService from '../../../../../services/MountainGroupService'
 import MountainGroup from '../../../../../models/MountainGroup'
+import { PathNames, getPath, Errors } from '../../../../../utils/defines'
 
 type Inputs = {
   name: string
@@ -35,7 +35,7 @@ const Add: React.FC<Props> = () => {
       progress: undefined,
       theme: 'light',
     })
-    navigate('/mountain-group/list')
+    navigate(getPath(PathNames.MOUNTAIN_GROUP))
   }
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const Add: React.FC<Props> = () => {
       }
     }
     fetchData()
-  }, [])
+  }, [id])
 
   const ErrorMessageMap = new Map([
     [Errors.REQUIRED, {
@@ -74,7 +74,7 @@ const Add: React.FC<Props> = () => {
 
         <Button
           className="me-2"
-          href="/mountain-group/list"
+          href={getPath(PathNames.MOUNTAIN_GROUP)}
           variant="primary"
         >
           Powrót

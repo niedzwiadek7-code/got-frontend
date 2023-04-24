@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 // TODO: Import path should use '@/.'
-// import { Button } from 'react-bootstrap'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 import MountainGroupService from '../../../../../services/MountainGroupService'
+import { getPath, PathNames } from '../../../../../utils/defines'
 import MountainGroup from '@/models/MountainGroup'
 import MountainRow from './MountainRow'
 import MountainRangeRow from './MountainRangeRow'
@@ -12,6 +12,7 @@ type Props = {}
 
 const MountainGroupComponent: React.FC<Props> = () => {
   const [mountainGroups, setMountainGroup] = useState<MountainGroup[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,9 +20,24 @@ const MountainGroupComponent: React.FC<Props> = () => {
       setMountainGroup(
         await mountainGroupService.getMountainGroupsWithMountainRanges(),
       )
+      setLoading(false)
     }
     fetchData()
   }, [])
+
+  if (loading) {
+    return (
+      <div className="mt-3 text-center">
+        <Spinner
+          animation="border"
+          role="status"
+          className="text-center"
+        >
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -57,7 +73,9 @@ const MountainGroupComponent: React.FC<Props> = () => {
                 >
                   <Button
                     variant="outline-success"
-                    href={`/mountain-range/add/${mountainGroup.id}`}
+                    href={getPath(PathNames.MOUNTAIN_RANGE_ADD, {
+                      id: mountainGroup.id,
+                    })}
                     className="w-100"
                   >
                     Dodaj pasmo górskie

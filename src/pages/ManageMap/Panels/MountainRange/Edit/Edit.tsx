@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as Input from '../../../../../components/UI/Input'
 import Select from '../../../../../components/UI/Select'
-import { Errors } from '../../../../../utils/defines'
+import { Errors, getPath, PathNames } from '../../../../../utils/defines'
 import MountainGroupService from '../../../../../services/MountainGroupService'
 import MountainRangeService from '../../../../../services/MountainRangeService'
 import MountainRange from '@/models/MountainRange'
@@ -79,7 +79,7 @@ const Edit: React.FC<Props> = () => {
 
   if (loading) {
     return (
-      <div className="w-50 mt-3 text-center">
+      <div className="mt-3 text-center">
         <Spinner
           animation="border"
           role="status"
@@ -129,7 +129,7 @@ const Edit: React.FC<Props> = () => {
                 type="submit"
                 variant="primary"
                 className="me-3"
-                href="/mountain-group/list"
+                href={getPath(PathNames.MOUNTAIN_GROUP)}
               >
                 Powrót
               </Button>

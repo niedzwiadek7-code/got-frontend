@@ -1,12 +1,12 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 // TODO: Import path should use '@/.'
 import { useNavigate } from 'react-router-dom'
 import * as Input from '../../../../../components/UI/Input'
 import TextArea from '../../../../../components/UI/TextArea'
-import { Errors } from '../../../../../utils/defines'
+import { Errors, getPath, PathNames } from '../../../../../utils/defines'
 import TerrainPointService from '../../../../../services/TerrainPointService'
 
 type Inputs = {
@@ -37,7 +37,10 @@ const TerrainPoint: React.FC<Props> = () => {
       progress: undefined,
       theme: 'light',
     })
-    navigate(`/terrain-points/edit/${terrainPoint.id}`)
+
+    navigate(getPath(PathNames.TERRAIN_POINT_EDIT, {
+      id: terrainPoint.id,
+    }))
   }
 
   const ErrorMessageMap = new Map([

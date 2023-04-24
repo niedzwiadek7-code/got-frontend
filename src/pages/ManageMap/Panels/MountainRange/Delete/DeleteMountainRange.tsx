@@ -4,7 +4,7 @@ import { Button, Spinner } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import MountainRange from '../../../../../models/MountainRange'
 import MountainRangeService from '../../../../../services/MountainRangeService'
-import defines from '../../../../../utils/defines'
+import { GlobalFunctions, PathNames, getPath } from '../../../../../utils/defines'
 
 type Props = {}
 
@@ -15,7 +15,6 @@ const DeleteMountainRange: React.FC<Props> = () => {
   const [loading, setLoading] = useState<(boolean)>(true)
 
   const deleteMountainRange = async () => {
-    console.log(id)
     if (id) {
       const mountainRangeService = new MountainRangeService()
       try {
@@ -42,9 +41,8 @@ const DeleteMountainRange: React.FC<Props> = () => {
           theme: 'light',
         })
       }
-      await defines.GlobalFunctions.wait(500)
-      // TODO: should use global paths
-      navigate('/mountain-group/list')
+      await GlobalFunctions.wait(500)
+      navigate(getPath(PathNames.MOUNTAIN_GROUP))
     }
   }
 
@@ -63,7 +61,7 @@ const DeleteMountainRange: React.FC<Props> = () => {
 
   if (loading) {
     return (
-      <div className="w-50 mt-3 text-center">
+      <div className="mt-3 text-center">
         <Spinner
           animation="border"
           role="status"
@@ -101,7 +99,7 @@ const DeleteMountainRange: React.FC<Props> = () => {
         <Button
           className="me-2"
           // TODO: should use global paths
-          href="/mountain-group/list"
+          href={getPath(PathNames.MOUNTAIN_GROUP)}
           variant="primary"
         >
           Powrót

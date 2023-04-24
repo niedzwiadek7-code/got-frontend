@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as Input from '../../../../../components/UI/Input'
-import { Errors } from '../../../../../utils/defines'
+import { Errors, getPath, PathNames } from '../../../../../utils/defines'
 import MountainGroupService from '../../../../../services/MountainGroupService'
 import MountainGroup from '../../../../../models/MountainGroup'
 
@@ -80,7 +80,7 @@ const Edit: React.FC<Props> = () => {
 
         <Button
           className="me-2"
-          href="/mountain-group/list"
+          href={getPath(PathNames.MOUNTAIN_GROUP)}
           variant="primary"
         >
           Powrót

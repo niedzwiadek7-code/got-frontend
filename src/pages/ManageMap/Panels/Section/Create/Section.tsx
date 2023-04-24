@@ -8,7 +8,7 @@ import * as Input from '../../../../../components/UI/Input'
 import TextArea from '../../../../../components/UI/TextArea'
 import Select from '../../../../../components/UI/Select'
 import TerrainPointService from '../../../../../services/TerrainPointService'
-import { Errors } from '../../../../../utils/defines'
+import { Errors, getPath, PathNames } from '../../../../../utils/defines'
 import SectionService from '../../../../../services/SectionService'
 import MountainRangeService from '../../../../../services/MountainRangeService'
 
@@ -58,7 +58,9 @@ const Section: React.FC<Props> = () => {
       theme: 'light',
     })
 
-    navigate(`/section/edit/${section.id}`)
+    navigate(getPath(PathNames.SECTION_EDIT, {
+      id: section.id,
+    }))
   }
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
 import SectionService from '../../../../../services/SectionService'
 import Section from '../../../../../models/Section'
+import { getPath, PathNames } from '../../../../../utils/defines'
 
 type Props = {}
 
@@ -26,7 +27,7 @@ const List: React.FC<Props> = () => {
 
   if (loading) {
     return (
-      <div className="w-50 mt-3 text-center">
+      <div className="mt-3 text-center">
         <Spinner
           animation="border"
           role="status"
@@ -188,7 +189,9 @@ const List: React.FC<Props> = () => {
                     <th className="text-center">
                       <Button
                         variant="primary"
-                        href={`/terrain-points/edit/${section.terrainPointA?.id}`}
+                        href={getPath(PathNames.TERRAIN_POINT_EDIT, {
+                          id: section.terrainPointA?.id,
+                        })}
                       >
                         Edytuj
                       </Button>
@@ -197,7 +200,9 @@ const List: React.FC<Props> = () => {
                     <th className="text-center">
                       <Button
                         variant="danger"
-                        href={`/terrain-points/delete/${section.terrainPointA?.id}`}
+                        href={getPath(PathNames.TERRAIN_POINT_DELETE, {
+                          id: section.terrainPointA?.id,
+                        })}
                       >
                         Usuń
                       </Button>
@@ -234,7 +239,9 @@ const List: React.FC<Props> = () => {
                     <th className="text-center">
                       <Button
                         variant="primary"
-                        href={`/terrain-points/edit/${section.terrainPointB?.id}`}
+                        href={getPath(PathNames.TERRAIN_POINT_EDIT, {
+                          id: section.terrainPointB?.id,
+                        })}
                       >
                         Edytuj
                       </Button>
@@ -243,7 +250,9 @@ const List: React.FC<Props> = () => {
                     <th className="text-center">
                       <Button
                         variant="danger"
-                        href={`/terrain-points/delete/${section.terrainPointB?.id}`}
+                        href={getPath(PathNames.TERRAIN_POINT_DELETE, {
+                          id: section.terrainPointB?.id,
+                        })}
                       >
                         Usuń
                       </Button>
@@ -254,7 +263,9 @@ const List: React.FC<Props> = () => {
 
               <Button
                 className="me-2 mt-2"
-                href={`/mountain-range/${section.mountainRange?.id}`}
+                href={getPath(PathNames.MOUNTAIN_RANGE, {
+                  id: section.mountainRange?.id,
+                })}
                 variant="primary"
               >
                 Powrót
@@ -269,4 +280,5 @@ const List: React.FC<Props> = () => {
     </div>
   )
 }
+
 export default List

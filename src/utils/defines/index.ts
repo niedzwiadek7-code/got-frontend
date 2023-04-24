@@ -1,9 +1,8 @@
-import Paths from './paths'
 import GlobalFunctions from './GlobalFunctions'
 
 export * from './Errors'
+export * from './paths'
 
-export default {
-  Paths,
+export {
   GlobalFunctions,
 }

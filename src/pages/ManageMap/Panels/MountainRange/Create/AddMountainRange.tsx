@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import * as Input from '../../../../../components/UI/Input'
 import Select from '../../../../../components/UI/Select'
-import { Errors } from '../../../../../utils/defines'
+import { Errors, getPath, PathNames } from '../../../../../utils/defines'
 import MountainGroupService from '../../../../../services/MountainGroupService'
 import MountainRangeService from '../../../../../services/MountainRangeService'
 
@@ -18,16 +19,25 @@ interface Props {}
 
 const AddMountainRange: React.FC<Props> = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
+
   const {
     register, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const mountainRangeService = new MountainRangeService()
-    // eslint-disable-next-line no-console
-    console.log(data)
-    mountainRangeService.addMountainRange(data).then(
-      (r) => alert(`Added mountain range: ${JSON.stringify(r)}`),
-    )
+    await mountainRangeService.addMountainRange(data)
+    toast.success('Dodanie pasma górskiego przebiegło pomyślnie', {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    })
+    navigate(getPath(PathNames.MOUNTAIN_GROUP))
   }
 
   const ErrorMessageMap = new Map([
@@ -83,7 +93,7 @@ const AddMountainRange: React.FC<Props> = () => {
           type="submit"
           variant="primary"
           className="me-3"
-          href="/mountain-group/list"
+          href={getPath(PathNames.MOUNTAIN_RANGE)}
         >
           Powrót
         </Button>

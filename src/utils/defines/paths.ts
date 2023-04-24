@@ -1,27 +1,71 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 
-enum Names {
+export enum PathNames {
   MANAGE_MAP = 'Zarządzanie mapą',
-  TERRAIN_POINT = 'Punkt',
+
+  TERRAIN_POINT_ADD = 'Punkt',
   TERRAIN_POINT_EDIT = 'Edycja punktu',
   TERRAIN_POINT_DELETE = 'Usunięcie punktu',
-  SECTION = 'Odcinek',
-  SECTION_LIST = 'Przeglądanie odcinka',
-  DELETE_SECTION = 'Usuwanie odcinka',
-  EDIT_SECTION = 'Edytowanie odcinka',
-  MOUNTAIN_GROUP = 'Grupa górska',
-  ADD_MOUNTAIN_GROUP = 'Dodaj grupę górską',
-  EDIT_MOUNTAIN_GROUP = 'Edycja grupy górskiej',
-  DELETE_MOUNTAIN_GROUP = 'Usunięcie grupy górskiej',
-  DELETE_MOUNTAIN_RANGE = 'Usuwanie pasma górskiego',
-  MOUNTAIN_RANGE = 'Pasmo górskie',
 
-  ADD_MOUNTAIN_RANGE = 'Dodanie grupy górskiej',
-  EDIT_MOUNTAIN_RANGE = 'Edycja pasma górskiego',
+  SECTION = 'Przeglądanie odcinka',
+  SECTION_ADD = 'Odcinek',
+  SECTION_EDIT = 'Edytowanie odcinka',
+  SECTION_DELETE = 'Usuwanie odcinka',
+
+  MOUNTAIN_RANGE = 'Pasmo górskie',
+  MOUNTAIN_RANGE_ADD = 'Dodanie grupy górskiej',
+  MOUNTAIN_RANGE_EDIT = 'Edycja grupy górskiej',
+  MOUNTAIN_RANGE_DELETE = 'Usuwanie pasma górskiego',
+
+  MOUNTAIN_GROUP = 'Grupa górska',
+  MOUNTAIN_GROUP_ADD = 'Dodaj grupę górską',
+  MOUNTAIN_GROUP_EDIT = 'Edycja pasma górskiego',
+  MOUNTAIN_GROUP_DELETE = 'Usunięcie grupy górskiej',
 
   BADGES = 'Odznaki',
   LEADERS = 'Zarządzanie przodownikami'
 }
 
-export default Names
+export const PathLinkMap = new Map([
+  [PathNames.MANAGE_MAP, '/manage-map'],
+
+  [PathNames.TERRAIN_POINT_ADD, '/terrain-points/add'],
+  [PathNames.TERRAIN_POINT_EDIT, '/terrain-points/edit/:id'],
+  [PathNames.TERRAIN_POINT_DELETE, '/terrain-points/delete/:id'],
+
+  [PathNames.SECTION, '/section/:id'],
+  [PathNames.SECTION_ADD, '/section/add'],
+  [PathNames.SECTION_EDIT, '/section/edit/:id'],
+  [PathNames.SECTION_DELETE, '/section/delete/:id'],
+
+  [PathNames.MOUNTAIN_RANGE, '/mountain-range/:id'],
+  [PathNames.MOUNTAIN_RANGE_ADD, '/mountain-range/add/:id'],
+  [PathNames.MOUNTAIN_RANGE_EDIT, '/mountain-range/edit/:id'],
+  [PathNames.MOUNTAIN_RANGE_DELETE, '/mountain-range/delete/:id'],
+
+  [PathNames.MOUNTAIN_GROUP, '/mountain-group'],
+  [PathNames.MOUNTAIN_GROUP_ADD, '/mountain-group/add'],
+  [PathNames.MOUNTAIN_GROUP_EDIT, '/mountain-group/edit/:id'],
+  [PathNames.MOUNTAIN_GROUP_DELETE, '/mountain-group/delete/:id'],
+
+  [PathNames.BADGES, '/badges'],
+  [PathNames.LEADERS, '/leaders'],
+])
+
+export const getPath = (
+  pathName: PathNames,
+  params: Record<string, any> | undefined = undefined,
+): string => {
+  if (!params) {
+    return PathLinkMap.get(pathName) || ''
+  }
+
+  let path = PathLinkMap.get(pathName) || ''
+
+  Object.entries(params).forEach(([param, value]) => {
+    path = path.replaceAll(`:${param}`, value)
+  })
+
+  return path
+}

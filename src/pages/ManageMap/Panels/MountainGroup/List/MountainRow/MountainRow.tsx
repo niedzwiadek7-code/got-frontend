@@ -1,6 +1,7 @@
 import { Button } from 'react-bootstrap'
 import React from 'react'
 import MountainGroup from '@/models/MountainGroup'
+import { getPath, PathNames } from '../../../../../../utils/defines'
 
 interface Props {
   mountain: MountainGroup
@@ -21,7 +22,9 @@ const MountainRow: React.FC<Props> = (props) => (
     <th className="text-center">
       <Button
         variant="primary"
-        href={`/mountain-group/edit/${props.mountain.id}`}
+        href={getPath(PathNames.MOUNTAIN_GROUP_EDIT, {
+          id: props.mountain.id,
+        })}
       >
         Edytuj
       </Button>
@@ -29,7 +32,9 @@ const MountainRow: React.FC<Props> = (props) => (
     <th className="text-center">
       <Button
         variant="danger"
-        href={`/mountain-group/delete/${props.mountain.id}`}
+        href={getPath(PathNames.MOUNTAIN_GROUP_DELETE, {
+          id: props.mountain.id,
+        })}
       >
         Usuń
       </Button>

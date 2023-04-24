@@ -4,6 +4,7 @@ import { Button, Spinner } from 'react-bootstrap'
 import { v4 as uuidv4 } from 'uuid'
 import MountainRangeService from '../../../../../services/MountainRangeService'
 import MountainRange from '../../../../../models/MountainRange'
+import { getPath, PathNames } from '../../../../../utils/defines'
 
 interface Props {}
 
@@ -23,11 +24,11 @@ const List: React.FC<Props> = () => {
       setLoading(false)
     }
     fetchData()
-  }, [])
+  }, [id])
 
   if (loading) {
     return (
-      <div className="w-50 mt-3 text-center">
+      <div className="mt-3 text-center">
         <Spinner
           animation="border"
           role="status"
@@ -50,7 +51,9 @@ const List: React.FC<Props> = () => {
               >
                 <Button
                   className="me-2 mb-2"
-                  href={`/mountain-range/edit/${id}`}
+                  href={getPath(PathNames.MOUNTAIN_RANGE, {
+                    id,
+                  })}
                   variant="primary"
                 >
                   Edytuj pasmo górskie
@@ -119,7 +122,9 @@ const List: React.FC<Props> = () => {
                         <th className="text-center">
                           <Button
                             variant="secondary"
-                            href={`/section/${section.id}`}
+                            href={getPath(PathNames.SECTION, {
+                              id: section.id,
+                            })}
                           >
                             Przeglądaj
                           </Button>
@@ -128,7 +133,9 @@ const List: React.FC<Props> = () => {
                         <th className="text-center">
                           <Button
                             variant="primary"
-                            href={`/section/edit/${section.id}`}
+                            href={getPath(PathNames.SECTION_EDIT, {
+                              id: section.id,
+                            })}
                           >
                             Edytuj
                           </Button>
@@ -137,7 +144,9 @@ const List: React.FC<Props> = () => {
                         <th className="text-center">
                           <Button
                             variant="danger"
-                            href={`/section/delete/${section.id}`}
+                            href={getPath(PathNames.SECTION_DELETE, {
+                              id: section.id,
+                            })}
                           >
                             Usuń
                           </Button>
@@ -150,7 +159,7 @@ const List: React.FC<Props> = () => {
 
               <Button
                 className="me-2"
-                href="/mountain-group/list"
+                href={getPath(PathNames.MOUNTAIN_GROUP)}
                 variant="primary"
               >
                 Powrót
