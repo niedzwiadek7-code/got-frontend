@@ -24,7 +24,19 @@ const MountainGroupComponent: React.FC<Props> = () => {
   }, [])
 
   return (
-    <div className="w-50">
+    <div>
+      <div
+        className="text-end"
+      >
+        <Button
+          variant="success"
+          href="/mountain-group/add"
+          className="mb-3"
+        >
+          Dodaj grupę górską
+        </Button>
+      </div>
+
       <h2 className="mb-4"> Grupy górskie: </h2>
 
       <table

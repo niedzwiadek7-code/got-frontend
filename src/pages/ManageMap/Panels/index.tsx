@@ -38,6 +38,11 @@ export default {
     icon: <FontAwesomeIcon icon={faMountainSun} />,
     component: <MountainGroup.List.Component />,
   },
+  [defines.Paths.ADD_MOUNTAIN_GROUP]: {
+    link: '/mountain-group/add',
+    component: <MountainGroup.Add.Component />,
+    hideInMenu: true,
+  },
   [defines.Paths.EDIT_MOUNTAIN_GROUP]: {
     link: '/mountain-group/edit/:id',
     component: <MountainGroup.Edit.Component />,
