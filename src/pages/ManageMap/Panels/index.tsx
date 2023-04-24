@@ -23,9 +23,15 @@ export default {
     link: '/section/add',
     component: <Section.Create.Component />,
   },
-  [defines.Paths.SECTION]: {
+  [defines.Paths.EDIT_SECTION]: {
+    link: '/section/edit/:id',
+    component: <Section.Edit.Component />,
+    hideInMenu: true,
+  },
+  [defines.Paths.DELETE_SECTION]: {
     link: '/section/delete/:id',
     component: <Section.Delete.Component />,
+    hideInMenu: true,
   },
   [defines.Paths.MOUNTAIN_GROUP]: {
     link: '/mountain-group/list',
