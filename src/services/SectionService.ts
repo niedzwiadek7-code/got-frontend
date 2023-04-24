@@ -1,6 +1,8 @@
 import TerrainPoint from '@/models/TerrainPoint'
 import ApiService, { ApiResponse } from './ApiService'
 import Section from '@/models/Section'
+import MountainRangeService from './MountainRangeService'
+import TerrainPointService from './TerrainPointService'
 
 class SectionService {
   private sectionUrl = '/sections'
@@ -27,8 +29,19 @@ class SectionService {
   }
 
   public async getOneSection(sectionId : string): Promise<Section> {
-    const response = await this.apiService.get<ApiResponse<Section>>(`${this.sectionUrl}/${sectionId}`)
-    return response as any as Promise<Section>
+    const section = await this.apiService.get<Section>(`${this.sectionUrl}/${sectionId}`)
+    const mountainRangeService = new MountainRangeService()
+    section.mountainRange = await
+    mountainRangeService.getOneMountainRange(section.mountain_range_id.toString())
+
+    const terrainPointService = new TerrainPointService()
+    section.terrainPointA = await
+    terrainPointService.getTerrainPoint(section.terrain_point_a_id.toString())
+
+    section.terrainPointB = await
+    terrainPointService.getTerrainPoint(section.terrain_point_b_id.toString())
+
+    return section
   }
 }
 

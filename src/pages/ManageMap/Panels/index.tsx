@@ -19,6 +19,11 @@ export default {
     component: <TerrainPoint.Edit.Component />,
     hideInMenu: true,
   },
+  [defines.Paths.SECTION_LIST]: {
+    link: '/section/:id',
+    component: <Section.List.Component />,
+    hideInMenu: true,
+  },
   [defines.Paths.SECTION]: {
     link: '/section/add',
     component: <Section.Create.Component />,

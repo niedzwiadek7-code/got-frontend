@@ -85,6 +85,13 @@ const List: React.FC<Props> = () => {
                       className="text-center"
                       scope="col"
                     >
+                      Przeglądaj
+                    </th>
+
+                    <th
+                      className="text-center"
+                      scope="col"
+                    >
                       Edytuj
                     </th>
 
@@ -107,6 +114,15 @@ const List: React.FC<Props> = () => {
                           scope="row"
                         >
                           { section.name }
+                        </th>
+
+                        <th className="text-center">
+                          <Button
+                            variant="secondary"
+                            href={`/section/${section.id}`}
+                          >
+                            Przeglądaj
+                          </Button>
                         </th>
 
                         <th className="text-center">

@@ -1,3 +1,6 @@
+import MountainRange from './MountainRange'
+import TerrainPoint from './TerrainPoint'
+
 class Section {
   id : number
 
@@ -18,6 +21,12 @@ class Section {
   created_at : string
 
   updated_at : string
+
+  mountainRange?: MountainRange
+
+  terrainPointA?: TerrainPoint
+
+  terrainPointB?: TerrainPoint
 
   constructor(
     id: number,
