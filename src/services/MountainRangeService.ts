@@ -24,6 +24,10 @@ class MountainRangeService {
     return mountains
   }
 
+  public async getOneMountainRangeWithoutDetails(mountainRangeId: string): Promise<MountainRange> {
+    return this.apiService.get<MountainRange>(`${this.mountainRangeUrl}/${mountainRangeId}`)
+  }
+
   public async getOneMountainRange(mountainRangeId: string): Promise<MountainRange> {
     const mountain = await this.apiService.get<MountainRange>(`${this.mountainRangeUrl}/${mountainRangeId}`)
     mountain.sections = await this.getSections(mountainRangeId)

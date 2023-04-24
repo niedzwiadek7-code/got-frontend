@@ -19,6 +19,11 @@ export default {
     component: <TerrainPoint.Edit.Component />,
     hideInMenu: true,
   },
+  [defines.Paths.TERRAIN_POINT_DELETE]: {
+    link: '/terrain-points/delete/:id',
+    component: <TerrainPoint.Delete.Component />,
+    hideInMenu: true,
+  },
   [defines.Paths.SECTION_LIST]: {
     link: '/section/:id',
     component: <Section.List.Component />,

@@ -32,7 +32,7 @@ class SectionService {
     const section = await this.apiService.get<Section>(`${this.sectionUrl}/${sectionId}`)
     const mountainRangeService = new MountainRangeService()
     section.mountainRange = await
-    mountainRangeService.getOneMountainRange(section.mountain_range_id.toString())
+    mountainRangeService.getOneMountainRangeWithoutDetails(section.mountain_range_id.toString())
 
     const terrainPointService = new TerrainPointService()
     section.terrainPointA = await

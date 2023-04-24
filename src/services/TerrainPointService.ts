@@ -21,6 +21,10 @@ class TerrainPointService {
   public async editTerrainPoint(id: string, data?: any): Promise<(TerrainPoint)> {
     return this.apiService.put<TerrainPoint>(`${this.terrainPointUrl}/${id}`, data)
   }
+
+  public async deleteTerrainPoint(id: string, data?: any): Promise<(TerrainPoint)> {
+    return this.apiService.delete<TerrainPoint>(`${this.terrainPointUrl}/${id}`, data)
+  }
 }
 
 export default TerrainPointService

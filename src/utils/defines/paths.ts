@@ -5,6 +5,7 @@ enum Names {
   MANAGE_MAP = 'Zarządzanie mapą',
   TERRAIN_POINT = 'Punkt',
   TERRAIN_POINT_EDIT = 'Edycja punktu',
+  TERRAIN_POINT_DELETE = 'Usunięcie punktu',
   SECTION = 'Odcinek',
   SECTION_LIST = 'Przeglądanie odcinka',
   DELETE_SECTION = 'Usuwanie odcinka',
