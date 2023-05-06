@@ -89,7 +89,7 @@ const MountainGroupComponent: React.FC<Props> = () => {
               </tr>
 
               {
-                mountainGroup.mountainRange.map((mountainRange) => (
+                mountainGroup.mountain_ranges.map((mountainRange) => (
                   <MountainRangeRow.Component
                     mountain={mountainRange}
                     key={uuidv4()}
