@@ -13,7 +13,7 @@ class MountainRangeService {
     return response as any as Promise<MountainRange[]>
   }
 
-  public async getMountainRangeWithSections(): Promise<MountainRange[]> {
+  public async getMountainRangesWithSections(): Promise<MountainRange[]> {
     const mountains = await this.apiService.get<MountainRange[]>(`${this.mountainRangeUrl}`)
 
     // eslint-disable-next-line no-restricted-syntax

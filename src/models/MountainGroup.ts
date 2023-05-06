@@ -9,14 +9,14 @@ class MountainGroup {
 
   updated_at: string
 
-  mountainRange: Array<MountainRange>
+  mountain_ranges: Array<MountainRange>
 
   constructor(id: number, name: string, created: string, updated: string) {
     this.id = id
     this.name = name
     this.created_at = created
     this.updated_at = updated
-    this.mountainRange = []
+    this.mountain_ranges = []
   }
 }
 
