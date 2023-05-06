@@ -76,12 +76,12 @@ const Delete: React.FC<Props> = () => {
 
   return (
     <div>
-      <h2 className="mb-4"> Usuń odcinek </h2>
+      <h2 className="mb-4"> Usuń punkt </h2>
       {
         terrainPoint
           ? (
             <div>
-              Czy na pewno chcesz usunąć ten odcinek
+              Czy na pewno chcesz usunąć ten punkt
               <span className="fw-bold">
                 {' '}
                 {terrainPoint.name}
