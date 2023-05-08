@@ -10,6 +10,8 @@ type Props = {
   data: any,
   errorMessage?: (string | undefined),
   default?: (string | number),
+  // eslint-disable-next-line no-unused-vars
+  onChange?: (e: any) => void,
 }
 
 const Input: React.FC<Props> = (props) => (
@@ -24,6 +26,7 @@ const Input: React.FC<Props> = (props) => (
         type={props.type}
         placeholder={props.label}
         {...props.data}
+        onChange={props.onChange}
       />
     </FloatingLabel>
     <span className="text-danger">
@@ -35,6 +38,7 @@ const Input: React.FC<Props> = (props) => (
 Input.defaultProps = {
   errorMessage: undefined,
   default: undefined,
+  onChange: () => {},
 }
 
 export default Input

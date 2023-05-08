@@ -30,6 +30,15 @@ const Edit: React.FC<Props> = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const { id } = useParams()
 
+  // @ts-ignore
+  const [mapPoint, setMapPoint] = useState<MapDefinition.Elements.Point>(
+    new MapDefinition.Elements.Point(
+      '',
+      '0',
+      '0',
+    ),
+  )
+
   useEffect(() => {
     const fetchData = async () => {
       const terrainPointService = new TerrainPointService()
@@ -46,6 +55,16 @@ const Edit: React.FC<Props> = () => {
     }
     fetchData()
   }, [])
+
+  useEffect(() => {
+    setMapPoint(
+      new MapDefinition.Elements.Point(
+        terrainPoint?.name || '',
+        terrainPoint?.latitude || '0',
+        terrainPoint?.longitude || '0',
+      ),
+    )
+  }, [terrainPoint])
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const terrainPointService = new TerrainPointService()
@@ -109,6 +128,15 @@ const Edit: React.FC<Props> = () => {
                     default={terrainPoint.name}
                     data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
                     errorMessage={errors?.name?.message || undefined}
+                    onChange={(e) => {
+                      setMapPoint(
+                        new MapDefinition.Elements.Point(
+                          e.target.value,
+                          mapPoint.latitude,
+                          mapPoint.longitude,
+                        ),
+                      )
+                    }}
                   />
                 </div>
 
@@ -139,6 +167,15 @@ const Edit: React.FC<Props> = () => {
                     default={terrainPoint.latitude}
                     data={register('latitude', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
                     errorMessage={errors?.latitude?.message || undefined}
+                    onChange={(e) => {
+                      setMapPoint(
+                        new MapDefinition.Elements.Point(
+                          mapPoint.name,
+                          e.target.value,
+                          mapPoint.longitude,
+                        ),
+                      )
+                    }}
                   />
                 </div>
 
@@ -149,6 +186,15 @@ const Edit: React.FC<Props> = () => {
                     default={terrainPoint.longitude}
                     data={register('longitude', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
                     errorMessage={errors?.longitude?.message || undefined}
+                    onChange={(e) => {
+                      setMapPoint(
+                        new MapDefinition.Elements.Point(
+                          mapPoint.name,
+                          mapPoint.latitude,
+                          e.target.value,
+                        ),
+                      )
+                    }}
                   />
                 </div>
 
@@ -170,7 +216,9 @@ const Edit: React.FC<Props> = () => {
               </form>
 
               <div className="col-6">
-                <MapDefinition.Component />
+                <MapDefinition.Component
+                  points={[mapPoint]}
+                />
               </div>
             </div>
           ) : (
