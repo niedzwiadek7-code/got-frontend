@@ -9,6 +9,7 @@ import TextArea from '../../../../../components/UI/TextArea'
 import { Errors } from '../../../../../utils/defines'
 import TerrainPointService from '../../../../../services/TerrainPointService'
 import TerrainPoint from '@/models/TerrainPoint'
+import MapDefinition from '../../../../../components/Map'
 
 type Inputs = {
   terrainPointId: string,
@@ -84,85 +85,94 @@ const Edit: React.FC<Props> = () => {
   }
 
   return (
-    <div className="w-50">
+    <div>
       <h2 className="mb-4"> Edytuj Punkt </h2>
 
       {
         terrainPoint
           ? (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <input
-                type="hidden"
-                defaultValue={id}
-                {...(register('terrainPointId'))}
-              />
-
-              <div className="mb-3">
-                <Input.Component
-                  label="Nazwa punktu"
-                  type={Input.Type.TEXT}
-                  default={terrainPoint.name}
-                  data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-                  errorMessage={errors?.name?.message || undefined}
-                />
-              </div>
-
-              <div className="mb-3">
-                <TextArea.Component
-                  label="Opis"
-                  height={150}
-                  default={terrainPoint.description}
-                  data={register('description', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-                  errorMessage={errors?.description?.message || undefined}
-                />
-              </div>
-
-              <div className="mb-3">
-                <Input.Component
-                  label="Wysokość nad poziomem morza"
-                  type={Input.Type.NUMBER}
-                  default={terrainPoint.sea_level_height}
-                  data={register('sea_level_height', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-                  errorMessage={errors?.sea_level_height?.message || undefined}
-                />
-              </div>
-
-              <div className="mb-3">
-                <Input.Component
-                  label="Szerokość geograficzna"
-                  type={Input.Type.TEXT}
-                  default={terrainPoint.latitude}
-                  data={register('latitude', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-                  errorMessage={errors?.latitude?.message || undefined}
-                />
-              </div>
-
-              <div className="mb-3">
-                <Input.Component
-                  label="Długość geograficzna"
-                  type={Input.Type.TEXT}
-                  default={terrainPoint.longitude}
-                  data={register('longitude', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-                  errorMessage={errors?.longitude?.message || undefined}
-                />
-              </div>
-
-              <Button
-                type="submit"
-                href="/terrain-points/add"
-                className="me-3"
-                variant="primary"
+            <div className="row">
+              <form
+                className="col-6"
+                onSubmit={handleSubmit(onSubmit)}
               >
-                Powrót
-              </Button>
+                <input
+                  type="hidden"
+                  defaultValue={id}
+                  {...(register('terrainPointId'))}
+                />
 
-              <Button
-                type="submit"
-                variant="success"
-              >
-                Zapisz zmiany
-              </Button>
-            </form>
+                <div className="mb-3">
+                  <Input.Component
+                    label="Nazwa punktu"
+                    type={Input.Type.TEXT}
+                    default={terrainPoint.name}
+                    data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+                    errorMessage={errors?.name?.message || undefined}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <TextArea.Component
+                    label="Opis"
+                    height={150}
+                    default={terrainPoint.description}
+                    data={register('description', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+                    errorMessage={errors?.description?.message || undefined}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <Input.Component
+                    label="Wysokość nad poziomem morza"
+                    type={Input.Type.NUMBER}
+                    default={terrainPoint.sea_level_height}
+                    data={register('sea_level_height', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+                    errorMessage={errors?.sea_level_height?.message || undefined}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <Input.Component
+                    label="Szerokość geograficzna"
+                    type={Input.Type.TEXT}
+                    default={terrainPoint.latitude}
+                    data={register('latitude', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+                    errorMessage={errors?.latitude?.message || undefined}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <Input.Component
+                    label="Długość geograficzna"
+                    type={Input.Type.TEXT}
+                    default={terrainPoint.longitude}
+                    data={register('longitude', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+                    errorMessage={errors?.longitude?.message || undefined}
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  href="/terrain-points/add"
+                  className="me-3"
+                  variant="primary"
+                >
+                  Powrót
+                </Button>
+
+                <Button
+                  type="submit"
+                  variant="success"
+                >
+                  Zapisz zmiany
+                </Button>
+              </form>
+
+              <div className="col-6">
+                <MapDefinition.Component />
+              </div>
+            </div>
           ) : (
             <p>
               Nie znaleziono podanego punktu
