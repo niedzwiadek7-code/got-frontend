@@ -80,6 +80,7 @@ const Edit: React.FC<Props> = () => {
         )
       }
 
+      const terrainPointsService = new TerrainPointService()
       const terrainPoints = await terrainPointsService.getTerrainPoints()
       const allPointsTemp: Record<number, string> = {}
 

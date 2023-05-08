@@ -148,7 +148,6 @@ const Map: React.FC<Props> = (props) => {
   )
 }
 
-// @ts-ignore
 Map.defaultProps = {
   points: [],
   lines: [],
