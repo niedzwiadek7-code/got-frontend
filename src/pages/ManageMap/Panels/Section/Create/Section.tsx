@@ -11,6 +11,7 @@ import TerrainPointService from '../../../../../services/TerrainPointService'
 import { Errors, getPath, PathNames } from '../../../../../utils/defines'
 import SectionService from '../../../../../services/SectionService'
 import MountainRangeService from '../../../../../services/MountainRangeService'
+import MapDefinition from '../../../../../components/Map'
 
 type Inputs = {
   name: string,
@@ -28,6 +29,14 @@ const Section: React.FC<Props> = () => {
   const navigate = useNavigate()
   const [allPoints, setAllPoints] = useState<Record<number, string>>({})
   const [allMountainRanges, setAllMountainRanges] = useState<Record<number, string>>({})
+  // @ts-ignore
+  const [mapLine, setMapLine] = useState<MapDefinition.Elements.Line>(
+    new MapDefinition.Elements.Line(
+      '',
+      1,
+      1,
+    ),
+  )
 
   const {
     register, handleSubmit, formState: { errors },
@@ -100,80 +109,122 @@ const Section: React.FC<Props> = () => {
   ])
 
   return (
-    <div className="w-50">
+    <div>
       <h2 className="mb-4"> Dodaj Odcinek </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3">
-          <Input.Component
-            label="Nazwa odcinka"
-            type={Input.Type.TEXT}
-            data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-            errorMessage={errors?.name?.message || undefined}
-          />
-        </div>
-
-        <div className="mb-3">
-          <TextArea.Component
-            label="Opis odcinka"
-            height={150}
-            data={register('description')}
-            errorMessage={errors?.description?.message || undefined}
-          />
-        </div>
-
-        <div className="mb-3">
-          <Select.Component
-            label="Wybierz pasmo górskie"
-            options={allMountainRanges}
-            data={register('mountainRange', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-            errorMessage={errors?.mountainRange?.message || undefined}
-          />
-        </div>
-
-        <div className="mb-3">
-          <Input.Component
-            label="Punkty do uzyskania (od A do B)"
-            type={Input.Type.NUMBER}
-            data={register('badgePoints_AtoB')}
-            errorMessage={errors?.badgePoints_AtoB?.message || undefined}
-          />
-        </div>
-
-        <div className="mb-3">
-          <Input.Component
-            label="Punkty do uzyskania (od B do A)"
-            type={Input.Type.NUMBER}
-            data={register('badgePoints_BtoA')}
-            errorMessage={errors?.badgePoints_BtoA?.message || undefined}
-          />
-        </div>
-
-        <div className="mb-3">
-          <Select.Component
-            label="Wybierz punkt A"
-            options={allPoints}
-            data={register('terrainPoint_A', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-            errorMessage={errors?.terrainPoint_A?.message || undefined}
-          />
-        </div>
-
-        <div className="mb-3">
-          <Select.Component
-            label="Wybierz punkt B"
-            options={allPoints}
-            data={register('terrainPoint_B', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
-            errorMessage={errors?.terrainPoint_B?.message || undefined}
-          />
-        </div>
-
-        <Button
-          type="submit"
-          variant="success"
+      <div className="row">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="col-6"
         >
-          Zapisz odcinek
-        </Button>
-      </form>
+          <div className="mb-3">
+            <Input.Component
+              label="Nazwa odcinka"
+              type={Input.Type.TEXT}
+              data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              errorMessage={errors?.name?.message || undefined}
+              onChange={(e) => {
+                setMapLine(
+                  new MapDefinition.Elements.Line(
+                    e.target.value,
+                    mapLine.pointAId,
+                    mapLine.pointBId,
+                  ),
+                )
+              }}
+            />
+          </div>
+
+          <div className="mb-3">
+            <TextArea.Component
+              label="Opis odcinka"
+              height={150}
+              data={register('description')}
+              errorMessage={errors?.description?.message || undefined}
+            />
+          </div>
+
+          <div className="mb-3">
+            <Select.Component
+              label="Wybierz pasmo górskie"
+              options={allMountainRanges}
+              data={register('mountainRange', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              errorMessage={errors?.mountainRange?.message || undefined}
+            />
+          </div>
+
+          <div className="mb-3">
+            <Input.Component
+              label="Punkty do uzyskania (od A do B)"
+              type={Input.Type.NUMBER}
+              data={register('badgePoints_AtoB')}
+              errorMessage={errors?.badgePoints_AtoB?.message || undefined}
+            />
+          </div>
+
+          <div className="mb-3">
+            <Input.Component
+              label="Punkty do uzyskania (od B do A)"
+              type={Input.Type.NUMBER}
+              data={register('badgePoints_BtoA')}
+              errorMessage={errors?.badgePoints_BtoA?.message || undefined}
+            />
+          </div>
+
+          <div className="mb-3">
+            <Select.Component
+              label="Wybierz punkt A"
+              options={allPoints}
+              default={mapLine.pointAId}
+              data={register('terrainPoint_A', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              errorMessage={errors?.terrainPoint_A?.message || undefined}
+              onChange={(e) => {
+                setMapLine(
+                  new MapDefinition.Elements.Line(
+                    mapLine.name,
+                    e.target.value,
+                    mapLine.pointBId,
+                  ),
+                )
+              }}
+            />
+          </div>
+
+          <div className="mb-3">
+            <Select.Component
+              label="Wybierz punkt B"
+              options={allPoints}
+              default={mapLine.pointBId}
+              data={register('terrainPoint_B', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              errorMessage={errors?.terrainPoint_B?.message || undefined}
+              onChange={(e) => {
+                setMapLine(
+                  new MapDefinition.Elements.Line(
+                    mapLine.name,
+                    mapLine.pointAId,
+                    e.target.value,
+                  ),
+                )
+              }}
+            />
+          </div>
+
+          <Button
+            type="submit"
+            variant="success"
+          >
+            Zapisz odcinek
+          </Button>
+        </form>
+
+        <div className="col-6">
+          <MapDefinition.Component
+            lines={[
+              mapLine,
+            ]}
+          />
+        </div>
+      </div>
     </div>
   )
 }
