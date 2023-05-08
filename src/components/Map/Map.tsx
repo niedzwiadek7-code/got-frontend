@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  MapContainer, Marker, Popup, TileLayer, useMapEvents,
+  MapContainer, Marker, Polyline, Popup, TileLayer, useMapEvents,
 } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -9,17 +9,23 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import './styles.scss'
 import { divIcon } from 'leaflet'
 import Styles from './Map.module.scss'
-import Point from './Elements/Point'
+import Elements from './Elements'
+import TerrainPointService from '../../services/TerrainPointService'
 
 type Props = {
-  points?: Array<Point>,
-  center: Point,
+  // @ts-ignore
+  points?: Array<Elements.Point>,
+  // @ts-ignore
+  lines?: Array<Elements.Line>,
+  // @ts-ignore
+  center: Elements.Point,
   // eslint-disable-next-line no-unused-vars
   onMarkerPositionChange: (position: [number, number] | null) => void,
-};
+}
 
 const Map: React.FC<Props> = (props) => {
   const [clickedPosition, setClickedPosition] = useState<[number, number] | null>(null)
+  const [, forceUpdate] = useState<any>()
 
   const handleClick = (e: any) => {
     const { lat, lng } = e.latlng
@@ -47,6 +53,26 @@ const Map: React.FC<Props> = (props) => {
     />,
   )
 
+  // eslint-disable-next-line no-restricted-syntax
+  for (const line of props.lines || []) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      const fetchData = async () => {
+        const terrainPointService = new TerrainPointService()
+        line.setPointA(
+          await terrainPointService.getTerrainPoint(line.pointAId),
+        )
+
+        line.setPointB(
+          await terrainPointService.getTerrainPoint(line.pointBId),
+        )
+
+        forceUpdate({})
+      }
+      fetchData()
+    }, [line])
+  }
+
   const customMarkerIcon = divIcon({
     html: iconMarkup,
   })
@@ -68,24 +94,61 @@ const Map: React.FC<Props> = (props) => {
       {clickedPosition}
 
       {
-          (props.points || []).map((point) => (
+        (props.points || []).map((point) => (
+          <Marker
+            icon={customMarkerIcon}
+            position={point.getPosition()}
+            key={point.name}
+          >
+            <Popup>
+              { point.name }
+            </Popup>
+          </Marker>
+        ))
+      }
+
+      {
+        (props.lines || []).filter((line) => line.pointA && line.pointB).map((line) => (
+          <>
             <Marker
               icon={customMarkerIcon}
-              position={point.getPosition()}
-              key={point.name}
+              position={line.pointA.getPosition()}
+              key={line.pointA.name}
             >
               <Popup>
-                { point.name }
+                { line.pointA.name }
               </Popup>
             </Marker>
-          ))
-        }
+
+            <Marker
+              icon={customMarkerIcon}
+              position={line.pointB.getPosition()}
+              key={line.pointB.name}
+            >
+              <Popup>
+                { line.pointB.name }
+              </Popup>
+            </Marker>
+
+            <Polyline
+              key={line.name}
+              pathOptions={{ color: 'green' }}
+              positions={line.getLine()}
+            >
+              <Popup>
+                { line.name }
+              </Popup>
+            </Polyline>
+          </>
+        ))
+      }
     </MapContainer>
   )
 }
 
 Map.defaultProps = {
   points: [],
+  lines: [],
 }
 
 export default Map
