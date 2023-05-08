@@ -30,7 +30,6 @@ const Map: React.FC<Props> = (props) => {
   const { getApiService } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
-
   const [, forceUpdate] = useState<any>()
 
   const handleClick = (e: any) => {
