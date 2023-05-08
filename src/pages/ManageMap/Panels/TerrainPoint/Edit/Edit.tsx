@@ -10,6 +10,7 @@ import { Errors } from '../../../../../utils/defines'
 import TerrainPointService from '../../../../../services/TerrainPointService'
 import TerrainPoint from '@/models/TerrainPoint'
 import MapDefinition from '../../../../../components/Map'
+import Point from '../../../../../components/Map/Elements/Point'
 
 type Inputs = {
   terrainPointId: string,
@@ -218,6 +219,11 @@ const Edit: React.FC<Props> = () => {
               <div className="col-6">
                 <MapDefinition.Component
                   points={[mapPoint]}
+                  center={new Point(
+                    '',
+                    terrainPoint.latitude,
+                    terrainPoint.longitude,
+                  )}
                 />
               </div>
             </div>

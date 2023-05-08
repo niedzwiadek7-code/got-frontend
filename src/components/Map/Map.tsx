@@ -9,16 +9,15 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import './styles.scss'
 import { divIcon } from 'leaflet'
 import Styles from './Map.module.scss'
-import Elements from './Elements'
+import Point from './Elements/Point'
 
 type Props = {
   // @ts-ignore
-  points?: Array<Elements.Point>,
+  points?: Array<Point>,
+  center: Point,
 }
 
 const Map: React.FC<Props> = (props) => {
-  const center = props.points?.[0] ? props.points[0].getPosition() : [50, 20]
-
   const iconMarkup = renderToStaticMarkup(
     <FontAwesomeIcon
       icon={faLocationDot}
@@ -32,7 +31,7 @@ const Map: React.FC<Props> = (props) => {
 
   return (
     <MapContainer
-      center={center}
+      center={props.center.getPosition()}
       zoom={13}
       scrollWheelZoom
       style={{ height: '100%' }}
