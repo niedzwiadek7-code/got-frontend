@@ -8,7 +8,9 @@ type Props = {
   // TODO: improve data type
   data: any,
   errorMessage?: (string | undefined),
-  default?: (string | number)
+  default?: (string | number),
+  // eslint-disable-next-line no-unused-vars
+  onChange?: (e: any) => void,
 }
 
 const Select: React.FC<Props> = (props) => (
@@ -20,6 +22,7 @@ const Select: React.FC<Props> = (props) => (
       <Form.Select
         aria-label="Floating label select example"
         {...props.data}
+        onChange={props.onChange}
       >
         {
           Object.entries(props.options).map(([key, value]) => (
@@ -44,6 +47,7 @@ const Select: React.FC<Props> = (props) => (
 Select.defaultProps = {
   errorMessage: undefined,
   default: '',
+  onChange: () => {},
 }
 
 export default Select
