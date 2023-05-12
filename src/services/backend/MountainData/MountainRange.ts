@@ -1,6 +1,6 @@
-import ApiService, { ApiResponse } from './ApiService'
+import ApiService, { ApiResponse } from '../ApiService'
 import MountainRange from '@/models/MountainRange'
-import MountainGroupService from './MountainGroupService'
+import MountainGroupService from './MountainGroup'
 import Section from '@/models/Section'
 
 class MountainRangeService {

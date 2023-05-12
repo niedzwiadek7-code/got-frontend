@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
 import { v4 as uuidv4 } from 'uuid'
-import MountainRangeService from '../../../../../services/MountainRangeService'
+import { Dependencies } from '../../../../../context/dependencies'
 import MountainRange from '../../../../../models/MountainRange'
 import { getPath, PathNames } from '../../../../../utils/defines'
 
 interface Props {}
 
 const List: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const [mountainRange, setMountainRange] = useState<(MountainRange | undefined)>(undefined)
   const { id } = useParams()
   const [loading, setLoading] = useState<boolean>(true)
@@ -16,7 +19,7 @@ const List: React.FC<Props> = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const mountainRangeService = new MountainRangeService()
+        const mountainRangeService = apiService.mountainData.mountainRange
         setMountainRange(
           await mountainRangeService.getOneMountainRange(id),
         )

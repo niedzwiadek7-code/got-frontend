@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 // TODO: Import path should use '@/.'
 import { Button, Spinner } from 'react-bootstrap'
-import MountainGroupService from '../../../../../services/MountainGroupService'
 import { getPath, PathNames } from '../../../../../utils/defines'
+import { Dependencies } from '../../../../../context/dependencies'
 import MountainGroup from '@/models/MountainGroup'
 import MountainRow from './MountainRow'
 import MountainRangeRow from './MountainRangeRow'
@@ -11,12 +11,15 @@ import MountainRangeRow from './MountainRangeRow'
 type Props = {}
 
 const MountainGroupComponent: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const [mountainGroups, setMountainGroup] = useState<MountainGroup[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchData = async () => {
-      const mountainGroupService = new MountainGroupService()
+      const mountainGroupService = apiService.mountainData.mountainGroup
       setMountainGroup(
         await mountainGroupService.getMountainGroupsWithMountainRanges(),
       )

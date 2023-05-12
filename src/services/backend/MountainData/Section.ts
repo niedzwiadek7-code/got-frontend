@@ -1,8 +1,8 @@
 import TerrainPoint from '@/models/TerrainPoint'
-import ApiService, { ApiResponse } from './ApiService'
+import ApiService, { ApiResponse } from '../ApiService'
 import Section from '@/models/Section'
-import MountainRangeService from './MountainRangeService'
-import TerrainPointService from './TerrainPointService'
+import MountainRangeService from './MountainRange'
+import TerrainPointService from './TerrainPoint'
 
 class SectionService {
   private sectionUrl = '/sections'

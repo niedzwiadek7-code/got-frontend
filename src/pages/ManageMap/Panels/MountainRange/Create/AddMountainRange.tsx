@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button } from 'react-bootstrap'
@@ -7,8 +7,7 @@ import { toast } from 'react-toastify'
 import * as Input from '../../../../../components/UI/Input'
 import Select from '../../../../../components/UI/Select'
 import { Errors, getPath, PathNames } from '../../../../../utils/defines'
-import MountainGroupService from '../../../../../services/MountainGroupService'
-import MountainRangeService from '../../../../../services/MountainRangeService'
+import { Dependencies } from '../../../../../context/dependencies'
 
 type Inputs = {
   name: string,
@@ -18,6 +17,9 @@ type Inputs = {
 interface Props {}
 
 const AddMountainRange: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -25,7 +27,7 @@ const AddMountainRange: React.FC<Props> = () => {
     register, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const mountainRangeService = new MountainRangeService()
+    const mountainRangeService = apiService.mountainData.mountainRange
     await mountainRangeService.addMountainRange(data)
     toast.success('Dodanie pasma górskiego przebiegło pomyślnie', {
       position: 'bottom-right',
@@ -51,7 +53,7 @@ const AddMountainRange: React.FC<Props> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const mountainGroupService = new MountainGroupService()
+      const mountainGroupService = apiService.mountainData.mountainGroup
       const mountainGroups = await mountainGroupService.getMountainGroups()
 
       const tempOptions: Record<number, string> = {}

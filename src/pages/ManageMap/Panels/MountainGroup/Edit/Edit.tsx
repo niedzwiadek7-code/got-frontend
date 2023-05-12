@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as Input from '../../../../../components/UI/Input'
 import { Errors, getPath, PathNames } from '../../../../../utils/defines'
-import MountainGroupService from '../../../../../services/MountainGroupService'
+import { Dependencies } from '../../../../../context/dependencies'
 import MountainGroup from '../../../../../models/MountainGroup'
 
 type Inputs = {
@@ -16,6 +16,8 @@ type Inputs = {
 type Props = {}
 
 const Edit: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
   const [mountainGroup, setMountainGroup] = useState<(MountainGroup | undefined)>()
   const { id } = useParams()
 
@@ -24,7 +26,7 @@ const Edit: React.FC<Props> = () => {
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { mountainId, ...formData } = data
-    const mountainGroupService = new MountainGroupService()
+    const mountainGroupService = apiService.mountainData.mountainGroup
     await mountainGroupService.editMountainGroup(mountainId, formData)
     toast.success('Edycja grupy górskiej przebiegła pomyślnie', {
       position: 'bottom-right',
@@ -40,7 +42,7 @@ const Edit: React.FC<Props> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const mountainGroupService = new MountainGroupService()
+      const mountainGroupService = apiService.mountainData.mountainGroup
       if (id) {
         setMountainGroup(
           await mountainGroupService.getOneMountainGroup(id),

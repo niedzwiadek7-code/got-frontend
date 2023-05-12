@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import Section from '../../../../../models/Section'
 import { GlobalFunctions, getPath, PathNames } from '../../../../../utils/defines'
-import SectionService from '../../../../../services/SectionService'
+import { Dependencies } from '../../../../../context/dependencies'
 
 type Props = {}
 
 const DeleteSection: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const { id } = useParams()
   const [section, setSection] = useState<(Section | undefined)>()
   const navigate = useNavigate()
@@ -16,7 +19,7 @@ const DeleteSection: React.FC<Props> = () => {
 
   const deleteSection = async () => {
     if (id) {
-      const sectionService = new SectionService()
+      const sectionService = apiService.mountainData.section
       await sectionService.deleteSection(id)
       toast.info('Usunięto odcinek', {
         position: 'bottom-right',
@@ -38,7 +41,7 @@ const DeleteSection: React.FC<Props> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const sectionService = new SectionService()
+      const sectionService = apiService.mountainData.section
       if (id) {
         setSection(
           await sectionService.getOneSection(id),

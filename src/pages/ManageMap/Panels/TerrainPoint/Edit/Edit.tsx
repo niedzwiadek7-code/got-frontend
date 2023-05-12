@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 import * as Input from '../../../../../components/UI/Input'
 import TextArea from '../../../../../components/UI/TextArea'
 import { Errors } from '../../../../../utils/defines'
-import TerrainPointService from '../../../../../services/TerrainPointService'
+import { Dependencies } from '../../../../../context/dependencies'
 import TerrainPoint from '@/models/TerrainPoint'
 import MapDefinition from '../../../../../components/Map'
 import Point from '../../../../../components/Map/Elements/Point'
@@ -24,6 +24,9 @@ type Inputs = {
 interface Props {}
 
 const Edit: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const {
     register, handleSubmit, setValue, formState: { errors },
   } = useForm<Inputs>()
@@ -42,7 +45,7 @@ const Edit: React.FC<Props> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const terrainPointService = new TerrainPointService()
+      const terrainPointService = apiService.mountainData.terrainPoint
       if (id) {
         try {
           setTerrainPoint(
@@ -75,7 +78,7 @@ const Edit: React.FC<Props> = () => {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const terrainPointService = new TerrainPointService()
+    const terrainPointService = apiService.mountainData.terrainPoint
     const { terrainPointId, ...formData } = data
     await terrainPointService.editTerrainPoint(terrainPointId, formData)
     toast.info('Edycja punktu przebiegło pomyślnie', {

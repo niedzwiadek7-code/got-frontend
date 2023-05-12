@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import MountainGroup from '../../../../../models/MountainGroup'
-import MountainGroupService from '../../../../../services/MountainGroupService'
+import { Dependencies } from '../../../../../context/dependencies'
 import { getPath, GlobalFunctions, PathNames } from '../../../../../utils/defines'
 
 type Props = {}
 
 const Delete: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const { id } = useParams()
   const [mountainGroup, setMountainGroup] = useState<(MountainGroup | undefined)>()
   const navigate = useNavigate()
@@ -16,7 +19,7 @@ const Delete: React.FC<Props> = () => {
 
   const deleteMountainGroup = async () => {
     if (id) {
-      const mountainGroupService = new MountainGroupService()
+      const mountainGroupService = apiService.mountainData.mountainGroup
       await mountainGroupService.deleteMountainGroup(id)
       toast.info('Usunięto grupę górską', {
         position: 'bottom-right',
@@ -36,7 +39,7 @@ const Delete: React.FC<Props> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const mountainGroupService = new MountainGroupService()
+      const mountainGroupService = apiService.mountainData.mountainGroup
       if (id) {
         setMountainGroup(
           await mountainGroupService.getOneMountainGroup(id),

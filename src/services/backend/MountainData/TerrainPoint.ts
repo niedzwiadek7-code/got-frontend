@@ -1,5 +1,5 @@
 import TerrainPoint from '@/models/TerrainPoint'
-import ApiService from './ApiService'
+import ApiService from '../ApiService'
 
 class TerrainPointService {
   private terrainPointUrl = '/terrain-points'

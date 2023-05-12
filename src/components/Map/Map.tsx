@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   MapContainer, Marker, Polyline, Popup, TileLayer, useMapEvents,
 } from 'react-leaflet'
@@ -10,7 +10,7 @@ import './styles.scss'
 import { divIcon } from 'leaflet'
 import Styles from './Map.module.scss'
 import Elements from './Elements'
-import TerrainPointService from '../../services/TerrainPointService'
+import { Dependencies } from '../../context/dependencies'
 
 type Props = {
   // @ts-ignore
@@ -26,6 +26,9 @@ type Props = {
 
 const Map: React.FC<Props> = (props) => {
   const [clickedPosition, setClickedPosition] = useState<[number, number] | null>(null)
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const [, forceUpdate] = useState<any>()
 
   const handleClick = (e: any) => {
@@ -60,7 +63,7 @@ const Map: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       const fetchData = async () => {
-        const terrainPointService = new TerrainPointService()
+        const terrainPointService = apiService.mountainData.terrainPoint
         line.setPointA(
           await terrainPointService.getTerrainPoint(line.pointAId),
         )

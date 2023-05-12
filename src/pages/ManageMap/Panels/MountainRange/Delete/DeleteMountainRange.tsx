@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import MountainRange from '../../../../../models/MountainRange'
-import MountainRangeService from '../../../../../services/MountainRangeService'
+import { Dependencies } from '../../../../../context/dependencies'
 import { GlobalFunctions, PathNames, getPath } from '../../../../../utils/defines'
 
 type Props = {}
 
 const DeleteMountainRange: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const { id } = useParams()
   const [mountainRange, setMountainRange] = useState<(MountainRange | undefined)>()
   const navigate = useNavigate()
@@ -16,7 +19,7 @@ const DeleteMountainRange: React.FC<Props> = () => {
 
   const deleteMountainRange = async () => {
     if (id) {
-      const mountainRangeService = new MountainRangeService()
+      const mountainRangeService = apiService.mountainData.mountainRange
       try {
         await mountainRangeService.deleteMountainRange(id)
         toast.info('Usunięto pasmo górskie', {
@@ -48,7 +51,7 @@ const DeleteMountainRange: React.FC<Props> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const mountainRangeService = new MountainRangeService()
+      const mountainRangeService = apiService.mountainData.mountainRange
       if (id) {
         setMountainRange(
           await mountainRangeService.getOneMountainRange(id),
