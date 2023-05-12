@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button, Spinner } from 'react-bootstrap'
@@ -7,8 +7,7 @@ import { toast } from 'react-toastify'
 import * as Input from '../../../../../components/UI/Input'
 import Select from '../../../../../components/UI/Select'
 import { Errors, getPath, PathNames } from '../../../../../utils/defines'
-import MountainGroupService from '../../../../../services/MountainGroupService'
-import MountainRangeService from '../../../../../services/MountainRangeService'
+import { Dependencies } from '../../../../../context/dependencies'
 import MountainRange from '@/models/MountainRange'
 
 type Inputs = {
@@ -20,6 +19,9 @@ type Inputs = {
 interface Props {}
 
 const Edit: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const { id } = useParams()
   const {
     register, handleSubmit, formState: { errors },
@@ -28,7 +30,7 @@ const Edit: React.FC<Props> = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { mountainId, ...formData } = data
-    const mountainRangeService = new MountainRangeService()
+    const mountainRangeService = apiService.mountainData.mountainRange
     await mountainRangeService.editMountainRange(mountainId, formData)
 
     toast.success('Edycja pasma górskiego przebiegła pomyślnie', {
@@ -56,13 +58,13 @@ const Edit: React.FC<Props> = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const mountainRangeService = new MountainRangeService()
+        const mountainRangeService = apiService.mountainData.mountainRange
         setMountainRange(
           await mountainRangeService.getOneMountainRange(id),
         )
       }
 
-      const mountainGroupService = new MountainGroupService()
+      const mountainGroupService = apiService.mountainData.mountainGroup
       const mountainGroups = await mountainGroupService.getMountainGroups()
 
       const tempOptions: Record<number, string> = {}

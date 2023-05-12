@@ -1,6 +1,6 @@
 import MountainGroup from '@/models/MountainGroup'
 import MountainRange from '@/models/MountainRange'
-import ApiService from './ApiService'
+import ApiService from '../ApiService'
 
 class MountainGroupService {
   private mountainGroupUrl = '/mountain-groups'

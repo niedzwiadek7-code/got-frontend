@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { getPath, GlobalFunctions, PathNames } from '../../../../../utils/defines'
 import TerrainPoint from '../../../../../models/TerrainPoint'
-import TerrainPointService from '../../../../../services/TerrainPointService'
+import { Dependencies } from '../../../../../context/dependencies'
 
 type Props = {}
 
 const Delete: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const { id } = useParams()
   const [terrainPoint, setTerrainPoint] = useState<(TerrainPoint | undefined)>()
   const navigate = useNavigate()
@@ -16,7 +19,7 @@ const Delete: React.FC<Props> = () => {
 
   const deleteTerrainPoint = async () => {
     if (id) {
-      const terrainPointService = new TerrainPointService()
+      const terrainPointService = apiService.mountainData.terrainPoint
       try {
         await terrainPointService.deleteTerrainPoint(id)
         toast.info('Usunięto punkt', {
@@ -49,7 +52,7 @@ const Delete: React.FC<Props> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const terrainPointService = new TerrainPointService()
+      const terrainPointService = apiService.mountainData.terrainPoint
       if (id) {
         setTerrainPoint(
           await terrainPointService.getTerrainPoint(id),

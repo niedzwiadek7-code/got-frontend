@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button, Spinner } from 'react-bootstrap'
@@ -7,10 +7,8 @@ import { useParams } from 'react-router-dom'
 import * as Input from '../../../../../components/UI/Input'
 import TextArea from '../../../../../components/UI/TextArea'
 import Select from '../../../../../components/UI/Select'
-import TerrainPointService from '../../../../../services/TerrainPointService'
 import { Errors, PathNames, getPath } from '../../../../../utils/defines'
-import SectionService from '../../../../../services/SectionService'
-import MountainRangeService from '../../../../../services/MountainRangeService'
+import { Dependencies } from '../../../../../context/dependencies'
 import Section from '@/models/Section'
 import MapDefinition from '../../../../../components/Map'
 
@@ -28,6 +26,9 @@ type Inputs = {
 interface Props {}
 
 const Edit: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const { id } = useParams()
   const [allPoints, setAllPoints] = useState<Record<number, string>>({})
   const [section, setSection] = useState<(Section | undefined)>()
@@ -40,7 +41,7 @@ const Edit: React.FC<Props> = () => {
     register, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const sectionService = new SectionService()
+    const sectionService = apiService.mountainData.section
 
     const transformedData = {
       name: data.name,
@@ -69,13 +70,13 @@ const Edit: React.FC<Props> = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const sectionService = new SectionService()
+        const sectionService = apiService.mountainData.section
         setSection(
           await sectionService.getOneSection(id),
         )
       }
 
-      const terrainPointsService = new TerrainPointService()
+      const terrainPointsService = apiService.mountainData.terrainPoint
       const terrainPoints = await terrainPointsService.getTerrainPoints()
       const allPointsTemp: Record<number, string> = {}
 
@@ -87,7 +88,7 @@ const Edit: React.FC<Props> = () => {
         allPointsTemp,
       )
 
-      const mountainRangeService = new MountainRangeService()
+      const mountainRangeService = apiService.mountainData.mountainRange
       const mountainRanges = await mountainRangeService.getMountainRanges()
       const allMountainRangesTemp: Record<number, string> = {}
 

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as Input from '../../../../../components/UI/Input'
-import MountainGroupService from '../../../../../services/MountainGroupService'
+import { Dependencies } from '../../../../../context/dependencies'
 import MountainGroup from '../../../../../models/MountainGroup'
 import { PathNames, getPath, Errors } from '../../../../../utils/defines'
 
@@ -15,6 +15,9 @@ type Inputs = {
 type Props = {}
 
 const Add: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const [mountainGroup, setMountainGroup] = useState<(MountainGroup | undefined)>()
   const navigate = useNavigate()
   const { id } = useParams()
@@ -23,7 +26,7 @@ const Add: React.FC<Props> = () => {
     register, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const mountainGroupService = new MountainGroupService()
+    const mountainGroupService = apiService.mountainData.mountainGroup
     await mountainGroupService.addMountainGroup(data)
     toast.success('Dodanie grupy górskiej przebiegło pomyślnie', {
       position: 'bottom-right',
@@ -40,7 +43,7 @@ const Add: React.FC<Props> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const mountainGroupService = new MountainGroupService()
+      const mountainGroupService = apiService.mountainData.mountainGroup
       if (id) {
         setMountainGroup(
           await mountainGroupService.getOneMountainGroup(id),

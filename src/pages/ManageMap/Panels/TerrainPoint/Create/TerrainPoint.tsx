@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import * as Input from '../../../../../components/UI/Input'
 import TextArea from '../../../../../components/UI/TextArea'
 import { Errors, getPath, PathNames } from '../../../../../utils/defines'
-import TerrainPointService from '../../../../../services/TerrainPointService'
+import { Dependencies } from '../../../../../context/dependencies'
 import MapDefinition from '../../../../../components/Map'
 
 type Inputs = {
@@ -21,6 +21,9 @@ type Inputs = {
 interface Props {}
 
 const TerrainPoint: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const navigate = useNavigate()
   const {
     register, handleSubmit, formState: { errors },
@@ -35,7 +38,7 @@ const TerrainPoint: React.FC<Props> = () => {
   )
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const terrainPointService = new TerrainPointService()
+    const terrainPointService = apiService.mountainData.terrainPoint
     const terrainPoint = await terrainPointService.createTerrainPoint(data)
     toast.success('Dodanie nowego punktu przebiegło pomyślnie', {
       position: 'bottom-right',

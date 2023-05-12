@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
-import SectionService from '../../../../../services/SectionService'
+import { Dependencies } from '../../../../../context/dependencies'
 import Section from '../../../../../models/Section'
 import { getPath, PathNames } from '../../../../../utils/defines'
 
 type Props = {}
 
 const List: React.FC<Props> = () => {
+  const { getApiService } = useContext(Dependencies)
+  const apiService = getApiService()
+
   const { id } = useParams()
   const [section, setSection] = useState<(Section | undefined)>()
   const [loading, setLoading] = useState<(boolean)>(true)
@@ -15,7 +18,7 @@ const List: React.FC<Props> = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const sectionService = new SectionService()
+        const sectionService = apiService.mountainData.section
         setSection(
           await sectionService.getOneSection(id),
         )
