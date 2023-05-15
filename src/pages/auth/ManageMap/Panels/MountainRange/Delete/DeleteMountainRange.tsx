@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 import MountainRange from '../../../../../../models/MountainRange'
 import { useAuth } from '../../../../../../context/auth'
 import { useDependencies } from '../../../../../../context/dependencies'
@@ -10,9 +9,10 @@ import { GlobalFunctions, PathNames, getPath } from '../../../../../../utils/def
 type Props = {}
 
 const DeleteMountainRange: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const { id } = useParams()
   const [mountainRange, setMountainRange] = useState<(MountainRange | undefined)>()
@@ -24,27 +24,15 @@ const DeleteMountainRange: React.FC<Props> = () => {
       const mountainRangeService = apiService.mountainData.getMountainRange(token)
       try {
         await mountainRangeService.deleteMountainRange(id)
-        toast.info('Usunięto pasmo górskie', {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        })
+        toastUtils.Toast.showToast(
+          toastUtils.types.INFO,
+          'Usunięto pasmo górskie',
+        )
       } catch (err) {
-        toast.error('Istnieją odcinki powiązane z tym pasmem górskim. Usuń je, by usunąć to pasmo górskie', {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        })
+        toastUtils.Toast.showToast(
+          toastUtils.types.ERROR,
+          'Istnieją odcinki powiązane z tym pasmem górskim. Usuń je, by usunąć to pasmo górskie',
+        )
       }
       await GlobalFunctions.wait(500)
       navigate(getPath(PathNames.MOUNTAIN_GROUP))

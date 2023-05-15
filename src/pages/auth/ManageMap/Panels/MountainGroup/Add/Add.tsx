@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import * as Input from '../../../../../../components/UI/Input'
 import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
@@ -16,9 +15,10 @@ type Inputs = {
 type Props = {}
 
 const Add: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const [mountainGroup, setMountainGroup] = useState<(MountainGroup | undefined)>()
   const navigate = useNavigate()
@@ -30,16 +30,10 @@ const Add: React.FC<Props> = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const mountainGroupService = apiService.mountainData.getMountainGroup(token)
     await mountainGroupService.addMountainGroup(data)
-    toast.success('Dodanie grupy górskiej przebiegło pomyślnie', {
-      position: 'bottom-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    })
+    toastUtils.Toast.showToast(
+      toastUtils.types.SUCCESS,
+      'Dodanie grupy górskiej przebiegło pomyślnie',
+    )
     navigate(getPath(PathNames.MOUNTAIN_GROUP))
   }
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 import { getPath, GlobalFunctions, PathNames } from '../../../../../../utils/defines'
 import TerrainPoint from '../../../../../../models/TerrainPoint'
 import { useDependencies } from '../../../../../../context/dependencies'
@@ -10,9 +9,10 @@ import { useAuth } from '../../../../../../context/auth'
 type Props = {}
 
 const Delete: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const { id } = useParams()
   const [terrainPoint, setTerrainPoint] = useState<(TerrainPoint | undefined)>()
@@ -24,30 +24,17 @@ const Delete: React.FC<Props> = () => {
       const terrainPointService = apiService.mountainData.getTerrainPoint(token)
       try {
         await terrainPointService.deleteTerrainPoint(id)
-        toast.info('Usunięto punkt', {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        })
+        toastUtils.Toast.showToast(
+          toastUtils.types.INFO,
+          'Usunięto punkt',
+        )
       } catch (err) {
-        toast.error('Istnieją odcinki powiązane z tym punktem. Usuń je, by usunąć ten odcinek', {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        })
+        toastUtils.Toast.showToast(
+          toastUtils.types.ERROR,
+          'Istnieją odcinki powiązane z tym punktem. Usuń je, by usunąć ten odcinek',
+        )
       }
       await GlobalFunctions.wait(500)
-      // TODO: should use global paths
       navigate(getPath(PathNames.MOUNTAIN_GROUP))
     }
   }

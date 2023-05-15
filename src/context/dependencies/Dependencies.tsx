@@ -3,21 +3,30 @@ import React, {
 } from 'react'
 import { DependencyInterface } from './DependencyInterface'
 import Backend from '../../services/backend'
+import { Toast, Types } from '../../utils/Toast'
 
-export class DependenciesClass {
+export class Dependencies {
   getApiService() {
     return new Backend()
   }
+
+  getToastUtils() {
+    const toast = new Toast()
+    return {
+      Toast: toast,
+      types: Types.Type,
+    }
+  }
 }
 
-export const DependenciesContext = createContext<DependencyInterface>(new DependenciesClass())
+export const DependenciesContext = createContext<DependencyInterface>(new Dependencies())
 
 type Props = {
   children: ReactNode
 }
 
 export const DependenciesProvider: React.FC<Props> = (props) => {
-  const value = useMemo(() => new DependenciesClass(), [])
+  const value = useMemo(() => new Dependencies(), [])
 
   return (
     <DependenciesContext.Provider
