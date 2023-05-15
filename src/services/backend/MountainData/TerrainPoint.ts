@@ -4,7 +4,7 @@ import ApiService from '../ApiService'
 class TerrainPointService {
   private terrainPointUrl = '/terrain-points'
 
-  private apiService = ApiService.getInstance()
+  private apiService: ApiService
 
   public async getTerrainPoints(): Promise<TerrainPoint[]> {
     return this.apiService.get<TerrainPoint[]>(this.terrainPointUrl)
@@ -22,8 +22,12 @@ class TerrainPointService {
     return this.apiService.put<TerrainPoint>(`${this.terrainPointUrl}/${id}`, data)
   }
 
-  public async deleteTerrainPoint(id: string, data?: any): Promise<(TerrainPoint)> {
-    return this.apiService.delete<TerrainPoint>(`${this.terrainPointUrl}/${id}`, data)
+  public async deleteTerrainPoint(id: string): Promise<(TerrainPoint)> {
+    return this.apiService.delete<TerrainPoint>(`${this.terrainPointUrl}/${id}`)
+  }
+
+  constructor(token: string) {
+    this.apiService = new ApiService(token)
   }
 }
 

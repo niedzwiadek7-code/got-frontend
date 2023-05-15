@@ -1,33 +1,30 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Paths from './paths'
+import Layout from '../components/Layout'
+import Public from './public'
+import Auth from './auth'
+import paths from './auth/paths'
+import { useAuth } from '../context/auth'
 
-const App = () => (
-  <div>
-    <Routes>
-      {
-        Object.keys(Paths).map((key) => (
-          <>
-            <Route
-              key={key}
-              path={Paths[key].link}
-              element={Paths[key].component}
-            />
+type Props = {}
 
-            {
-              Object.entries(Paths[key]?.panels || {}).map(([panelKey, panel]) => (
-                <Route
-                  key={panelKey}
-                  path={panel.link}
-                  element={panel.component}
-                />
-              ))
-            }
-          </>
-        ))
-      }
-    </Routes>
-  </div>
-)
+const Content: React.FC<Props> = () => {
+  const { loggedIn } = useAuth()
 
-export default App
+  if (loggedIn) {
+    return (
+      <Layout.Auth.Component
+        paths={paths}
+      >
+        <Auth />
+      </Layout.Auth.Component>
+    )
+  }
+
+  return (
+    <Layout.Public.Component>
+      <Public />
+    </Layout.Public.Component>
+  )
+}
+
+export default Content

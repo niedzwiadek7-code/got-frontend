@@ -6,7 +6,7 @@ import Section from '@/models/Section'
 class MountainRangeService {
   private mountainRangeUrl = '/mountain-ranges'
 
-  private apiService = ApiService.getInstance()
+  private apiService: ApiService
 
   public async getMountainRanges(): Promise<MountainRange[]> {
     const response = await this.apiService.get<ApiResponse<MountainRange[]>>(`${this.mountainRangeUrl}`)
@@ -32,7 +32,7 @@ class MountainRangeService {
     const mountain = await this.apiService.get<MountainRange>(`${this.mountainRangeUrl}/${mountainRangeId}`)
     mountain.sections = await this.getSections(mountainRangeId)
 
-    const mountainGroupService = new MountainGroupService()
+    const mountainGroupService = new MountainGroupService(this.apiService.token)
     mountain.mountain_group = await mountainGroupService.getOneMountainGroup(
       mountain.mountain_group_id.toString(),
     )
@@ -52,8 +52,12 @@ class MountainRangeService {
     return this.apiService.put<MountainRange>(`${this.mountainRangeUrl}/${id}`, data)
   }
 
-  public async deleteMountainRange(id: string, data?: any): Promise<MountainRange> {
-    return this.apiService.delete<MountainRange>(`${this.mountainRangeUrl}/${id}`, data)
+  public async deleteMountainRange(id: string): Promise<MountainRange> {
+    return this.apiService.delete<MountainRange>(`${this.mountainRangeUrl}/${id}`)
+  }
+
+  constructor(token: string) {
+    this.apiService = new ApiService(token)
   }
 }
 

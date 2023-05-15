@@ -1,5 +1,7 @@
-import Layout from './Layout'
+import AuthLayout from './auth'
+import PublicLayout from './public'
 
 export default {
-  Component: Layout,
+  Auth: AuthLayout,
+  Public: PublicLayout,
 }
