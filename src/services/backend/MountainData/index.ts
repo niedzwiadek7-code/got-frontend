@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { MountainDataInterface } from './MountainDataInterface'
 
 import MountainGroup from './MountainGroup'
@@ -8,18 +10,18 @@ import TerrainPoint from './TerrainPoint'
 export * from './MountainDataInterface'
 
 export default class MountainData implements MountainDataInterface {
-  mountainGroup: MountainGroup
+  getMountainGroup: (token: string | undefined) => MountainGroup
 
-  mountainRange: MountainRange
+  getMountainRange: (token: string | undefined) => MountainRange
 
-  section: Section
+  getSection: (token: string | undefined) => Section
 
-  terrainPoint: TerrainPoint
+  getTerrainPoint: (token: string | undefined) => TerrainPoint
 
   constructor() {
-    this.mountainGroup = new MountainGroup()
-    this.mountainRange = new MountainRange()
-    this.section = new Section()
-    this.terrainPoint = new TerrainPoint()
+    this.getMountainGroup = (token: string | undefined) => new MountainGroup(token || '')
+    this.getMountainRange = (token: string | undefined) => new MountainRange(token || '')
+    this.getSection = (token: string | undefined) => new Section(token || '')
+    this.getTerrainPoint = (token: string | undefined) => new TerrainPoint(token || '')
   }
 }

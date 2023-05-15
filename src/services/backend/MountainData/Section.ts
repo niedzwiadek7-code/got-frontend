@@ -7,7 +7,7 @@ import TerrainPointService from './TerrainPoint'
 class SectionService {
   private sectionUrl = '/sections'
 
-  private apiService = ApiService.getInstance()
+  private apiService: ApiService
 
   public async getSections(): Promise<Section[]> {
     const response = await this.apiService.get<ApiResponse<Section[]>>(this.sectionUrl)
@@ -30,11 +30,11 @@ class SectionService {
 
   public async getOneSection(sectionId : string): Promise<Section> {
     const section = await this.apiService.get<Section>(`${this.sectionUrl}/${sectionId}`)
-    const mountainRangeService = new MountainRangeService()
+    const mountainRangeService = new MountainRangeService(this.apiService.token)
     section.mountainRange = await
     mountainRangeService.getOneMountainRangeWithoutDetails(section.mountain_range_id.toString())
 
-    const terrainPointService = new TerrainPointService()
+    const terrainPointService = new TerrainPointService(this.apiService.token)
     section.terrainPointA = await
     terrainPointService.getTerrainPoint(section.terrain_point_a_id.toString())
 
@@ -42,6 +42,10 @@ class SectionService {
     terrainPointService.getTerrainPoint(section.terrain_point_b_id.toString())
 
     return section
+  }
+
+  constructor(token: string) {
+    this.apiService = new ApiService(token)
   }
 }
 

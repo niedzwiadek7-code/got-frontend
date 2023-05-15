@@ -5,5 +5,6 @@
 export enum Type {
   TEXT = 'text',
   EMAIL = 'email',
-  NUMBER = 'number'
+  NUMBER = 'number',
+  PASSWORD = 'password',
 }

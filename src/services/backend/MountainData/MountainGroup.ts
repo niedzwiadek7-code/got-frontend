@@ -5,7 +5,7 @@ import ApiService from '../ApiService'
 class MountainGroupService {
   private mountainGroupUrl = '/mountain-groups'
 
-  private apiService = ApiService.getInstance()
+  private apiService: ApiService
 
   public async getMountainGroups(): Promise<MountainGroup[]> {
     return this.apiService.get<MountainGroup[]>(this.mountainGroupUrl)
@@ -34,8 +34,12 @@ class MountainGroupService {
     return this.apiService.put<MountainGroup>(`${this.mountainGroupUrl}/${id}`, data)
   }
 
-  public async deleteMountainGroup(id: string, data?: any): Promise<MountainGroup> {
-    return this.apiService.delete<MountainGroup>(`${this.mountainGroupUrl}/${id}`, data)
+  public async deleteMountainGroup(id: string): Promise<MountainGroup> {
+    return this.apiService.delete<MountainGroup>(`${this.mountainGroupUrl}/${id}`)
+  }
+
+  constructor(token: string) {
+    this.apiService = new ApiService(token)
   }
 }
 

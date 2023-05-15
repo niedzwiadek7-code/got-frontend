@@ -9,13 +9,23 @@ export interface ApiResponse<T> {
 class ApiService {
   private baseUrl = 'http://localhost:8000/api'
 
-  // eslint-disable-next-line no-use-before-define
-  private static instance: ApiService
+  token: string
 
-  public async get<T>(endpoint: string, data?:any): Promise<T> {
+  getHeader(): Record<string, any> {
+    const header: Record<string, any> = {
+      headers: {},
+    }
+    if (this.token) {
+      header.headers.Authorization = `Bearer ${this.token}`
+    }
+    return header
+  }
+
+  public async get<T>(endpoint: string): Promise<T> {
     try {
       const url = `${this.baseUrl}${endpoint}`
-      const response = await axios.get<T>(url, data)
+      const header = this.getHeader()
+      const response = await axios.get<T>(url, header)
       return response.data
     } catch (err) {
       console.log(err)
@@ -24,15 +34,22 @@ class ApiService {
   }
 
   public async post<T>(endpoint: string, data?: any): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`
-    const response = await axios.post<T>(url, data)
-    return response.data
+    try {
+      const url = `${this.baseUrl}${endpoint}`
+      const header = this.getHeader()
+      const response = await axios.post<T>(url, data, header)
+      return response.data
+    } catch (err) {
+      console.log(err)
+      throw new Error()
+    }
   }
 
   public async put<T>(endpoint: string, data?: any): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`
     try {
-      const response = await axios.put<T>(url, data)
+      const header = this.getHeader()
+      const response = await axios.put<T>(url, data, header)
       return response.data
     } catch (err) {
       console.log(err)
@@ -40,10 +57,11 @@ class ApiService {
     }
   }
 
-  public async delete<T>(endpoint: string, data?: any): Promise<T> {
+  public async delete<T>(endpoint: string): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`
     try {
-      const response = await axios.delete<T>(url, data)
+      const header = this.getHeader()
+      const response = await axios.delete<T>(url, header)
       return response.data
     } catch (err) {
       console.log(err)
@@ -51,11 +69,8 @@ class ApiService {
     }
   }
 
-  public static getInstance(): ApiService {
-    if (!ApiService.instance) {
-      ApiService.instance = new ApiService()
-    }
-    return ApiService.instance
+  constructor(token: string) {
+    this.token = token
   }
 }
 

@@ -2,6 +2,9 @@
 /* eslint-disable no-unused-vars */
 
 export enum PathNames {
+  LOGIN = 'Logowanie',
+  REGISTER = 'Rejestracja',
+
   MANAGE_MAP = 'Zarządzanie mapą',
 
   TERRAIN_POINT_ADD = 'Punkt',
@@ -28,6 +31,9 @@ export enum PathNames {
 }
 
 export const PathLinkMap = new Map([
+  [PathNames.LOGIN, '/login'],
+  [PathNames.REGISTER, '/register'],
+
   [PathNames.MANAGE_MAP, '/manage-map'],
 
   [PathNames.TERRAIN_POINT_ADD, '/terrain-points/add'],
