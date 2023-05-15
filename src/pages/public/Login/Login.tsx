@@ -1,11 +1,12 @@
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { Errors, getPath, PathNames } from '../../../utils/defines'
 import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
 import * as Input from '../../../components/UI/Input'
+import Styles from './Login.module.scss'
 
 type Inputs = {
   email: string,
@@ -40,10 +41,13 @@ const Login: React.FC<Props> = () => {
   ])
 
   return (
-    <div>
-      <h2 className="mb-4"> Zaloguj się </h2>
+    <div className="me-3">
+      <h2 className="my-4"> Zaloguj się </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mb-4"
+      >
         <div className="mb-3">
           <Input.Component
             label="Adres email"
@@ -51,22 +55,39 @@ const Login: React.FC<Props> = () => {
             data={register('email', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
             errorMessage={errors?.email?.message || undefined}
           />
+        </div>
 
+        <div className="mb-3">
           <Input.Component
             label="Hasło"
             type={Input.Type.PASSWORD}
             data={register('password', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
             errorMessage={errors?.password?.message || undefined}
           />
-
-          <Button
-            type="submit"
-            variant="success"
-          >
-            Zaloguj się
-          </Button>
         </div>
+
+        <Button
+          type="submit"
+          variant="success"
+        >
+          Zaloguj się
+        </Button>
       </form>
+
+      <div
+        className="text-center"
+      >
+        Nie masz konta?
+        <p>
+          <NavLink
+            to={getPath(PathNames.REGISTER)}
+            aria-current="true"
+            className={Styles.link}
+          >
+            Zarejestruj się
+          </NavLink>
+        </p>
+      </div>
     </div>
   )
 }
