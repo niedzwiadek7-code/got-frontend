@@ -25,7 +25,7 @@ interface Props {}
 
 const Edit: React.FC<Props> = () => {
   const {
-    register, handleSubmit, formState: { errors },
+    register, handleSubmit, setValue, formState: { errors },
   } = useForm<Inputs>()
   const [terrainPoint, setTerrainPoint] = useState<(TerrainPoint | undefined)>()
   const [loading, setLoading] = useState<boolean>(true)
@@ -66,6 +66,13 @@ const Edit: React.FC<Props> = () => {
       ),
     )
   }, [terrainPoint])
+
+  const handleMarkerPositionChange = (position: [number, number] | null) => {
+    if (position) {
+      setValue('latitude', position[0].toString())
+      setValue('longitude', position[1].toString())
+    }
+  }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const terrainPointService = new TerrainPointService()
@@ -224,6 +231,7 @@ const Edit: React.FC<Props> = () => {
                     terrainPoint.latitude,
                     terrainPoint.longitude,
                   )}
+                  onMarkerPositionChange={handleMarkerPositionChange}
                 />
               </div>
             </div>
