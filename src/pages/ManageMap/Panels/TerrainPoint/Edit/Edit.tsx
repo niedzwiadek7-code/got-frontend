@@ -232,6 +232,7 @@ const Edit: React.FC<Props> = () => {
                     terrainPoint.longitude,
                   )}
                   onMarkerPositionChange={handleMarkerPositionChange}
+                  zoom={13}
                 />
               </div>
             </div>

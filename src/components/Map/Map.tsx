@@ -18,9 +18,10 @@ type Props = {
   // @ts-ignore
   lines?: Array<Elements.Line>,
   // @ts-ignore
-  center: Elements.Point,
+  center?: Elements.Point,
   // eslint-disable-next-line no-unused-vars
-  onMarkerPositionChange: (position: [number, number] | null) => void,
+  onMarkerPositionChange?: (position: [number, number] | null) => void,
+  zoom?: number
 }
 
 const Map: React.FC<Props> = (props) => {
@@ -28,15 +29,16 @@ const Map: React.FC<Props> = (props) => {
   const [, forceUpdate] = useState<any>()
 
   const handleClick = (e: any) => {
-    const { lat, lng } = e.latlng
-    setClickedPosition([lat, lng])
-    // TODO prawdopodobnie po ustawieniu tego w rzeczywistości będą tu dwa markery.
-    //  Do naprawienia później, jeżeli wystarczy czasu.
-    if (props.points) {
-      props.points[0].setLatitude(lat)
-      props.points[0].setLongitude(lng)
+    if (props.onMarkerPositionChange) {
+      const { lat, lng } = e.latlng
+      setClickedPosition([lat, lng])
+      if (props.points) {
+        props.points[0].setLatitude(lat)
+        props.points[0].setLongitude(lng)
+      }
+
+      props.onMarkerPositionChange([lat, lng])
     }
-    props.onMarkerPositionChange([lat, lng])
   }
 
   const ClickEvent = () => {
@@ -80,7 +82,7 @@ const Map: React.FC<Props> = (props) => {
   return (
     <MapContainer
       center={props.center.getPosition()}
-      zoom={13}
+      zoom={props.zoom}
       scrollWheelZoom
       style={{ height: '100%' }}
     >
@@ -146,9 +148,18 @@ const Map: React.FC<Props> = (props) => {
   )
 }
 
+// @ts-ignore
 Map.defaultProps = {
   points: [],
   lines: [],
+  center: new Elements.Point(
+    '',
+    '50.44',
+    '18.91',
+  ),
+  // @ts-ignore
+  onMarkerPositionChange: null,
+  zoom: 6,
 }
 
 export default Map
