@@ -3,7 +3,6 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button, Spinner } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import * as Input from '../../../../../../components/UI/Input'
 import Select from '../../../../../../components/UI/Select'
 import { Errors, getPath, PathNames } from '../../../../../../utils/defines'
@@ -20,9 +19,10 @@ type Inputs = {
 interface Props {}
 
 const Edit: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const { id } = useParams()
   const {
@@ -35,16 +35,10 @@ const Edit: React.FC<Props> = () => {
     const mountainRangeService = apiService.mountainData.getMountainRange(token)
     await mountainRangeService.editMountainRange(mountainId, formData)
 
-    toast.success('Edycja pasma górskiego przebiegła pomyślnie', {
-      position: 'bottom-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    })
+    toastUtils.Toast.showToast(
+      toastUtils.types.SUCCESS,
+      'Edycja pasma górskiego przebiegła pomyślnie',
+    )
   }
 
   const ErrorMessageMap = new Map([

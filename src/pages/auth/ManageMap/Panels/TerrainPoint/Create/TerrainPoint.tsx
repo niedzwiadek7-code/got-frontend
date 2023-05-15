@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 // TODO: Import path should use '@/.'
 import { useNavigate } from 'react-router-dom'
 import * as Input from '../../../../../../components/UI/Input'
@@ -22,9 +21,10 @@ type Inputs = {
 interface Props {}
 
 const TerrainPoint: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const { token } = useAuth()
   const apiService = getApiService()
+  const toastUtils = getToastUtils()
 
   const navigate = useNavigate()
   const {
@@ -42,16 +42,11 @@ const TerrainPoint: React.FC<Props> = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const terrainPointService = apiService.mountainData.getTerrainPoint(token)
     const terrainPoint = await terrainPointService.createTerrainPoint(data)
-    toast.success('Dodanie nowego punktu przebiegło pomyślnie', {
-      position: 'bottom-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    })
+
+    toastUtils.Toast.showToast(
+      toastUtils.types.SUCCESS,
+      'Dodanie nowego punktu przebiegło pomyślnie',
+    )
 
     navigate(getPath(PathNames.TERRAIN_POINT_EDIT, {
       id: terrainPoint.id,
@@ -67,9 +62,6 @@ const TerrainPoint: React.FC<Props> = () => {
 
   return (
     <div>
-      Token:
-      {' '}
-      {token}
       <h2 className="mb-4"> Dodaj Punkt </h2>
 
       <div className="row">

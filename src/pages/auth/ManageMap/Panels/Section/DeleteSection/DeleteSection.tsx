@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 import Section from '../../../../../../models/Section'
 import { GlobalFunctions, getPath, PathNames } from '../../../../../../utils/defines'
 import { useDependencies } from '../../../../../../context/dependencies'
@@ -10,9 +9,10 @@ import { useAuth } from '../../../../../../context/auth'
 type Props = {}
 
 const DeleteSection: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const { id } = useParams()
   const [section, setSection] = useState<(Section | undefined)>()
@@ -23,16 +23,10 @@ const DeleteSection: React.FC<Props> = () => {
     if (id) {
       const sectionService = apiService.mountainData.getSection(token)
       await sectionService.deleteSection(id)
-      toast.info('Usunięto odcinek', {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      })
+      toastUtils.Toast.showToast(
+        toastUtils.types.INFO,
+        'Usunięto odcinek',
+      )
       await GlobalFunctions.wait(500)
       navigate(getPath(PathNames.MOUNTAIN_RANGE, {
         id: section?.mountain_range_id,

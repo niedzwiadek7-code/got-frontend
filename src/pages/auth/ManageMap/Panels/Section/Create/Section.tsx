@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import * as Input from '../../../../../../components/UI/Input'
 import TextArea from '../../../../../../components/UI/TextArea'
@@ -25,9 +24,10 @@ type Inputs = {
 interface Props {}
 
 const Section: React.FC<Props> = () => {
-  const { token, setToken } = useAuth()
-  const { getApiService } = useDependencies()
+  const { token } = useAuth()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
+  const toastUtils = getToastUtils()
 
   const navigate = useNavigate()
   const [allPoints, setAllPoints] = useState<Record<number, string>>({})
@@ -58,17 +58,10 @@ const Section: React.FC<Props> = () => {
     }
 
     const section = await sectionService.createSection(transformedData)
-
-    toast.success('Dodanie nowego odcinka przebiegło pomyślnie', {
-      position: 'bottom-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    })
+    toastUtils.Toast.showToast(
+      toastUtils.types.SUCCESS,
+      'Dodanie nowego odcinka przebiegło pomyślnie',
+    )
 
     navigate(getPath(PathNames.SECTION_EDIT, {
       id: section.id,
@@ -111,13 +104,8 @@ const Section: React.FC<Props> = () => {
     }],
   ])
 
-  setToken('abudabu')
-
   return (
     <div>
-      Token:
-      {' '}
-      {token}
       <h2 className="mb-4"> Dodaj Odcinek </h2>
 
       <div className="row">

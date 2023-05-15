@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 import MountainGroup from '../../../../../../models/MountainGroup'
 import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
@@ -10,9 +9,10 @@ import { getPath, GlobalFunctions, PathNames } from '../../../../../../utils/def
 type Props = {}
 
 const Delete: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const { id } = useParams()
   const [mountainGroup, setMountainGroup] = useState<(MountainGroup | undefined)>()
@@ -23,18 +23,11 @@ const Delete: React.FC<Props> = () => {
     if (id) {
       const mountainGroupService = apiService.mountainData.getMountainGroup(token)
       await mountainGroupService.deleteMountainGroup(id)
-      toast.info('Usunięto grupę górską', {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      })
+      toastUtils.Toast.showToast(
+        toastUtils.types.INFO,
+        'Usunięto grupę górską',
+      )
       await GlobalFunctions.wait(500)
-      // TODO: should use global paths
       navigate(PathNames.MOUNTAIN_GROUP)
     }
   }

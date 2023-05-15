@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button, Spinner } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 import { useParams } from 'react-router-dom'
 import * as Input from '../../../../../../components/UI/Input'
 import TextArea from '../../../../../../components/UI/TextArea'
@@ -28,9 +27,10 @@ type Inputs = {
 interface Props {}
 
 const Edit: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const { id } = useParams()
   const [allPoints, setAllPoints] = useState<Record<number, string>>({})
@@ -60,16 +60,10 @@ const Edit: React.FC<Props> = () => {
 
     await sectionService.createSection(transformedData)
 
-    toast.success('Edycja odcinka przebiegła pomyślnie', {
-      position: 'bottom-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    })
+    toastUtils.Toast.showToast(
+      toastUtils.types.SUCCESS,
+      'Edycja odcinka przebiegła pomyślnie',
+    )
   }
 
   useEffect(() => {

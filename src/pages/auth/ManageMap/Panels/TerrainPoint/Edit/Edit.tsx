@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { toast } from 'react-toastify'
 // TODO: Import path should use '@/.'
 import { useParams } from 'react-router-dom'
 import * as Input from '../../../../../../components/UI/Input'
@@ -24,9 +23,10 @@ type Inputs = {
 interface Props {}
 
 const Edit: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const {
     register, handleSubmit, setValue, formState: { errors },
@@ -82,16 +82,10 @@ const Edit: React.FC<Props> = () => {
     const terrainPointService = apiService.mountainData.getTerrainPoint(token)
     const { terrainPointId, ...formData } = data
     await terrainPointService.editTerrainPoint(terrainPointId, formData)
-    toast.info('Edycja punktu przebiegło pomyślnie', {
-      position: 'bottom-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    })
+    toastUtils.Toast.showToast(
+      toastUtils.types.INFO,
+      'Edycja punktu przebiegło pomyślnie',
+    )
   }
 
   const ErrorMessageMap = new Map([

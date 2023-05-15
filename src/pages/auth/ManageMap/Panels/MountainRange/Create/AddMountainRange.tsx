@@ -3,7 +3,6 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import * as Input from '../../../../../../components/UI/Input'
 import Select from '../../../../../../components/UI/Select'
 import { Errors, getPath, PathNames } from '../../../../../../utils/defines'
@@ -18,9 +17,10 @@ type Inputs = {
 interface Props {}
 
 const AddMountainRange: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const { id } = useParams()
   const navigate = useNavigate()
@@ -31,16 +31,10 @@ const AddMountainRange: React.FC<Props> = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const mountainRangeService = apiService.mountainData.getMountainRange(token)
     await mountainRangeService.addMountainRange(data)
-    toast.success('Dodanie pasma górskiego przebiegło pomyślnie', {
-      position: 'bottom-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    })
+    toastUtils.Toast.showToast(
+      toastUtils.types.SUCCESS,
+      'Dodanie pasma górskiego przebiegło pomyślnie',
+    )
     navigate(getPath(PathNames.MOUNTAIN_GROUP))
   }
 

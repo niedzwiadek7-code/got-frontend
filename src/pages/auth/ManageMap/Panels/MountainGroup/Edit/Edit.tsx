@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import * as Input from '../../../../../../components/UI/Input'
 import { Errors, getPath, PathNames } from '../../../../../../utils/defines'
 import { useDependencies } from '../../../../../../context/dependencies'
@@ -17,9 +16,10 @@ type Inputs = {
 type Props = {}
 
 const Edit: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const [mountainGroup, setMountainGroup] = useState<(MountainGroup | undefined)>()
   const { id } = useParams()
@@ -31,16 +31,10 @@ const Edit: React.FC<Props> = () => {
     const { mountainId, ...formData } = data
     const mountainGroupService = apiService.mountainData.getMountainGroup(token)
     await mountainGroupService.editMountainGroup(mountainId, formData)
-    toast.success('Edycja grupy górskiej przebiegła pomyślnie', {
-      position: 'bottom-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    })
+    toastUtils.Toast.showToast(
+      toastUtils.types.SUCCESS,
+      'Edycja grupy górskiej przebiegła pomyślnie',
+    )
   }
 
   useEffect(() => {
