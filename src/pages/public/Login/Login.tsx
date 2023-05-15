@@ -78,7 +78,7 @@ const Login: React.FC<Props> = () => {
         className="text-center"
       >
         Nie masz konta?
-        <p>
+        <div>
           <NavLink
             to={getPath(PathNames.REGISTER)}
             aria-current="true"
@@ -86,7 +86,7 @@ const Login: React.FC<Props> = () => {
           >
             Zarejestruj się
           </NavLink>
-        </p>
+        </div>
       </div>
     </div>
   )
