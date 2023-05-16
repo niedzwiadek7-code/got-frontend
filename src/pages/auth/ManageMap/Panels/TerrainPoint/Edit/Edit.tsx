@@ -10,6 +10,7 @@ import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
 import TerrainPoint from '@/models/TerrainPoint'
 import MapDefinition from '../../../../../../components/Map'
+import Elements from '../../../../../../components/Map/Elements'
 
 type Inputs = {
   terrainPointId: string,
@@ -29,7 +30,7 @@ const Edit: React.FC<Props> = () => {
   const toastUtils = getToastUtils()
 
   const {
-    register, handleSubmit, formState: { errors },
+    register, handleSubmit, setValue, formState: { errors },
   } = useForm<Inputs>()
   const [terrainPoint, setTerrainPoint] = useState<(TerrainPoint | undefined)>()
   const [loading, setLoading] = useState<boolean>(true)
@@ -70,6 +71,13 @@ const Edit: React.FC<Props> = () => {
       ),
     )
   }, [terrainPoint])
+
+  const handleMarkerPositionChange = (position: [number, number] | null) => {
+    if (position) {
+      setValue('latitude', position[0].toString())
+      setValue('longitude', position[1].toString())
+    }
+  }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const terrainPointService = apiService.mountainData.getTerrainPoint(token)
@@ -217,6 +225,13 @@ const Edit: React.FC<Props> = () => {
               <div className="col-6">
                 <MapDefinition.Component
                   points={[mapPoint]}
+                  center={new Elements.Point(
+                    '',
+                    terrainPoint.latitude,
+                    terrainPoint.longitude,
+                  )}
+                  onMarkerPositionChange={handleMarkerPositionChange}
+                  zoom={13}
                 />
               </div>
             </div>

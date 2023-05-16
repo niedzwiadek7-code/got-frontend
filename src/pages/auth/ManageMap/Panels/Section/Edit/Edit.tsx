@@ -11,6 +11,7 @@ import { useAuth } from '../../../../../../context/auth'
 import { useDependencies } from '../../../../../../context/dependencies'
 import Section from '@/models/Section'
 import MapDefinition from '../../../../../../components/Map'
+import Elements from '../../../../../../components/Map/Elements'
 
 type Inputs = {
   section_id: string,
@@ -38,6 +39,8 @@ const Edit: React.FC<Props> = () => {
   const [loading, setLoading] = useState<boolean>(true)
   // @ts-ignore
   const [mapLine, setMapLine] = useState<MapDefinition.Elements.Line | undefined>(undefined)
+  // @ts-ignore
+  const [center, setCenter] = useState<MapDefinition.Elements.Line | undefined>(undefined)
 
   const {
     register, handleSubmit, formState: { errors },
@@ -107,6 +110,17 @@ const Edit: React.FC<Props> = () => {
           section.name,
           section.terrainPointA.id,
           section.terrainPointB.id,
+        ),
+      )
+      setCenter(
+        new Elements.Point(
+          '',
+          // @ts-ignore
+          // eslint-disable-next-line max-len
+          (parseFloat(section.terrainPointA.latitude) + parseFloat(section.terrainPointB.latitude)) / 2,
+          // @ts-ignore
+          // eslint-disable-next-line max-len
+          (parseFloat(section.terrainPointA.longitude) + parseFloat(section.terrainPointB.longitude)) / 2,
         ),
       )
     }
@@ -266,6 +280,8 @@ const Edit: React.FC<Props> = () => {
                   lines={[
                     mapLine,
                   ].filter((e) => e)}
+                  center={center}
+                  zoom={11}
                 />
               </div>
             </div>
