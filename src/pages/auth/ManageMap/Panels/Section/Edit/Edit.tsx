@@ -10,8 +10,8 @@ import { Errors, PathNames, getPath } from '../../../../../../utils/defines'
 import { useAuth } from '../../../../../../context/auth'
 import { useDependencies } from '../../../../../../context/dependencies'
 import Section from '@/models/Section'
-import MapDefinition from '../../../../../components/Map'
-import Elements from '../../../../../components/Map/Elements'
+import MapDefinition from '../../../../../../components/Map'
+import Elements from '../../../../../../components/Map/Elements'
 
 type Inputs = {
   section_id: string,
