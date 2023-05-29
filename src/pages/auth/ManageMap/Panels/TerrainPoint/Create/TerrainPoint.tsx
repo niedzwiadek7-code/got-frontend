@@ -5,7 +5,9 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as Input from '../../../../../../components/UI/Input'
 import TextArea from '../../../../../../components/UI/TextArea'
-import { Errors, getPath, PathNames } from '../../../../../../utils/defines'
+import {
+  ErrorsMap, getValidationObj, getPath, PathNames,
+} from '../../../../../../utils/defines'
 import { useDependencies } from '../../../../../../context/dependencies'
 import MapDefinition from '../../../../../../components/Map'
 import { useAuth } from '../../../../../../context/auth'
@@ -14,8 +16,8 @@ type Inputs = {
   name: string,
   description: string,
   sea_level_height: number,
-  latitude: string,
-  longitude: string
+  latitude: number,
+  longitude: number
 }
 
 interface Props {}
@@ -53,13 +55,6 @@ const TerrainPoint: React.FC<Props> = () => {
     }))
   }
 
-  const ErrorMessageMap = new Map([
-    [Errors.REQUIRED, {
-      value: true,
-      message: 'To pole jest wymagane',
-    }],
-  ])
-
   return (
     <div>
       <h2 className="mb-4"> Dodaj Punkt </h2>
@@ -73,7 +68,14 @@ const TerrainPoint: React.FC<Props> = () => {
             <Input.Component
               label="Nazwa punktu"
               type={Input.Type.TEXT}
-              data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              data={
+                register(
+                  'name',
+                  getValidationObj([
+                    ErrorsMap.REQUIRED(),
+                  ]),
+                )
+              }
               errorMessage={errors?.name?.message || undefined}
               onChange={(e) => {
                 setMapPoint(
@@ -91,7 +93,11 @@ const TerrainPoint: React.FC<Props> = () => {
             <TextArea.Component
               label="Opis"
               height={150}
-              data={register('description', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              data={
+                register(
+                  'description',
+                )
+              }
               errorMessage={errors?.description?.message || undefined}
             />
           </div>
@@ -100,7 +106,14 @@ const TerrainPoint: React.FC<Props> = () => {
             <Input.Component
               label="Wysokość nad poziomem morza"
               type={Input.Type.NUMBER}
-              data={register('sea_level_height', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              data={
+                register(
+                  'sea_level_height',
+                  getValidationObj([
+                    ErrorsMap.REQUIRED(),
+                  ]),
+                )
+              }
               errorMessage={errors?.sea_level_height?.message || undefined}
             />
           </div>
@@ -109,7 +122,14 @@ const TerrainPoint: React.FC<Props> = () => {
             <Input.Component
               label="Szerokość geograficzna"
               type={Input.Type.TEXT}
-              data={register('latitude', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              data={
+                register(
+                  'latitude',
+                  getValidationObj([
+                    ErrorsMap.REQUIRED(),
+                  ]),
+                )
+              }
               errorMessage={errors?.latitude?.message || undefined}
               onChange={(e) => {
                 setMapPoint(
@@ -127,7 +147,14 @@ const TerrainPoint: React.FC<Props> = () => {
             <Input.Component
               label="Długość geograficzna"
               type={Input.Type.TEXT}
-              data={register('longitude', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              data={
+                register(
+                  'longitude',
+                  getValidationObj([
+                    ErrorsMap.REQUIRED(),
+                  ]),
+                )
+              }
               errorMessage={errors?.longitude?.message || undefined}
               onChange={(e) => {
                 setMapPoint(
