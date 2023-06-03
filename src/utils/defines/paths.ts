@@ -27,7 +27,12 @@ export enum PathNames {
   MOUNTAIN_GROUP_DELETE = 'Usunięcie grupy górskiej',
 
   BADGES = 'Odznaki',
-  LEADERS = 'Zarządzanie przodownikami'
+  LEADERS = 'Zarządzanie przodownikami',
+
+  TRIPS = 'Zarządzanie wycieczkami',
+  TRIP_ADD = 'Dodaj wycieczkę',
+  TRIP_EDIT = 'Modyfikuj wycieczkę',
+  TRIP_DELETE = 'Usuń wycieczkę'
 }
 
 export const PathLinkMap = new Map([
@@ -57,6 +62,11 @@ export const PathLinkMap = new Map([
 
   [PathNames.BADGES, '/badges'],
   [PathNames.LEADERS, '/leaders'],
+
+  [PathNames.TRIPS, '/trips'],
+  [PathNames.TRIP_ADD, '/trip/add'],
+  [PathNames.TRIP_EDIT, '/trip/edit/:id'],
+  [PathNames.TRIP_DELETE, '/trip/delete/:id'],
 ])
 
 export const getPath = (
