@@ -15,7 +15,7 @@ type Props = {
 }
 
 const Input: React.FC<Props> = (props) => (
-  <>
+  <div>
     <FloatingLabel
       controlId="input"
       label={props.label}
@@ -32,7 +32,7 @@ const Input: React.FC<Props> = (props) => (
     <span className="text-danger">
       {props?.errorMessage }
     </span>
-  </>
+  </div>
 )
 
 Input.defaultProps = {

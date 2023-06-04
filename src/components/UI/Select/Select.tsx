@@ -14,7 +14,7 @@ type Props = {
 }
 
 const Select: React.FC<Props> = (props) => (
-  <>
+  <div>
     <FloatingLabel
       controlId="floatingSelect"
       label={props.label}
@@ -41,7 +41,7 @@ const Select: React.FC<Props> = (props) => (
     <span className="text-danger">
       {props?.errorMessage }
     </span>
-  </>
+  </div>
 )
 
 Select.defaultProps = {
