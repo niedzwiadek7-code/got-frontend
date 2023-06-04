@@ -7,4 +7,7 @@ export enum Type {
   EMAIL = 'email',
   NUMBER = 'number',
   PASSWORD = 'password',
+  DATE = 'date',
+  DATETIME = 'datetime-local',
+  TIME = 'time',
 }
