@@ -242,12 +242,10 @@ const Modify: React.FC<Props> = () => {
             }
           </Button>
         </form>
-      </div>
 
-      <div
-        className="col-6"
-      >
-        <MapDefinition.Component />
+        <div className="col-6">
+          <MapDefinition.Component />
+        </div>
       </div>
     </div>
   )
