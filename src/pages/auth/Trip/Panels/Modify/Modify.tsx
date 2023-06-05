@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 // import dayjs from 'dayjs'
 import { Button } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
-import { Errors } from '../../../../../utils/defines'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Errors, PathNames, getPath } from '../../../../../utils/defines'
 import * as Input from '../../../../../components/UI/Input'
 import * as Checkbox from '../../../../../components/UI/Checkbox'
 import MapDefinition from '../../../../../components/Map'
@@ -28,10 +28,12 @@ const Modify: React.FC<Props> = () => {
     name: 'tripElements',
   })
 
+  const navigate = useNavigate()
   const { id } = useParams()
   const { token } = useAuth()
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
+  const toastUtils = getToastUtils()
   const [allSections, setAllSections] = useState<Record<number, string>>({})
   const [trip, setTrip] = useState<Trip | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
@@ -83,8 +85,36 @@ const Modify: React.FC<Props> = () => {
   }
 
   const onSubmit: SubmitHandler<types.Inputs> = async (data) => {
-    const tripService = apiService.getTrip(token)
-    await tripService.createTrip(data)
+    try {
+      const tripService = apiService.getTrip(token)
+
+      if (id) {
+        await tripService.updateTrip(id, data)
+
+        toastUtils.Toast.showToast(
+          toastUtils.types.SUCCESS,
+          'Edycja wycieczki przebiegła pomyślnie',
+        )
+      } else {
+        const tripRes = await tripService.createTrip(data)
+
+        toastUtils.Toast.showToast(
+          toastUtils.types.SUCCESS,
+          'Utworzenie wycieczki przebiegło pomyślnie',
+        )
+
+        navigate(
+          getPath(PathNames.TRIP_EDIT, {
+            id: tripRes.id,
+          }),
+        )
+      }
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieocezekiwany błąd',
+      )
+    }
   }
 
   const ErrorMessageMap = new Map([
@@ -205,9 +235,11 @@ const Modify: React.FC<Props> = () => {
           <Button
             className="d-block mt-3"
             type="submit"
-            variant="success"
+            variant={trip ? 'primary' : 'success'}
           >
-            Stwórz wycieczkę
+            {
+              trip ? 'Edytuj wycieczkę' : 'Stwórz wycieczkę'
+            }
           </Button>
         </form>
       </div>

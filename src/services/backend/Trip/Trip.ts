@@ -1,6 +1,5 @@
 import ApiService from '../ApiService'
 import Trip from '../../../models/Trip'
-import TripEntry from '../../../models/TripEntry'
 
 class TripService {
   private tripUrl: string = '/plans'
@@ -43,25 +42,28 @@ class TripService {
     const tripRequest = {
       name: data.name,
       description: data.description,
+      trip_plan_entries: data.tripElements.map((entry: any) => ({
+        section_id: entry.section,
+        trip_date: entry.date,
+        b_to_a: Boolean(entry.opositeDirection),
+      })),
     }
 
-    const response = await this.apiService.post<Trip>(`${this.tripUrl}`, tripRequest)
+    return this.apiService.post<Trip>(`${this.tripUrl}/with-entries`, tripRequest)
+  }
 
-    const tripId = response.id
-
-    const entriesRequest = data.tripElements.map((entry: any) => ({
-      trip_plan_id: tripId,
-      section_id: entry.section,
-      trip_date: entry.date,
-      b_to_a: Boolean(entry.opositeDirection),
-    }))
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const entryRequest of entriesRequest) {
-      await this.apiService.post<TripEntry>(`${this.tripUrl}/entries`, entryRequest)
+  public async updateTrip(tripId: string, data?: any): Promise<Trip> {
+    const tripRequest = {
+      name: data.name,
+      description: data.description,
+      trip_plan_entries: data.tripElements.map((entry: any) => ({
+        section_id: entry.section,
+        trip_date: entry.date,
+        b_to_a: Boolean(entry.opositeDirection),
+      })),
     }
 
-    return response
+    return this.apiService.put<Trip>(`${this.tripUrl}/with-entries/${tripId}`, tripRequest)
   }
 
   constructor(token: string) {
