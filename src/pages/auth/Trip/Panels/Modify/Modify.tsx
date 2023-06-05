@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Errors, PathNames, getPath } from '../../../../../utils/defines'
 import * as Input from '../../../../../components/UI/Input'
 import * as Checkbox from '../../../../../components/UI/Checkbox'
+import * as Modal from '../../../../../components/UI/Modal'
 import MapDefinition from '../../../../../components/Map'
 import TextArea from '../../../../../components/UI/TextArea'
 import * as types from './types'
@@ -82,6 +83,27 @@ const Modify: React.FC<Props> = () => {
     section: 0,
     date: new Date(),
     oppositeDirection: false,
+  }
+
+  const deleteTrip = async () => {
+    try {
+      const tripService = apiService.getTrip(token)
+      await tripService.deleteTrip(id || '')
+
+      toastUtils.Toast.showToast(
+        toastUtils.types.INFO,
+        'Wycieczkę usunięto pomyślnie',
+      )
+
+      navigate(
+        getPath(PathNames.TRIP_ADD),
+      )
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieocezekiwany błąd',
+      )
+    }
   }
 
   const onSubmit: SubmitHandler<types.Inputs> = async (data) => {
@@ -245,12 +267,12 @@ const Modify: React.FC<Props> = () => {
 
           {
             trip && (
-              <Button
-                type="button"
+              <Modal.Component
+                title="Usuń wycieczkę"
+                message="Czy napewno chcesz usunąć tę wycieczkę"
+                action={deleteTrip}
                 variant="danger"
-              >
-                Usuń wycieczkę
-              </Button>
+              />
             )
           }
         </form>
