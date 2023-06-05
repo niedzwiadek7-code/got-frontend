@@ -1,5 +1,5 @@
 export type TripElement = {
-  section: string,
+  section: number,
   date: Date,
   oppositeDirection: boolean,
 }

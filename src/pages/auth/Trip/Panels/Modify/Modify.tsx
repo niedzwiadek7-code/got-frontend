@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+// import dayjs from 'dayjs'
 import { Button } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 import { Errors } from '../../../../../utils/defines'
 import * as Input from '../../../../../components/UI/Input'
 import * as Checkbox from '../../../../../components/UI/Checkbox'
@@ -11,6 +13,7 @@ import Select from '../../../../../components/UI/Select'
 import { useDependencies } from '../../../../../context/dependencies'
 import { useAuth } from '../../../../../context/auth'
 import * as Loading from '../../../../../components/UI/Loading'
+import Trip from '@/models/Trip'
 
 type Props = {}
 
@@ -18,19 +21,30 @@ const Modify: React.FC<Props> = () => {
   const {
     control, register, handleSubmit, formState: { errors },
   } = useForm<types.Inputs>()
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields, append, remove, update,
+  } = useFieldArray({
     control,
     name: 'tripElements',
   })
 
+  const { id } = useParams()
   const { token } = useAuth()
   const { getApiService } = useDependencies()
   const apiService = getApiService()
   const [allSections, setAllSections] = useState<Record<number, string>>({})
+  const [trip, setTrip] = useState<Trip | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
 
   useState(() => {
     const fetchData = async () => {
+      if (id) {
+        const tripsService = apiService.getTrip(token)
+        setTrip(
+          await tripsService.getTrip(id),
+        )
+      }
+
       const sectionService = apiService.mountainData.getSection(token)
       const sections = await sectionService.getSections()
 
@@ -48,12 +62,22 @@ const Modify: React.FC<Props> = () => {
     fetchData()
   })
 
+  useEffect(() => {
+    trip?.tripEntries.forEach((entry, index) => {
+      update(index, {
+        section: entry.sectionId,
+        date: entry.date,
+        oppositeDirection: entry.isBlocked,
+      })
+    })
+  }, [trip])
+
   if (loading) {
     return <Loading.Component />
   }
 
   const defaultTripElement: types.TripElement = {
-    section: '',
+    section: 0,
     date: new Date(),
     oppositeDirection: false,
   }
@@ -61,7 +85,6 @@ const Modify: React.FC<Props> = () => {
   const onSubmit: SubmitHandler<types.Inputs> = async (data) => {
     const tripService = apiService.getTrip(token)
     await tripService.createTrip(data)
-    console.log(data)
   }
 
   const ErrorMessageMap = new Map([
@@ -73,7 +96,11 @@ const Modify: React.FC<Props> = () => {
 
   return (
     <div>
-      <h2 className="mb-4"> Tworzenie wycieczki </h2>
+      <h2 className="mb-4">
+        {
+          trip ? 'Edycja wycieczki' : 'Tworzenie wycieczki'
+        }
+      </h2>
 
       <div className="row">
         <form
@@ -84,6 +111,7 @@ const Modify: React.FC<Props> = () => {
             <Input.Component
               label="Nazwa wycieczki"
               type={Input.Type.TEXT}
+              default={trip?.name}
               data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
               errorMessage={errors?.name?.message || undefined}
             />
@@ -93,6 +121,7 @@ const Modify: React.FC<Props> = () => {
             <TextArea.Component
               label="Opis"
               height={150}
+              default={trip?.description}
               data={register('description')}
               errorMessage={errors?.description?.message || undefined}
             />
@@ -129,7 +158,7 @@ const Modify: React.FC<Props> = () => {
 
                     <Input.Component
                       label="Wybierz datę"
-                      type={Input.Type.DATETIME}
+                      type={Input.Type.DATE}
                       data={
                         register(
                           dateFieldName,
@@ -137,6 +166,7 @@ const Modify: React.FC<Props> = () => {
                         )
                       }
                       errorMessage={errors?.tripElements?.[index]?.date?.message || undefined}
+                      onChange={(e) => console.log(e)}
                     />
 
                     <Button

@@ -10,7 +10,7 @@ export enum Status {
 class TripEntry {
   sectionId: number
 
-  tripDate: Date
+  date: Date
 
   status: Status
 
@@ -18,7 +18,7 @@ class TripEntry {
 
   constructor(sectionId: number, tripDate: Date, status: Status, isBlocked: boolean) {
     this.sectionId = sectionId
-    this.tripDate = tripDate
+    this.date = tripDate
     this.status = status
     this.isBlocked = isBlocked
   }

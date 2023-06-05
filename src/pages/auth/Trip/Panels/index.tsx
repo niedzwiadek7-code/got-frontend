@@ -11,4 +11,9 @@ export default {
     icon: <FontAwesomeIcon icon={faPlus} />,
     component: <Modify.Component />,
   },
+  [PathNames.TRIP_EDIT]: {
+    link: PathLinkMap.get(PathNames.TRIP_EDIT),
+    hideInMenu: true,
+    component: <Modify.Component />,
+  },
 } as Record<string, PageInterface>

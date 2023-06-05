@@ -7,6 +7,23 @@ class TripService {
 
   private apiService: ApiService
 
+  public async getTrip(tripId: string): Promise<Trip> {
+    const tripBase = await this.apiService.get<any>(`${this.tripUrl}/${tripId}`)
+
+    const trip = new Trip(
+      tripBase.id,
+      tripBase.name,
+      tripBase.description,
+      tripBase.trip_plan_entries.map((entry: any) => ({
+        sectionId: entry.section_id,
+        date: entry.trip_date,
+        oppositeDirection: Boolean(entry.b_to_a),
+      })),
+    )
+
+    return trip
+  }
+
   public async createTrip(data?: any): Promise<Trip> {
     const tripRequest = {
       name: data.name,
