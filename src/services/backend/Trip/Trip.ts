@@ -66,6 +66,10 @@ class TripService {
     return this.apiService.put<Trip>(`${this.tripUrl}/with-entries/${tripId}`, tripRequest)
   }
 
+  public async deleteTrip(tripId: string): Promise<void> {
+    await this.apiService.delete<any>(`${this.tripUrl}/${tripId}`)
+  }
+
   constructor(token: string) {
     this.apiService = new ApiService(token)
   }

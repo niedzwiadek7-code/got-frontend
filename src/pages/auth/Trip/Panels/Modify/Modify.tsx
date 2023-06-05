@@ -226,6 +226,7 @@ const Modify: React.FC<Props> = () => {
           }
 
           <Button
+            className="d-block mb-3"
             onClick={() => append(defaultTripElement)}
             variant="outline-primary"
           >
@@ -233,7 +234,7 @@ const Modify: React.FC<Props> = () => {
           </Button>
 
           <Button
-            className="d-block mt-3"
+            className="me-2"
             type="submit"
             variant={trip ? 'primary' : 'success'}
           >
@@ -241,6 +242,17 @@ const Modify: React.FC<Props> = () => {
               trip ? 'Edytuj wycieczkę' : 'Stwórz wycieczkę'
             }
           </Button>
+
+          {
+            trip && (
+              <Button
+                type="button"
+                variant="danger"
+              >
+                Usuń wycieczkę
+              </Button>
+            )
+          }
         </form>
 
         <div className="col-6">
