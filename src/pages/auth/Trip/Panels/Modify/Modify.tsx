@@ -58,7 +58,9 @@ const Modify: React.FC<Props> = () => {
     oppositeDirection: false,
   }
 
-  const onSubmit: SubmitHandler<types.Inputs> = (data) => {
+  const onSubmit: SubmitHandler<types.Inputs> = async (data) => {
+    const tripService = apiService.getTrip(token)
+    await tripService.createTrip(data)
     console.log(data)
   }
 
