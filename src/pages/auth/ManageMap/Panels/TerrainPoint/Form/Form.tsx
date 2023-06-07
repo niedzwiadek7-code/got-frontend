@@ -9,7 +9,7 @@ import {
   getPath, PathNames,
 } from '../../../../../../utils/defines'
 import { useDependencies } from '../../../../../../context/dependencies'
-import MapDefinition from '../../../../../../components/Map'
+import * as MapDefinition from '../../../../../../components/Map'
 import * as Loading from '../../../../../../components/UI/Loading'
 import * as Modal from '../../../../../../components/UI/Modal'
 import { useAuth } from '../../../../../../context/auth'

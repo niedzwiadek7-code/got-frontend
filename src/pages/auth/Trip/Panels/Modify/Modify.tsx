@@ -6,7 +6,7 @@ import { PathNames, getPath } from '../../../../../utils/defines'
 import * as Input from '../../../../../components/UI/Input'
 import * as Checkbox from '../../../../../components/UI/Checkbox'
 import * as Modal from '../../../../../components/UI/Modal'
-import MapDefinition from '../../../../../components/Map'
+import * as MapDefinition from '../../../../../components/Map'
 import TextArea from '../../../../../components/UI/TextArea'
 import * as types from './types'
 import Select from '../../../../../components/UI/Select'
@@ -21,6 +21,8 @@ type SectionObj = {
   name: string
   a_to_b: number
   b_to_a: number
+  pointAId: number
+  pointBId: number
 }
 
 const Modify: React.FC<Props> = () => {
@@ -63,6 +65,8 @@ const Modify: React.FC<Props> = () => {
           name: section.name,
           a_to_b: section.badge_points_a_to_b,
           b_to_a: section.badge_points_b_to_a,
+          pointAId: section.terrain_point_a_id,
+          pointBId: section.terrain_point_b_id,
         }
       })
 
@@ -304,11 +308,23 @@ const Modify: React.FC<Props> = () => {
           }
         </form>
 
-        <div
-          className="col-6"
-          style={{ height: '60vh' }}
-        >
-          <MapDefinition.Component />
+        <div className="col-6" style={{ height: '60vh' }}>
+          <MapDefinition.Component
+            lines={
+              watch('tripElements').map((elem) => {
+                if (allSections[elem.section]) {
+                  const sectionData = allSections[elem.section]
+
+                  return new MapDefinition.Elements.Line(
+                    sectionData.name,
+                    sectionData.pointAId,
+                    sectionData.pointBId,
+                  )
+                }
+                return undefined
+              }).filter((e) => e) as MapDefinition.Elements.Line[]
+            }
+          />
         </div>
       </div>
     </div>

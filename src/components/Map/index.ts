@@ -1,7 +1,7 @@
 import Component from './Map'
-import Elements from './Elements'
 
-export default {
+export * as Elements from './Elements'
+
+export {
   Component,
-  Elements,
 }

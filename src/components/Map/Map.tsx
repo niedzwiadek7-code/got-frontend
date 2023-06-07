@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable react/no-array-index-key */
+
 import React, { useEffect, useState } from 'react'
 import {
   MapContainer, Marker, Polyline, Popup, TileLayer, useMapEvents,
@@ -9,7 +12,7 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import './styles.scss'
 import { divIcon } from 'leaflet'
 import Styles from './Map.module.scss'
-import Elements from './Elements'
+import * as Elements from './Elements'
 import { useDependencies } from '../../context/dependencies'
 import { useAuth } from '../../context/auth'
 
@@ -30,7 +33,8 @@ const Map: React.FC<Props> = (props) => {
   const { getApiService } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
-  const [, forceUpdate] = useState<any>()
+  const [lines, setLines] = useState<Elements.Line[]>([])
+  // const [, forceUpdate] = useState<any>()
 
   const handleClick = (e: any) => {
     if (props.onMarkerPositionChange) {
@@ -59,25 +63,30 @@ const Map: React.FC<Props> = (props) => {
     />,
   )
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const line of props.lines || []) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      const fetchData = async () => {
-        const terrainPointService = apiService.mountainData.getTerrainPoint(token)
+  useEffect(() => {
+    const terrainPointService = apiService.mountainData.getTerrainPoint(token)
+
+    const fetchData = async () => {
+      for (const line of props.lines || []) {
         line.setPointA(
-          await terrainPointService.getTerrainPoint(line.pointAId),
+          await terrainPointService.getTerrainPoint(line.pointAId.toString()),
         )
 
         line.setPointB(
-          await terrainPointService.getTerrainPoint(line.pointBId),
+          await terrainPointService.getTerrainPoint(line.pointBId.toString()),
         )
-
-        forceUpdate({})
       }
-      fetchData()
-    }, [line])
-  }
+
+      setLines(props.lines || [])
+    }
+
+    fetchData()
+  }, [JSON.stringify(
+    (props.lines || []).map((line) => ({
+      pointAId: line.pointAId,
+      pointBId: line.pointBId,
+    })),
+  )])
 
   const customMarkerIcon = divIcon({
     html: iconMarkup,
@@ -85,7 +94,7 @@ const Map: React.FC<Props> = (props) => {
 
   return (
     <MapContainer
-      center={props.center.getPosition()}
+      center={props.center?.getPosition()}
       zoom={props.zoom}
       scrollWheelZoom
       style={{ height: '100%' }}
@@ -114,27 +123,35 @@ const Map: React.FC<Props> = (props) => {
       }
 
       {
-        (props.lines || []).filter((line) => line.pointA && line.pointB).map((line) => (
-          <>
-            <Marker
-              icon={customMarkerIcon}
-              position={line.pointA.getPosition()}
-              key={line.pointA.name}
-            >
-              <Popup>
-                { line.pointA.name }
-              </Popup>
-            </Marker>
+        (lines || []).filter((line) => line.pointA && line.pointB).map((line, index) => (
+          <div
+            key={`${line.pointAId}-${line.pointBId}-${index}`}
+          >
+            {
+              line.pointA && line.pointB && (
+                <>
+                  <Marker
+                    icon={customMarkerIcon}
+                    position={line.pointA.getPosition()}
+                    key={line.pointA.name}
+                  >
+                    <Popup>
+                      { line.pointA.name }
+                    </Popup>
+                  </Marker>
 
-            <Marker
-              icon={customMarkerIcon}
-              position={line.pointB.getPosition()}
-              key={line.pointB.name}
-            >
-              <Popup>
-                { line.pointB.name }
-              </Popup>
-            </Marker>
+                  <Marker
+                    icon={customMarkerIcon}
+                    position={line.pointB.getPosition()}
+                    key={line.pointB.name}
+                  >
+                    <Popup>
+                      { line.pointB.name }
+                    </Popup>
+                  </Marker>
+                </>
+              )
+            }
 
             <Polyline
               key={line.name}
@@ -145,7 +162,7 @@ const Map: React.FC<Props> = (props) => {
                 { line.name }
               </Popup>
             </Polyline>
-          </>
+          </div>
         ))
       }
     </MapContainer>

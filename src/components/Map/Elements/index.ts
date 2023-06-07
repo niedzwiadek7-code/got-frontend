@@ -1,7 +1,7 @@
 import Point from './Point'
 import Line from './Line'
 
-export default {
+export {
   Point,
   Line,
 }
