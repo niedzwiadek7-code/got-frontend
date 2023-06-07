@@ -18,9 +18,15 @@ import Trip from '@/models/Trip'
 
 type Props = {}
 
+type SectionObj = {
+  name: string
+  a_to_b: number
+  b_to_a: number
+}
+
 const Modify: React.FC<Props> = () => {
   const {
-    control, register, handleSubmit, formState: { errors },
+    control, register, handleSubmit, formState: { errors }, watch,
   } = useForm<types.Inputs>()
   const {
     fields, append, remove, update,
@@ -35,7 +41,7 @@ const Modify: React.FC<Props> = () => {
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const toastUtils = getToastUtils()
-  const [allSections, setAllSections] = useState<Record<number, string>>({})
+  const [allSections, setAllSections] = useState<Record<number, SectionObj>>({})
   const [trip, setTrip] = useState<Trip | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -51,10 +57,14 @@ const Modify: React.FC<Props> = () => {
       const sectionService = apiService.mountainData.getSection(token)
       const sections = await sectionService.getSections()
 
-      const allSectionsTemp: Record<number, string> = {}
+      const allSectionsTemp: Record<number, SectionObj> = {}
 
       sections.forEach((section) => {
-        allSectionsTemp[section.id] = section.name
+        allSectionsTemp[section.id] = {
+          name: section.name,
+          a_to_b: section.badge_points_a_to_b,
+          b_to_a: section.badge_points_b_to_a,
+        }
       })
 
       setAllSections(allSectionsTemp)
@@ -189,6 +199,8 @@ const Modify: React.FC<Props> = () => {
               const sectionFieldName = `${fieldName}.section` as 'tripElements.0.section'
               const dateFieldName = `${fieldName}.date` as 'tripElements.0.date'
               const oppositeDirectionFieldName = `${fieldName}.oppositeDirection` as 'tripElements.0.oppositeDirection'
+              const watchSectionField = watch(sectionFieldName)
+              const watchOppositeDirectionField = watch(oppositeDirectionFieldName)
 
               return (
                 <div
@@ -198,7 +210,11 @@ const Modify: React.FC<Props> = () => {
                   <div className="mb-2 d-flex gap-2">
                     <Select.Component
                       label="Wybierz odcinek"
-                      options={allSections}
+                      options={Object.fromEntries(
+                        Object.entries(allSections).map(
+                          ([sectionId, value]) => [sectionId, value.name],
+                        ),
+                      )}
                       data={
                         register(
                           sectionFieldName,
@@ -229,23 +245,49 @@ const Modify: React.FC<Props> = () => {
                     </Button>
                   </div>
 
-                  <Checkbox.Component
-                    label="W kierunku przeciwnym?"
-                    data={
-                      register(
-                        oppositeDirectionFieldName,
-                      )
-                    }
-                    errorMessage={
-                      errors?.tripElements?.[index]?.oppositeDirection?.message || undefined
-                    }
-                  />
+                  <div className="mb-2 d-flex justify-content-between">
+                    <div className="fw-bold">
+                      {
+                        watchOppositeDirectionField
+                          ? allSections[watchSectionField]?.b_to_a
+                          : allSections[watchSectionField]?.a_to_b
+                      }
+                      {' '}
+                      punktów
+                    </div>
 
+                    <Checkbox.Component
+                      label="W kierunku przeciwnym?"
+                      data={
+                        register(
+                          oppositeDirectionFieldName,
+                        )
+                      }
+                      errorMessage={
+                        errors?.tripElements?.[index]?.oppositeDirection?.message || undefined
+                      }
+                    />
+                  </div>
                   <hr />
                 </div>
               )
             })
           }
+
+          <div className="fw-bold mb-3">
+            Razem:
+            {' '}
+            {
+              watch('tripElements').reduce((sum, elem) => {
+                const value = elem.oppositeDirection
+                  ? allSections[elem.section].b_to_a
+                  : allSections[elem.section].a_to_b
+                return sum + value
+              }, 0)
+            }
+            {' '}
+            punktów
+          </div>
 
           <Button
             className="d-block mb-3"

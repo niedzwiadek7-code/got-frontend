@@ -1,5 +1,4 @@
 import React from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import { FloatingLabel, Form } from 'react-bootstrap'
 
 type Props = {
@@ -21,13 +20,13 @@ const Select: React.FC<Props> = (props) => (
     >
       <Form.Select
         aria-label="Floating label select example"
-        {...props.data}
         onChange={props.onChange}
+        {...props.data}
       >
         {
           Object.entries(props.options).map(([key, value]) => (
             <option
-              key={uuidv4()}
+              key={value}
               value={key}
               selected={key.toString() === props.default?.toString()}
             >
