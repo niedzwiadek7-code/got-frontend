@@ -280,9 +280,9 @@ const Modify: React.FC<Props> = () => {
             {
               watch('tripElements').reduce((sum, elem) => {
                 const value = elem.oppositeDirection
-                  ? allSections[elem.section].b_to_a
-                  : allSections[elem.section].a_to_b
-                return sum + value
+                  ? allSections[elem.section]?.b_to_a
+                  : allSections[elem.section]?.a_to_b
+                return sum + (value || 0)
               }, 0)
             }
             {' '}
