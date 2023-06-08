@@ -3,6 +3,7 @@ import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
 import Trip from '@/models/Trip'
 import * as Loading from '../../../components/UI/Loading'
+import * as Card from './Card'
 
 type Props = {}
 
@@ -10,7 +11,7 @@ const TripComponent: React.FC<Props> = () => {
   const { getApiService } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
-  const [trips, setTrips] = useState<Trip[]>()
+  const [trips, setTrips] = useState<Trip[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const TripComponent: React.FC<Props> = () => {
     }
 
     fetchData()
-  })
+  }, [])
 
   if (loading) {
     return <Loading.Component />
@@ -31,7 +32,22 @@ const TripComponent: React.FC<Props> = () => {
 
   return (
     <div>
-      {JSON.stringify(trips)}
+      <h2 className="text-center mb-4">
+        Twoje wycieczki
+      </h2>
+
+      {
+        trips.map((trip) => (
+          <div
+            key={trip.id}
+            className="mb-3"
+          >
+            <Card.Component
+              trip={trip}
+            />
+          </div>
+        ))
+      }
     </div>
   )
 }

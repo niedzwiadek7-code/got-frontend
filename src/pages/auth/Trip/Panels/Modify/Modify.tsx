@@ -45,7 +45,7 @@ const Modify: React.FC<Props> = () => {
   const [trip, setTrip] = useState<Trip | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
 
-  useState(() => {
+  useEffect(() => {
     const fetchData = async () => {
       if (id) {
         const tripsService = apiService.getTrip(token)
@@ -73,14 +73,14 @@ const Modify: React.FC<Props> = () => {
     }
 
     fetchData()
-  })
+  }, [id])
 
   useEffect(() => {
     trip?.tripEntries.forEach((entry, index) => {
       update(index, {
         section: entry.sectionId,
         date: entry.date,
-        oppositeDirection: entry.isBlocked,
+        oppositeDirection: entry.oppositeDirection,
       })
     })
   }, [trip])
@@ -106,7 +106,7 @@ const Modify: React.FC<Props> = () => {
       )
 
       navigate(
-        getPath(PathNames.TRIP_ADD),
+        getPath(PathNames.TRIPS),
       )
     } catch (err) {
       toastUtils.Toast.showToast(
@@ -234,7 +234,6 @@ const Modify: React.FC<Props> = () => {
                         )
                       }
                       errorMessage={errors?.tripElements?.[index]?.date?.message || undefined}
-                      onChange={(e) => console.log(e)}
                     />
 
                     <Button
@@ -319,7 +318,10 @@ const Modify: React.FC<Props> = () => {
           }
         </form>
 
-        <div className="col-6">
+        <div
+          className="col-6"
+          style={{ height: '60vh' }}
+        >
           <MapDefinition.Component />
         </div>
       </div>

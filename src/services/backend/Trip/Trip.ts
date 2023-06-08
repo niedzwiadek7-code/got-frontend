@@ -17,6 +17,7 @@ class TripService {
         sectionId: entry.section_id,
         date: entry.trip_date,
         oppositeDirection: Boolean(entry.b_to_a),
+        section: entry.section,
       })),
     ))
   }
@@ -45,7 +46,7 @@ class TripService {
       trip_plan_entries: data.tripElements.map((entry: any) => ({
         section_id: entry.section,
         trip_date: entry.date,
-        b_to_a: Boolean(entry.opositeDirection),
+        b_to_a: Boolean(entry.oppositeDirection),
       })),
     }
 

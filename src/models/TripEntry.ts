@@ -1,6 +1,8 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 
+import Section from './Section'
+
 export enum Status {
   PLANNED = 'Planowany',
   IN_PROGRESS = 'W trakcie',
@@ -8,19 +10,32 @@ export enum Status {
 }
 
 class TripEntry {
+  id: number
+
   sectionId: number
+
+  section: Section
 
   date: Date
 
   status: Status
 
-  isBlocked: boolean
+  oppositeDirection: boolean
 
-  constructor(sectionId: number, tripDate: Date, status: Status, isBlocked: boolean) {
+  constructor(
+    id: number,
+    sectionId: number,
+    tripDate: Date,
+    status: Status,
+    oppositeDirection: boolean,
+    section: Section,
+  ) {
+    this.id = id
     this.sectionId = sectionId
     this.date = tripDate
     this.status = status
-    this.isBlocked = isBlocked
+    this.oppositeDirection = oppositeDirection
+    this.section = section
   }
 }
 
