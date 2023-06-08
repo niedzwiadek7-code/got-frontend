@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
-// import dayjs from 'dayjs'
 import { Button } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Errors, PathNames, getPath } from '../../../../../utils/defines'
+import { PathNames, getPath } from '../../../../../utils/defines'
 import * as Input from '../../../../../components/UI/Input'
 import * as Checkbox from '../../../../../components/UI/Checkbox'
 import * as Modal from '../../../../../components/UI/Modal'
@@ -149,13 +148,6 @@ const Modify: React.FC<Props> = () => {
     }
   }
 
-  const ErrorMessageMap = new Map([
-    [Errors.REQUIRED, {
-      value: true,
-      message: 'To pole jest wymagane',
-    }],
-  ])
-
   return (
     <div>
       <h2 className="mb-4">
@@ -174,7 +166,8 @@ const Modify: React.FC<Props> = () => {
               label="Nazwa wycieczki"
               type={Input.Type.TEXT}
               default={trip?.name}
-              data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              register={register}
+              name="name"
               errorMessage={errors?.name?.message || undefined}
             />
           </div>
@@ -184,7 +177,8 @@ const Modify: React.FC<Props> = () => {
               label="Opis"
               height={150}
               default={trip?.description}
-              data={register('description')}
+              register={register}
+              name="description"
               errorMessage={errors?.description?.message || undefined}
             />
           </div>
@@ -215,24 +209,16 @@ const Modify: React.FC<Props> = () => {
                           ([sectionId, value]) => [sectionId, value.name],
                         ),
                       )}
-                      data={
-                        register(
-                          sectionFieldName,
-                          { required: ErrorMessageMap.get(Errors.REQUIRED) },
-                        )
-                      }
+                      register={register}
+                      name={sectionFieldName}
                       errorMessage={errors?.tripElements?.[index]?.section?.message || undefined}
                     />
 
                     <Input.Component
                       label="Wybierz datę"
                       type={Input.Type.DATE}
-                      data={
-                        register(
-                          dateFieldName,
-                          { required: ErrorMessageMap.get(Errors.REQUIRED) },
-                        )
-                      }
+                      register={register}
+                      name={dateFieldName}
                       errorMessage={errors?.tripElements?.[index]?.date?.message || undefined}
                     />
 

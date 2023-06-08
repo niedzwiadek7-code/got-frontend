@@ -1,10 +1,10 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faMountainSun } from '@fortawesome/free-solid-svg-icons'
-import TerrainPoint from './TerrainPoint'
-import MountainGroup from './MountainGroup'
-import MountainRange from './MountainRange'
-import Section from './Section'
+import * as TerrainPoint from './TerrainPoint'
+import * as MountainGroup from './MountainGroup'
+import * as MountainRange from './MountainRange'
+import * as Section from './Section'
 import { PathLinkMap, PathNames } from '../../../../utils/defines'
 import PageInterface from '@/pages/auth/PageInterface'
 
@@ -12,16 +12,11 @@ export default {
   [PathNames.TERRAIN_POINT_ADD]: {
     link: PathLinkMap.get(PathNames.TERRAIN_POINT_ADD),
     icon: <FontAwesomeIcon icon={faLocationDot} />,
-    component: <TerrainPoint.Create.Component />,
+    component: <TerrainPoint.Form.Component />,
   },
   [PathNames.TERRAIN_POINT_EDIT]: {
     link: PathLinkMap.get(PathNames.TERRAIN_POINT_EDIT),
-    component: <TerrainPoint.Edit.Component />,
-    hideInMenu: true,
-  },
-  [PathNames.TERRAIN_POINT_DELETE]: {
-    link: PathLinkMap.get(PathNames.TERRAIN_POINT_DELETE),
-    component: <TerrainPoint.Delete.Component />,
+    component: <TerrainPoint.Form.Component />,
     hideInMenu: true,
   },
   [PathNames.SECTION]: {
@@ -31,16 +26,11 @@ export default {
   },
   [PathNames.SECTION_ADD]: {
     link: PathLinkMap.get(PathNames.SECTION_ADD),
-    component: <Section.Create.Component />,
+    component: <Section.Form.Component />,
   },
   [PathNames.SECTION_EDIT]: {
     link: PathLinkMap.get(PathNames.SECTION_EDIT),
-    component: <Section.Edit.Component />,
-    hideInMenu: true,
-  },
-  [PathNames.SECTION_DELETE]: {
-    link: PathLinkMap.get(PathNames.SECTION_DELETE),
-    component: <Section.Delete.Component />,
+    component: <Section.Form.Component />,
     hideInMenu: true,
   },
   [PathNames.MOUNTAIN_GROUP]: {
@@ -50,17 +40,12 @@ export default {
   },
   [PathNames.MOUNTAIN_GROUP_ADD]: {
     link: PathLinkMap.get(PathNames.MOUNTAIN_GROUP_ADD),
-    component: <MountainGroup.Add.Component />,
+    component: <MountainGroup.Form.Component />,
     hideInMenu: true,
   },
   [PathNames.MOUNTAIN_GROUP_EDIT]: {
     link: PathLinkMap.get(PathNames.MOUNTAIN_GROUP_EDIT),
-    component: <MountainGroup.Edit.Component />,
-    hideInMenu: true,
-  },
-  [PathNames.MOUNTAIN_GROUP_DELETE]: {
-    link: PathLinkMap.get(PathNames.MOUNTAIN_GROUP_DELETE),
-    component: <MountainGroup.Delete.Component />,
+    component: <MountainGroup.Form.Component />,
     hideInMenu: true,
   },
   [PathNames.MOUNTAIN_RANGE]: {
@@ -70,17 +55,12 @@ export default {
   },
   [PathNames.MOUNTAIN_RANGE_ADD]: {
     link: PathLinkMap.get(PathNames.MOUNTAIN_RANGE_ADD),
-    component: <MountainRange.Create.Component />,
+    component: <MountainRange.Form.Component />,
     hideInMenu: true,
   },
   [PathNames.MOUNTAIN_RANGE_EDIT]: {
     link: PathLinkMap.get(PathNames.MOUNTAIN_RANGE_EDIT),
-    component: <MountainRange.Edit.Component />,
-    hideInMenu: true,
-  },
-  [PathNames.MOUNTAIN_RANGE_DELETE]: {
-    link: PathLinkMap.get(PathNames.MOUNTAIN_RANGE_DELETE),
-    component: <MountainRange.Delete.Component />,
+    component: <MountainRange.Form.Component />,
     hideInMenu: true,
   },
 } as Record<string, PageInterface>

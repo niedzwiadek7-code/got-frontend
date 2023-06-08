@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 // TODO: Import path should use '@/.'
 import { Button } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as Input from '../../../../../../components/UI/Input'
 import TextArea from '../../../../../../components/UI/TextArea'
 import Select from '../../../../../../components/UI/Select'
-import { Errors, getPath, PathNames } from '../../../../../../utils/defines'
+import { getPath, PathNames } from '../../../../../../utils/defines'
 import { useDependencies } from '../../../../../../context/dependencies'
 import MapDefinition from '../../../../../../components/Map'
 import { useAuth } from '../../../../../../context/auth'
+import Section from '@/models/Section'
+import * as Loading from '../../../../../../components/UI/Loading'
+import * as Modal from '../../../../../../components/UI/Modal'
 
 type Inputs = {
   name: string,
@@ -23,11 +26,14 @@ type Inputs = {
 
 interface Props {}
 
-const Section: React.FC<Props> = () => {
+const Form: React.FC<Props> = () => {
   const { token } = useAuth()
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const toastUtils = getToastUtils()
+  const { id } = useParams()
+  const [section, setSection] = useState<(Section | undefined)>()
+  const [loading, setLoading] = useState<boolean>(true)
 
   const navigate = useNavigate()
   const [allPoints, setAllPoints] = useState<Record<number, string>>({})
@@ -41,32 +47,42 @@ const Section: React.FC<Props> = () => {
     ),
   )
 
-  const {
-    register, handleSubmit, formState: { errors },
-  } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const sectionService = apiService.mountainData.getSection(token)
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+        const sectionService = apiService.mountainData.getSection(token)
+        setSection(
+          await sectionService.getOneSection(id),
+        )
+      }
 
-    const transformedData = {
-      name: data.name,
-      description: data.description,
-      mountain_range_id: data.mountainRange,
-      badge_points_a_to_b: data.badgePoints_AtoB,
-      badge_points_b_to_a: data.badgePoints_BtoA,
-      terrain_point_a_id: data.terrainPoint_A,
-      terrain_point_b_id: data.terrainPoint_B,
+      const terrainPointsService = apiService.mountainData.getTerrainPoint(token)
+      const terrainPoints = await terrainPointsService.getTerrainPoints()
+      const allPointsTemp: Record<number, string> = {}
+
+      terrainPoints.forEach((terrainPoint) => {
+        allPointsTemp[terrainPoint.id] = terrainPoint.name
+      })
+
+      setAllPoints(
+        allPointsTemp,
+      )
+
+      const mountainRangeService = apiService.mountainData.getMountainRange(token)
+      const mountainRanges = await mountainRangeService.getMountainRanges()
+      const allMountainRangesTemp: Record<number, string> = {}
+
+      mountainRanges.forEach((mountainRange) => {
+        allMountainRangesTemp[mountainRange.id] = mountainRange.name
+      })
+
+      setAllMountainRanges(
+        allMountainRangesTemp,
+      )
+      setLoading(false)
     }
-
-    const section = await sectionService.createSection(transformedData)
-    toastUtils.Toast.showToast(
-      toastUtils.types.SUCCESS,
-      'Dodanie nowego odcinka przebiegło pomyślnie',
-    )
-
-    navigate(getPath(PathNames.SECTION_EDIT, {
-      id: section.id,
-    }))
-  }
+    fetchData()
+  }, [id])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,16 +113,76 @@ const Section: React.FC<Props> = () => {
     fetchData()
   }, [])
 
-  const ErrorMessageMap = new Map([
-    [Errors.REQUIRED, {
-      value: true,
-      message: 'To pole jest wymagane',
-    }],
-  ])
+  const {
+    register, handleSubmit, formState: { errors },
+  } = useForm<Inputs>()
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const sectionService = apiService.mountainData.getSection(token)
+
+    const transformedData = {
+      name: data.name,
+      description: data.description,
+      mountain_range_id: data.mountainRange,
+      badge_points_a_to_b: data.badgePoints_AtoB,
+      badge_points_b_to_a: data.badgePoints_BtoA,
+      terrain_point_a_id: data.terrainPoint_A,
+      terrain_point_b_id: data.terrainPoint_B,
+    }
+
+    try {
+      if (id) {
+        await sectionService.createSection(transformedData)
+        toastUtils.Toast.showToast(
+          toastUtils.types.INFO,
+          'Edycja odcinka przebiegła pomyślnie',
+        )
+      } else {
+        const sectionResult = await sectionService.createSection(transformedData)
+        toastUtils.Toast.showToast(
+          toastUtils.types.SUCCESS,
+          'Dodanie nowego odcinka przebiegło pomyślnie',
+        )
+
+        navigate(getPath(PathNames.SECTION_EDIT, {
+          id: sectionResult.id,
+        }))
+      }
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieocezekiwany błąd',
+      )
+    }
+  }
+
+  const deleteSection = async () => {
+    try {
+      const sectionService = apiService.mountainData.getSection(token)
+      await sectionService.deleteSection(id || '')
+
+      toastUtils.Toast.showToast(
+        toastUtils.types.INFO,
+        'Usunięcie odcinka przebiegło pomyślnie',
+      )
+
+      navigate(getPath(PathNames.MOUNTAIN_GROUP))
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieocezekiwany błąd',
+      )
+    }
+  }
+
+  if (loading) {
+    return <Loading.Component />
+  }
 
   return (
     <div>
-      <h2 className="mb-4"> Dodaj Odcinek </h2>
+      <h2 className="mb-4">
+        {section ? 'Edytuj odcinek' : 'Dodaj Odcinek'}
+      </h2>
 
       <div className="row">
         <form
@@ -117,7 +193,8 @@ const Section: React.FC<Props> = () => {
             <Input.Component
               label="Nazwa odcinka"
               type={Input.Type.TEXT}
-              data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              register={register}
+              name="name"
               errorMessage={errors?.name?.message || undefined}
               onChange={(e) => {
                 setMapLine(
@@ -128,6 +205,7 @@ const Section: React.FC<Props> = () => {
                   ),
                 )
               }}
+              default={section?.name}
             />
           </div>
 
@@ -135,8 +213,10 @@ const Section: React.FC<Props> = () => {
             <TextArea.Component
               label="Opis odcinka"
               height={150}
-              data={register('description')}
+              register={register}
+              name="description"
               errorMessage={errors?.description?.message || undefined}
+              default={section?.description}
             />
           </div>
 
@@ -144,8 +224,10 @@ const Section: React.FC<Props> = () => {
             <Select.Component
               label="Wybierz pasmo górskie"
               options={allMountainRanges}
-              data={register('mountainRange', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              register={register}
+              name="mountainRange"
               errorMessage={errors?.mountainRange?.message || undefined}
+              default={section?.mountain_range_id}
             />
           </div>
 
@@ -153,8 +235,10 @@ const Section: React.FC<Props> = () => {
             <Input.Component
               label="Punkty do uzyskania (od A do B)"
               type={Input.Type.NUMBER}
-              data={register('badgePoints_AtoB')}
+              register={register}
+              name="badgePoints_AtoB"
               errorMessage={errors?.badgePoints_AtoB?.message || undefined}
+              default={section?.badge_points_a_to_b}
             />
           </div>
 
@@ -162,8 +246,10 @@ const Section: React.FC<Props> = () => {
             <Input.Component
               label="Punkty do uzyskania (od B do A)"
               type={Input.Type.NUMBER}
-              data={register('badgePoints_BtoA')}
+              register={register}
+              name="badgePoints_BtoA"
               errorMessage={errors?.badgePoints_BtoA?.message || undefined}
+              default={section?.badge_points_b_to_a}
             />
           </div>
 
@@ -171,8 +257,8 @@ const Section: React.FC<Props> = () => {
             <Select.Component
               label="Wybierz punkt A"
               options={allPoints}
-              default={mapLine.pointAId}
-              data={register('terrainPoint_A', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              register={register}
+              name="terrainPoint_A"
               errorMessage={errors?.terrainPoint_A?.message || undefined}
               onChange={(e) => {
                 setMapLine(
@@ -183,6 +269,7 @@ const Section: React.FC<Props> = () => {
                   ),
                 )
               }}
+              default={section?.terrain_point_a_id || mapLine.pointAId}
             />
           </div>
 
@@ -190,8 +277,8 @@ const Section: React.FC<Props> = () => {
             <Select.Component
               label="Wybierz punkt B"
               options={allPoints}
-              default={mapLine.pointBId}
-              data={register('terrainPoint_B', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+              register={register}
+              name="terrainPoint_B"
               errorMessage={errors?.terrainPoint_B?.message || undefined}
               onChange={(e) => {
                 setMapLine(
@@ -202,15 +289,38 @@ const Section: React.FC<Props> = () => {
                   ),
                 )
               }}
+              default={section?.terrain_point_b_id || mapLine.pointBId}
             />
           </div>
 
-          <Button
-            type="submit"
-            variant="success"
-          >
-            Zapisz odcinek
-          </Button>
+          {
+            section ? (
+              <>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className="me-3"
+                >
+                  Edytuj odcinek
+                </Button>
+
+                <Modal.Component
+                  title="Usuń odcinek"
+                  message="Czy napewno chcesz usunąć odcinek?"
+                  action={deleteSection}
+                  variant="danger"
+                />
+              </>
+            ) : (
+              <Button
+                type="submit"
+                variant="success"
+              >
+                Zapisz odcinek
+              </Button>
+            )
+          }
+
         </form>
 
         <div className="col-6">
@@ -225,4 +335,4 @@ const Section: React.FC<Props> = () => {
   )
 }
 
-export default Section
+export default Form

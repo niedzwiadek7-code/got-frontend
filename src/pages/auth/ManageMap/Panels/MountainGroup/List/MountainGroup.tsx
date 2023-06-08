@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 // TODO: Import path should use '@/.'
-import { Button, Spinner } from 'react-bootstrap'
-import { getPath, PathNames } from '../../../../../../utils/defines'
+import { Button } from 'react-bootstrap'
 import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
+import * as Loading from '../../../../../../components/UI/Loading'
 import MountainGroup from '@/models/MountainGroup'
 import MountainRow from './MountainRow'
 import MountainRangeRow from './MountainRangeRow'
@@ -32,15 +32,7 @@ const MountainGroupComponent: React.FC<Props> = () => {
 
   if (loading) {
     return (
-      <div className="mt-3 text-center">
-        <Spinner
-          animation="border"
-          role="status"
-          className="text-center"
-        >
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </div>
+      <Loading.Component />
     )
   }
 
@@ -70,23 +62,6 @@ const MountainGroupComponent: React.FC<Props> = () => {
                 key={uuidv4()}
                 mountain={mountainGroup}
               />
-
-              <tr>
-                <th />
-                <th
-                  colSpan={4}
-                >
-                  <Button
-                    variant="outline-success"
-                    href={getPath(PathNames.MOUNTAIN_RANGE_ADD, {
-                      id: mountainGroup.id,
-                    })}
-                    className="w-100"
-                  >
-                    Dodaj pasmo górskie
-                  </Button>
-                </th>
-              </tr>
 
               {
                 mountainGroup.mountain_ranges.map((mountainRange) => (

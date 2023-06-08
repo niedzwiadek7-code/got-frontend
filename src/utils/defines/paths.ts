@@ -51,7 +51,7 @@ export const PathLinkMap = new Map([
   [PathNames.SECTION_DELETE, '/section/delete/:id'],
 
   [PathNames.MOUNTAIN_RANGE, '/mountain-range/:id'],
-  [PathNames.MOUNTAIN_RANGE_ADD, '/mountain-range/add/:id'],
+  [PathNames.MOUNTAIN_RANGE_ADD, '/mountain-range/add/:groupId'],
   [PathNames.MOUNTAIN_RANGE_EDIT, '/mountain-range/edit/:id'],
   [PathNames.MOUNTAIN_RANGE_DELETE, '/mountain-range/delete/:id'],
 

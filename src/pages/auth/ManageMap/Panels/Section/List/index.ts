@@ -1,5 +1,5 @@
-import List from './List'
+import Component from './List'
 
-export default {
-  Component: List,
+export {
+  Component,
 }

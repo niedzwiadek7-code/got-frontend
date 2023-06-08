@@ -2,7 +2,7 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
-import { Errors, getPath, PathNames } from '../../../utils/defines'
+import { getPath, PathNames } from '../../../utils/defines'
 import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
 import * as Input from '../../../components/UI/Input'
@@ -47,13 +47,6 @@ const Register: React.FC<Props> = () => {
     navigate(getPath(PathNames.MOUNTAIN_GROUP))
   }
 
-  const ErrorMessageMap = new Map([
-    [Errors.REQUIRED, {
-      value: true,
-      message: 'To pole jest wymagane',
-    }],
-  ])
-
   return (
     <div className="me-3">
       <h2 className="my-4"> Zarejestruj się </h2>
@@ -66,7 +59,8 @@ const Register: React.FC<Props> = () => {
           <Input.Component
             label="Imię"
             type={Input.Type.TEXT}
-            data={register('firstName', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+            register={register}
+            name="firstName"
             errorMessage={errors?.firstName?.message || undefined}
           />
         </div>
@@ -75,7 +69,8 @@ const Register: React.FC<Props> = () => {
           <Input.Component
             label="Nazwisko"
             type={Input.Type.TEXT}
-            data={register('lastName', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+            register={register}
+            name="lastName"
             errorMessage={errors?.lastName?.message || undefined}
           />
         </div>
@@ -84,7 +79,8 @@ const Register: React.FC<Props> = () => {
           <Input.Component
             label="Adres email"
             type={Input.Type.EMAIL}
-            data={register('email', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+            register={register}
+            name="email"
             errorMessage={errors?.email?.message || undefined}
           />
         </div>
@@ -93,7 +89,8 @@ const Register: React.FC<Props> = () => {
           <Input.Component
             label="Hasło"
             type={Input.Type.PASSWORD}
-            data={register('password', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+            register={register}
+            name="password"
             errorMessage={errors?.password?.message || undefined}
           />
         </div>
@@ -102,7 +99,8 @@ const Register: React.FC<Props> = () => {
           <Input.Component
             label="Nazwa użytkownika"
             type={Input.Type.TEXT}
-            data={register('name', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+            register={register}
+            name="name"
             errorMessage={errors?.name?.message || undefined}
           />
         </div>
@@ -111,7 +109,8 @@ const Register: React.FC<Props> = () => {
           <Input.Component
             label="Numer legitymacji"
             type={Input.Type.TEXT}
-            data={register('legitimationNumber', { required: ErrorMessageMap.get(Errors.REQUIRED) })}
+            register={register}
+            name="legitimationNumber"
             errorMessage={errors?.legitimationNumber?.message || undefined}
           />
         </div>

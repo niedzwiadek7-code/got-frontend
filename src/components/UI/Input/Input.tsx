@@ -6,10 +6,11 @@ import Styles from './Input.module.scss'
 type Props = {
   label: string,
   type: Type,
-  // TODO: improve data type
-  data: any,
   errorMessage?: (string | undefined),
   default?: (string | number),
+
+  register: any,
+  name: string,
   // eslint-disable-next-line no-unused-vars
   onChange?: (e: any) => void,
 }
@@ -17,7 +18,7 @@ type Props = {
 const Input: React.FC<Props> = (props) => (
   <div>
     <FloatingLabel
-      controlId="input"
+      controlId={props.name}
       label={props.label}
       className={`${Styles.container} mb-1`}
     >
@@ -25,8 +26,9 @@ const Input: React.FC<Props> = (props) => (
         defaultValue={props?.default ? props.default : ''}
         type={props.type}
         placeholder={props.label}
-        {...props.data}
-        onChange={props.onChange}
+        {...props.register(props.name, {
+          onChange: props.onChange,
+        })}
       />
     </FloatingLabel>
     <span className="text-danger">

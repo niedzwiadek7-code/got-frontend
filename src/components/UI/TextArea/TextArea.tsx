@@ -5,7 +5,8 @@ interface Props {
   label: string,
   height: number,
   // TODO: improve data type
-  data: any,
+  register: any,
+  name: string,
   errorMessage?: (string | undefined),
   default?: string,
 }
@@ -22,7 +23,7 @@ const TextArea: React.FC<Props> = (props) => (
         placeholder={props.label}
         defaultValue={props.default}
         style={{ height: props.height }}
-        {...props.data}
+        {...props.register(props.name)}
       />
     </FloatingLabel>
     <span className="text-danger">

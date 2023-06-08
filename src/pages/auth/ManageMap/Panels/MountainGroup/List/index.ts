@@ -1,5 +1,5 @@
-import MountainGroup from './MountainGroup'
+import Component from './MountainGroup'
 
-export default {
-  Component: MountainGroup,
+export {
+  Component,
 }
