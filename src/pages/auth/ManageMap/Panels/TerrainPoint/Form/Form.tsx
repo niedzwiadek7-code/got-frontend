@@ -194,7 +194,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
                 setMapPoint(
                   new MapDefinition.Elements.Point(
                     mapPoint.name,
-                    e.target.value,
+                    e.target.value || mapPoint.longitude,
                     mapPoint.longitude,
                   ),
                 )
@@ -216,7 +216,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
                   new MapDefinition.Elements.Point(
                     mapPoint.name,
                     mapPoint.latitude,
-                    e.target.value,
+                    e.target.value || mapPoint.longitude,
                   ),
                 )
               }}

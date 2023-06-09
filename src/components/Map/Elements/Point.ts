@@ -13,8 +13,8 @@ class Point {
 
   getPosition(): [number, number] {
     return [
-      parseFloat(this.latitude),
-      parseFloat(this.longitude),
+      parseFloat(this.latitude) || 0,
+      parseFloat(this.longitude) || 0,
     ]
   }
 

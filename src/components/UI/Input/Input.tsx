@@ -23,11 +23,6 @@ const Input: React.FC<Props> = (props) => {
   (props.validation || []).forEach((err) => {
     const [errName, value] = err.split(':')
 
-    if (errName === 'pattern') {
-      console.log(props.name, new RegExp(value))
-      console.log(new RegExp(value).test('53.15'))
-    }
-
     if (Errors[errName]) {
       if (value) {
         errorsObj = {
