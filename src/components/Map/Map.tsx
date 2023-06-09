@@ -20,7 +20,7 @@ type Props = {
   lines?: Array<Elements.Line>,
   // @ts-ignore
   center?: Elements.Point,
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars,react/require-default-props
   onMarkerPositionChange?: (position: [number, number] | null) => void,
   zoom?: number
 }
@@ -152,7 +152,6 @@ const Map: React.FC<Props> = (props) => {
   )
 }
 
-// @ts-ignore
 Map.defaultProps = {
   points: [],
   lines: [],
@@ -161,8 +160,6 @@ Map.defaultProps = {
     '50.44',
     '18.91',
   ),
-  // @ts-ignore
-  onMarkerPositionChange: null,
   zoom: 6,
 }
 

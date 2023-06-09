@@ -326,7 +326,11 @@ const Form: React.FC<Props> = () => {
         <div className="col-6">
           <MapDefinition.Component
             lines={[
-              mapLine,
+              (section) ? new MapDefinition.Elements.Line(
+                section.name,
+                section.terrain_point_a_id,
+                section.terrain_point_b_id,
+              ) : mapLine,
             ]}
           />
         </div>

@@ -36,14 +36,14 @@ const TerrainPointComponent: React.FC<Props> = () => {
 
   const navigate = useNavigate()
   const {
-    register, handleSubmit, formState: { errors },
+    register, setValue, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
   // @ts-ignore
   const [mapPoint, setMapPoint] = useState<MapDefinition.Elements.Point>(
     new MapDefinition.Elements.Point(
       '',
-      '0',
-      '0',
+      '50.44',
+      '18.91',
     ),
   )
 
@@ -75,7 +75,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
 
         toastUtils.Toast.showToast(
           toastUtils.types.INFO,
-          'Edycja punktu przebiegło pomyślnie',
+          'Edycja punktu przebiegła pomyślnie',
         )
       } else {
         const terrainPointResult = await terrainPointService.createTerrainPoint(data)
@@ -118,6 +118,13 @@ const TerrainPointComponent: React.FC<Props> = () => {
 
   if (loading) {
     return <Loading.Component />
+  }
+
+  const handleMarkerPositionChange = (position: [number, number] | null) => {
+    if (position) {
+      setValue('latitude', position[0])
+      setValue('longitude', position[1])
+    }
   }
 
   return (
@@ -247,7 +254,18 @@ const TerrainPointComponent: React.FC<Props> = () => {
           className="col-6"
         >
           <MapDefinition.Component
-            points={[mapPoint]}
+            points={(terrainPoint) ? [new MapDefinition.Elements.Point(
+              terrainPoint.name,
+              terrainPoint.latitude,
+              terrainPoint.longitude,
+            )] : [mapPoint]}
+            center={(terrainPoint) ? new MapDefinition.Elements.Point(
+              terrainPoint.name,
+              terrainPoint.latitude,
+              terrainPoint.longitude,
+            ) : mapPoint}
+            onMarkerPositionChange={handleMarkerPositionChange}
+            zoom={(terrainPoint) ? 13 : 6}
           />
         </div>
       </div>
