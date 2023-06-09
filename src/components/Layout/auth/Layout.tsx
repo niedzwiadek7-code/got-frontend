@@ -57,7 +57,7 @@ const Layout = (props: Props) => {
               <figcaption
                 className="px-3 rounded-circle text-red"
               >
-                Random admin
+                Użytkownik
               </figcaption>
               <img
                 src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp"

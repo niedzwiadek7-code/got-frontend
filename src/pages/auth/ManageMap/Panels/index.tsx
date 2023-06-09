@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationDot, faMountainSun } from '@fortawesome/free-solid-svg-icons'
+import { faLocationDot, faCodePullRequest } from '@fortawesome/free-solid-svg-icons'
 import * as TerrainPoint from './TerrainPoint'
 import * as MountainGroup from './MountainGroup'
 import * as MountainRange from './MountainRange'
@@ -35,6 +35,7 @@ export default {
   },
   [PathNames.SECTION_ADD]: {
     link: PathLinkMap.get(PathNames.SECTION_ADD),
+    icon: <FontAwesomeIcon icon={faCodePullRequest} />,
     component: <Section.Form.Component />,
     requireRole: Roles.ADMIN,
   },
@@ -42,12 +43,6 @@ export default {
     link: PathLinkMap.get(PathNames.SECTION_EDIT),
     component: <Section.Form.Component />,
     hideInMenu: true,
-    requireRole: Roles.ADMIN,
-  },
-  [PathNames.MOUNTAIN_GROUP]: {
-    link: PathLinkMap.get(PathNames.MOUNTAIN_GROUP),
-    icon: <FontAwesomeIcon icon={faMountainSun} />,
-    component: <MountainGroup.List.Component />,
     requireRole: Roles.ADMIN,
   },
   [PathNames.MOUNTAIN_GROUP_ADD]: {

@@ -46,7 +46,7 @@ const Register: React.FC<Props> = () => {
     const token = await authService.register(transformedData)
     setToken(token)
     setLoggedIn(true)
-    navigate(getPath(PathNames.MOUNTAIN_GROUP))
+    navigate(getPath(PathNames.MANAGE_MAP))
   }
 
   return (

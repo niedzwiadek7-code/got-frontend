@@ -27,6 +27,7 @@ type Inputs = {
 interface Props {}
 
 const Form: React.FC<Props> = () => {
+  const { rangeId } = useParams()
   const { token } = useAuth()
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
@@ -38,7 +39,8 @@ const Form: React.FC<Props> = () => {
   const navigate = useNavigate()
   const [allPoints, setAllPoints] = useState<Record<number, string>>({})
   const [allMountainRanges, setAllMountainRanges] = useState<Record<number, string>>({})
-  // @ts-ignore
+  const [defaultMountainRangeId, setDefaultMountainRangeId] = useState<string | undefined>()
+
   const [mapLine, setMapLine] = useState<MapDefinition.Elements.Line>(
     new MapDefinition.Elements.Line(
       '',
@@ -109,6 +111,8 @@ const Form: React.FC<Props> = () => {
       setAllMountainRanges(
         allMountainRangesTemp,
       )
+
+      setDefaultMountainRangeId(rangeId)
     }
     fetchData()
   }, [])
@@ -227,11 +231,11 @@ const Form: React.FC<Props> = () => {
           <div className="mb-3">
             <Select.Component
               label="Wybierz pasmo górskie"
+              default={defaultMountainRangeId || section?.mountain_range_id}
               options={allMountainRanges}
               register={register}
               name="mountainRange"
               errorMessage={errors?.mountainRange?.message || undefined}
-              default={section?.mountain_range_id}
             />
           </div>
 
@@ -324,7 +328,6 @@ const Form: React.FC<Props> = () => {
               </Button>
             )
           }
-
         </form>
 
         <div className="col-6">

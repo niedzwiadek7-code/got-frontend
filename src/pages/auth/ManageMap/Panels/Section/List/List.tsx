@@ -267,11 +267,31 @@ const List: React.FC<Props> = () => {
               </table>
 
               <Button
+                variant="primary"
+                href={getPath(PathNames.SECTION_EDIT, {
+                  id: section.id,
+                })}
+                className="me-2 mt-2"
+              >
+                Edytuj odcinek
+              </Button>
+
+              <Button
+                variant="danger"
+                href={getPath(PathNames.SECTION_DELETE, {
+                  id: section.id,
+                })}
+                className="me-2 mt-2"
+              >
+                Usuń odcinek
+              </Button>
+
+              <Button
                 className="me-2 mt-2"
                 href={getPath(PathNames.MOUNTAIN_RANGE, {
                   id: section.mountainRange?.id,
                 })}
-                variant="primary"
+                variant="secondary"
               >
                 Powrót
               </Button>

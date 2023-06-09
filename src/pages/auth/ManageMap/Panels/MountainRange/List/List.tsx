@@ -63,6 +63,16 @@ const List: React.FC<Props> = () => {
                 >
                   Edytuj pasmo górskie
                 </Button>
+
+                <Button
+                  className="me-2 mb-2"
+                  href={getPath(PathNames.MOUNTAIN_RANGE_DELETE, {
+                    id,
+                  })}
+                  variant="danger"
+                >
+                  Usuń pasmo górskie
+                </Button>
               </div>
 
               <h2 className="mb-3">
@@ -164,8 +174,18 @@ const List: React.FC<Props> = () => {
 
               <Button
                 className="me-2"
-                href={getPath(PathNames.MOUNTAIN_GROUP)}
-                variant="primary"
+                href={getPath(PathNames.SECTION_ADD, {
+                  rangeId: id,
+                })}
+                variant="success"
+              >
+                Dodaj odcinek
+              </Button>
+
+              <Button
+                className="me-2"
+                href={getPath(PathNames.MANAGE_MAP)}
+                variant="secondary"
               >
                 Powrót
               </Button>

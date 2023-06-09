@@ -7,12 +7,12 @@ export enum PathNames {
 
   MANAGE_MAP = 'Zarządzanie mapą',
 
-  TERRAIN_POINT_ADD = 'Punkt',
+  TERRAIN_POINT_ADD = 'Dodaj punkt',
   TERRAIN_POINT_EDIT = 'Edycja punktu',
   TERRAIN_POINT_DELETE = 'Usunięcie punktu',
 
   SECTION = 'Przeglądanie odcinka',
-  SECTION_ADD = 'Odcinek',
+  SECTION_ADD = 'Dodaj odcinek',
   SECTION_EDIT = 'Edytowanie odcinka',
   SECTION_DELETE = 'Usuwanie odcinka',
 
@@ -47,7 +47,7 @@ export const PathLinkMap = new Map([
   [PathNames.TERRAIN_POINT_DELETE, '/terrain-points/delete/:id'],
 
   [PathNames.SECTION, '/section/:id'],
-  [PathNames.SECTION_ADD, '/section/add'],
+  [PathNames.SECTION_ADD, '/section/add/:rangeId'], // Id pasma górskiego żeby łatwiej było dodwać odcinki z poziomu pasma
   [PathNames.SECTION_EDIT, '/section/edit/:id'],
   [PathNames.SECTION_DELETE, '/section/delete/:id'],
 

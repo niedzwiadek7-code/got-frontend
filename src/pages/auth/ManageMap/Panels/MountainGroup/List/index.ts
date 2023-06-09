@@ -1,4 +1,4 @@
-import Component from './MountainGroup'
+import Component from './MountainGroupComponent'
 
 export {
   Component,

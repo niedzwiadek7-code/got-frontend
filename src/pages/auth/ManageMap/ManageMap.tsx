@@ -1,9 +1,8 @@
 import React from 'react'
+import MountainGroupComponent from './Panels/MountainGroup/List/MountainGroupComponent'
 
 const ManageMap = () => (
-  <div>
-    <h2>Terrain Points:</h2>
-  </div>
+  <MountainGroupComponent />
 )
 
 export default ManageMap
