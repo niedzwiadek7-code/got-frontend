@@ -31,7 +31,10 @@ const Form: React.FC<Props> = () => {
 
   const {
     register, handleSubmit, formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    mode: 'all',
+  })
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const mountainRangeService = apiService.mountainData.getMountainRange(token)
     await mountainRangeService.addMountainRange(data)
@@ -113,6 +116,7 @@ const Form: React.FC<Props> = () => {
             name="name"
             errorMessage={errors?.name?.message || undefined}
             default={mountainRange?.name}
+            validation={['required', 'min:3']}
           />
         </div>
 

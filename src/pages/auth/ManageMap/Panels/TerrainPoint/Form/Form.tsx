@@ -37,7 +37,9 @@ const TerrainPointComponent: React.FC<Props> = () => {
   const navigate = useNavigate()
   const {
     register, setValue, handleSubmit, formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    mode: 'all',
+  })
   // @ts-ignore
   const [mapPoint, setMapPoint] = useState<MapDefinition.Elements.Point>(
     new MapDefinition.Elements.Point(
@@ -155,6 +157,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
               }}
               errorMessage={errors?.name?.message || undefined}
               default={terrainPoint?.name}
+              validation={['required', 'min:3']}
             />
           </div>
 
@@ -197,6 +200,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
                 )
               }}
               default={terrainPoint?.latitude}
+              validation={['required', 'pattern:^-?([1-8]?[0-9](\\.\\d+)?|90(\\.0+)?)$']}
             />
           </div>
 
@@ -217,6 +221,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
                 )
               }}
               default={terrainPoint?.longitude}
+              validation={['required', 'pattern:^-?((1[0-7]|[1-9])?\\d(\\.\\d+)?|180(\\.0+)?)$']}
             />
           </div>
 
@@ -252,6 +257,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
 
         <div
           className="col-6"
+          style={{ height: '60vh' }}
         >
           <MapDefinition.Component
             points={(terrainPoint) ? [new MapDefinition.Elements.Point(

@@ -17,11 +17,8 @@ import { useDependencies } from '../../context/dependencies'
 import { useAuth } from '../../context/auth'
 
 type Props = {
-  // @ts-ignore
   points?: Array<Elements.Point>,
-  // @ts-ignore
   lines?: Array<Elements.Line>,
-  // @ts-ignore
   center?: Elements.Point,
   // eslint-disable-next-line no-unused-vars,react/require-default-props
   onMarkerPositionChange?: (position: [number, number] | null) => void,
@@ -34,7 +31,6 @@ const Map: React.FC<Props> = (props) => {
   const apiService = getApiService()
   const { token } = useAuth()
   const [lines, setLines] = useState<Elements.Line[]>([])
-  // const [, forceUpdate] = useState<any>()
 
   const handleClick = (e: any) => {
     if (props.onMarkerPositionChange) {

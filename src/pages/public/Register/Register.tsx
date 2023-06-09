@@ -27,7 +27,9 @@ const Register: React.FC<Props> = () => {
 
   const {
     register, handleSubmit, formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    mode: 'all',
+  })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const authService = apiService.getAuth()
@@ -62,6 +64,7 @@ const Register: React.FC<Props> = () => {
             register={register}
             name="firstName"
             errorMessage={errors?.firstName?.message || undefined}
+            validation={['required', 'min:3']}
           />
         </div>
 
@@ -72,6 +75,7 @@ const Register: React.FC<Props> = () => {
             register={register}
             name="lastName"
             errorMessage={errors?.lastName?.message || undefined}
+            validation={['required', 'min:3']}
           />
         </div>
 
@@ -82,6 +86,7 @@ const Register: React.FC<Props> = () => {
             register={register}
             name="email"
             errorMessage={errors?.email?.message || undefined}
+            validation={['required']}
           />
         </div>
 
@@ -92,6 +97,7 @@ const Register: React.FC<Props> = () => {
             register={register}
             name="password"
             errorMessage={errors?.password?.message || undefined}
+            validation={['required', 'password']}
           />
         </div>
 
@@ -102,6 +108,7 @@ const Register: React.FC<Props> = () => {
             register={register}
             name="name"
             errorMessage={errors?.name?.message || undefined}
+            validation={['required', 'min:3']}
           />
         </div>
 
@@ -112,6 +119,7 @@ const Register: React.FC<Props> = () => {
             register={register}
             name="legitimationNumber"
             errorMessage={errors?.legitimationNumber?.message || undefined}
+            validation={['required', 'min:3']}
           />
         </div>
 

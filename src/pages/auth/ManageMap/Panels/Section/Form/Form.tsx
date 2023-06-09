@@ -115,7 +115,10 @@ const Form: React.FC<Props> = () => {
 
   const {
     register, handleSubmit, formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    mode: 'all',
+  })
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const sectionService = apiService.mountainData.getSection(token)
 
@@ -206,6 +209,7 @@ const Form: React.FC<Props> = () => {
                 )
               }}
               default={section?.name}
+              validation={['required', 'min:3']}
             />
           </div>
 

@@ -28,7 +28,10 @@ type SectionObj = {
 const Modify: React.FC<Props> = () => {
   const {
     control, register, handleSubmit, formState: { errors }, watch,
-  } = useForm<types.Inputs>()
+  } = useForm<types.Inputs>({
+    mode: 'all',
+  })
+
   const {
     fields, append, remove, update,
   } = useFieldArray({
@@ -173,6 +176,7 @@ const Modify: React.FC<Props> = () => {
               register={register}
               name="name"
               errorMessage={errors?.name?.message || undefined}
+              validation={['required', 'min:3']}
             />
           </div>
 
@@ -224,6 +228,7 @@ const Modify: React.FC<Props> = () => {
                       register={register}
                       name={dateFieldName}
                       errorMessage={errors?.tripElements?.[index]?.date?.message || undefined}
+                      validation={['required']}
                     />
 
                     <Button
