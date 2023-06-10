@@ -7,7 +7,7 @@ import {
 import { PathLinkMap, PathNames } from '../../utils/defines'
 import ManageMap from './ManageMap'
 import Badges from './Badges'
-import Tours from './Leaders'
+import Leaders from './Leaders'
 import PageInterface from '@/pages/auth/PageInterface'
 import * as Trip from './Trip'
 
@@ -26,7 +26,8 @@ export default {
   [PathNames.LEADERS]: {
     link: PathLinkMap.get(PathNames.LEADERS),
     icon: <FontAwesomeIcon icon={faPeopleRoof} />,
-    component: <Tours.Component />,
+    component: <Leaders.Component />,
+    panels: Leaders.Panels,
   },
   [PathNames.TRIPS]: {
     link: PathLinkMap.get(PathNames.TRIPS),

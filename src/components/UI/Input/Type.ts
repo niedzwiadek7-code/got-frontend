@@ -9,5 +9,5 @@ export enum Type {
   PASSWORD = 'password',
   DATE = 'date',
   DATETIME = 'datetime-local',
-  TIME = 'time',
+  TIME = 'time'
 }

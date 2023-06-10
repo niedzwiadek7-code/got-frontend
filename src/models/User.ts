@@ -1,6 +1,8 @@
 import Role from './Role'
 
 class User {
+  id: number
+
   name: string
 
   email: string
@@ -14,6 +16,7 @@ class User {
   roles?: Role[] = []
 
   constructor(data: any) {
+    this.id = data.id
     this.name = data.name
     this.email = data.email
     this.firstName = data.first_name
@@ -21,20 +24,11 @@ class User {
     this.legitimationNumber = data.legitimation_number
   }
 
-  setRoles(roles: Record<string, number>) {
-    const trackedMountainGroups = {
-      tatra_podtatrze: 'Tatra Podtatrze',
-      tatra_slowackie: 'Tatra Słowackie',
-      beskidy_zachodnie: 'Beskidy Zachodnie',
-      beskidy_wschodnie: 'Beskidy Wschodnie',
-      gory_swietokrzyskie: 'Góry Świętokrzyskie',
-      sudety: 'Sudety',
-      słowacja: 'Słowacja',
-    }
-
-    this.roles = Object.entries(trackedMountainGroups).map(([key, name]) => new Role(
-      name,
-      Boolean(roles[key]),
+  setRoles(roles: Record<string, any>[]) {
+    this.roles = roles.map((role) => new Role(
+      role.id,
+      role.name,
+      role.pivot.assignment_date,
     ))
   }
 }

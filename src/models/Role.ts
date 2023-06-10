@@ -1,11 +1,14 @@
 class Role {
   name: string
 
-  value: boolean
+  id: number
 
-  constructor(name: string, value: boolean) {
+  assignmentDate: string
+
+  constructor(id: number, name: string, assignmentDate: string) {
+    this.id = id
     this.name = name
-    this.value = value
+    this.assignmentDate = assignmentDate
   }
 }
 
