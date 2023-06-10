@@ -19,7 +19,8 @@ const Login: React.FC<Props> = () => {
   const { getApiService, getToastUtils } = useDependencies()
   const toastUtils = getToastUtils()
   const apiService = getApiService()
-  const { setToken, setLoggedIn } = useAuth()
+  // eslint-disable-next-line no-unused-vars
+  const { setToken, setLoggedIn, setRoles } = useAuth()
   const navigate = useNavigate()
 
   const {
@@ -29,10 +30,11 @@ const Login: React.FC<Props> = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const authService = apiService.getAuth()
-      const token = await authService.login(data)
-      setToken(token)
+      const authData = await authService.login(data)
+      setToken(authData.getToken())
       setLoggedIn(true)
-      navigate(getPath(PathNames.MOUNTAIN_GROUP))
+      setRoles(authData.getUserRoles())
+      navigate(getPath(PathNames.TRIPS))
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,

@@ -15,6 +15,8 @@ class User {
 
   mountainGroupRoles?: MountainGroupRole[] = []
 
+  roles: string[]
+
   constructor(data: any) {
     this.id = data.id
     this.name = data.name
@@ -22,6 +24,7 @@ class User {
     this.firstName = data.first_name
     this.lastName = data.last_name
     this.legitimationNumber = data.legitimation_number
+    this.roles = data.roles
   }
 
   setRoles(roles: Record<string, any>[]) {

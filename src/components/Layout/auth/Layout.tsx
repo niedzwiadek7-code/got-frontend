@@ -14,7 +14,7 @@ interface Props {
 
 const Layout = (props: Props) => {
   const navigate = useNavigate()
-  const { setToken, setLoggedIn } = useAuth()
+  const auth = useAuth()
 
   return (
     <>
@@ -26,13 +26,26 @@ const Layout = (props: Props) => {
           <div className="position-sticky">
             <div className="list-group list-group-flush mx-2 mt-4">
               {
-                Object.entries(props.paths).map(([name, page]) => (
-                  <NavItem.Component
-                    key={name}
-                    name={name}
-                    page={page}
-                  />
-                ))
+                Object.entries(props.paths).map(([name, page]) => {
+                  const requireRole = page.requireRole?.toString()
+                  console.log(auth.roles)
+
+                  let hasRequiredRole: boolean | undefined
+                  if (requireRole) {
+                    hasRequiredRole = auth.roles?.includes(requireRole.toString())
+                  } else {
+                    hasRequiredRole = true
+                  }
+                  return (
+                    hasRequiredRole && (
+                      <NavItem.Component
+                        key={name}
+                        name={name}
+                        page={page}
+                      />
+                    )
+                  )
+                })
               }
             </div>
           </div>
@@ -59,8 +72,9 @@ const Layout = (props: Props) => {
             {
               name: 'Wyloguj',
               onClick: () => {
-                setToken(undefined)
-                setLoggedIn(false)
+                auth.setToken(undefined)
+                auth.setLoggedIn(false)
+                auth.setRoles([])
                 navigate(getPath(PathNames.LOGIN))
               },
             },

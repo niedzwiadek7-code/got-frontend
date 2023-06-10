@@ -5,4 +5,6 @@ export interface AuthInterface {
   setToken: (token: string | undefined) => void,
   loggedIn: boolean,
   setLoggedIn: (loggedIn: boolean) => void
+  roles: string[] | null
+  setRoles: (roles: string[] | null) => void
 }
