@@ -19,7 +19,7 @@ const Row: React.FC<Props> = (props) => (
     </td>
     <td>
       {
-        (props.user.roles || [])
+        (props.user.mountainGroupRoles || [])
           .map((role) => (
             <div
               key={role.name}

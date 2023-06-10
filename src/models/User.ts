@@ -1,4 +1,4 @@
-import Role from './Role'
+import MountainGroupRole from './MountainGroupRole'
 
 class User {
   id: number
@@ -13,7 +13,7 @@ class User {
 
   legitimationNumber: string
 
-  roles?: Role[] = []
+  mountainGroupRoles?: MountainGroupRole[] = []
 
   constructor(data: any) {
     this.id = data.id
@@ -25,7 +25,7 @@ class User {
   }
 
   setRoles(roles: Record<string, any>[]) {
-    this.roles = roles.map((role) => new Role(
+    this.mountainGroupRoles = roles.map((role) => new MountainGroupRole(
       role.id,
       role.name,
       role.pivot.assignment_date,

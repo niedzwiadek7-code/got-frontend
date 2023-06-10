@@ -1,4 +1,4 @@
-class Role {
+class MountainGroupRole {
   name: string
 
   id: number
@@ -12,4 +12,4 @@ class Role {
   }
 }
 
-export default Role
+export default MountainGroupRole

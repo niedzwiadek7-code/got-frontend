@@ -56,7 +56,7 @@ const Edit: React.FC = () => {
       <Table bordered responsive>
         {
           mountainGroups.map((mountainGroup) => {
-            const role = user?.roles?.find((e) => mountainGroup.id === e.id)
+            const role = user?.mountainGroupRoles?.find((e) => mountainGroup.id === e.id)
 
             return (
               <Row.Component
