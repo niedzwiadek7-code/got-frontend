@@ -1,0 +1,115 @@
+import React, { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
+import { useDependencies } from '../../../../../../context/dependencies'
+import { useAuth } from '../../../../../../context/auth'
+import * as Loading from '../../../../../../components/UI/Loading'
+import TerrainPoint from '@/models/TerrainPoint'
+import { getPath, PathNames } from '../../../../../../utils/defines'
+import * as Modal from '../../../../../../components/UI/Modal'
+
+type Props = {}
+
+const List: React.FC<Props> = () => {
+  const { getApiService, getToastUtils } = useDependencies()
+  const apiService = getApiService()
+  const { token } = useAuth()
+  const [terrainPoints, setTerrainPoints] = useState<(TerrainPoint[])>([])
+  const [loading, setLoading] = useState<(boolean)>(true)
+  const [deleted, setDeleted] = useState<boolean>(false)
+  const toastUtils = getToastUtils()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const terrainPointService = apiService.mountainData.getTerrainPoint(token)
+      setTerrainPoints(
+        await terrainPointService.getTerrainPoints(),
+      )
+      setLoading(false)
+    }
+    fetchData()
+  })
+
+  const deleteTerrainPoint = async (id : string) => {
+    try {
+      const terrainPointService = apiService.mountainData.getTerrainPoint(token)
+      await terrainPointService.deleteTerrainPoint(id)
+
+      toastUtils.Toast.showToast(
+        toastUtils.types.INFO,
+        'Usunięcie punktu terenowego przebiegło pomyślnie',
+      )
+
+      setDeleted(true)
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieocezekiwany błąd',
+      )
+    }
+  }
+
+  if (deleted) {
+    return <> </>
+  }
+  if (loading) {
+    return (
+      <Loading.Component />
+    )
+  }
+  return (
+    <div>
+      <div
+        className="text-end"
+      >
+        <Button
+          variant="success"
+          href="/terrain-points/add"
+          className="mb-3"
+        >
+          Dodaj punkt
+        </Button>
+      </div>
+
+      <h2 className="mb-4"> Punkty terenowe: </h2>
+
+      <table
+        className="table"
+      >
+        <thead>
+          <th>Nazwa</th>
+          <th>Szerokość geograficzna</th>
+          <th>Długość geograficzna</th>
+        </thead>
+        <tbody>
+          {terrainPoints.map((terrainPoint) => (
+            <tr key={terrainPoint.id}>
+              <td>{terrainPoint.name}</td>
+              <td>{terrainPoint.latitude}</td>
+              <td>{terrainPoint.longitude}</td>
+              <th className="text-center">
+                <Button
+                  variant="primary"
+                  href={getPath(PathNames.TERRAIN_POINT_EDIT, {
+                    id: terrainPoint.id,
+                  })}
+                >
+                  Edytuj
+                </Button>
+              </th>
+              <th className="text-center">
+                <Modal.Component
+                  title="Usuń"
+                  message="Czy napewno chcesz usunąć punkt terenowy?"
+                  action={deleteTerrainPoint(terrainPoint.id.toString())}
+                  variant="danger"
+                />
+              </th>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+export default List

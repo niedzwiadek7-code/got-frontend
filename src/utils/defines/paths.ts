@@ -7,6 +7,7 @@ export enum PathNames {
 
   MANAGE_MAP = 'Zarządzanie mapą',
 
+  TERRAIN_POINT_LIST = 'Lista punktów',
   TERRAIN_POINT_ADD = 'Dodaj punkt',
   TERRAIN_POINT_EDIT = 'Edycja punktu',
   TERRAIN_POINT_DELETE = 'Usunięcie punktu',
@@ -42,6 +43,7 @@ export const PathLinkMap = new Map([
 
   [PathNames.MANAGE_MAP, '/manage-map'],
 
+  [PathNames.TERRAIN_POINT_LIST, '/terrain-points'],
   [PathNames.TERRAIN_POINT_ADD, '/terrain-points/add'],
   [PathNames.TERRAIN_POINT_EDIT, '/terrain-points/edit/:id'],
   [PathNames.TERRAIN_POINT_DELETE, '/terrain-points/delete/:id'],

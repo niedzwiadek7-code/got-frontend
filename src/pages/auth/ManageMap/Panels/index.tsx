@@ -10,6 +10,12 @@ import PageInterface from '@/pages/auth/PageInterface'
 import { Roles } from '../../Roles'
 
 export default {
+  [PathNames.TERRAIN_POINT_LIST]: {
+    link: PathLinkMap.get(PathNames.TERRAIN_POINT_LIST),
+    icon: <FontAwesomeIcon icon={faLocationDot} />,
+    component: <TerrainPoint.List.Component />,
+    requireRole: Roles.ADMIN,
+  },
   [PathNames.TERRAIN_POINT_ADD]: {
     link: PathLinkMap.get(PathNames.TERRAIN_POINT_ADD),
     icon: <FontAwesomeIcon icon={faLocationDot} />,
