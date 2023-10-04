@@ -15,42 +15,37 @@ const List: React.FC<Props> = () => {
   const { token } = useAuth()
   const [terrainPoints, setTerrainPoints] = useState<(TerrainPoint[])>([])
   const [loading, setLoading] = useState<(boolean)>(true)
-  const [deleted, setDeleted] = useState<boolean>(false)
   const toastUtils = getToastUtils()
+  const [terrainPointService] = useState(apiService.mountainData.getTerrainPoint(token))
 
   useEffect(() => {
     const fetchData = async () => {
-      const terrainPointService = apiService.mountainData.getTerrainPoint(token)
       setTerrainPoints(
         await terrainPointService.getTerrainPoints(),
       )
       setLoading(false)
     }
     fetchData()
-  })
+  }, [terrainPointService])
 
-  const deleteTerrainPoint = async (id : string) => {
+  const deleteTerrainPoint = async (id : number) => {
     try {
-      const terrainPointService = apiService.mountainData.getTerrainPoint(token)
-      await terrainPointService.deleteTerrainPoint(id)
-
+      await terrainPointService.deleteTerrainPoint(id.toString())
+      setTerrainPoints(
+        await terrainPointService.getTerrainPoints(),
+      )
       toastUtils.Toast.showToast(
         toastUtils.types.INFO,
         'Usunięcie punktu terenowego przebiegło pomyślnie',
       )
-
-      setDeleted(true)
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieocezekiwany błąd',
+        'Wystąpił nieoczekiwany błąd',
       )
     }
   }
 
-  if (deleted) {
-    return <> </>
-  }
   if (loading) {
     return (
       <Loading.Component />
@@ -79,6 +74,7 @@ const List: React.FC<Props> = () => {
           <th>Nazwa</th>
           <th>Szerokość geograficzna</th>
           <th>Długość geograficzna</th>
+          <th>Wysokość (m n.p.m.)</th>
         </thead>
         <tbody>
           {terrainPoints.map((terrainPoint) => (
@@ -86,6 +82,7 @@ const List: React.FC<Props> = () => {
               <td>{terrainPoint.name}</td>
               <td>{terrainPoint.latitude}</td>
               <td>{terrainPoint.longitude}</td>
+              <td>{terrainPoint.sea_level_height}</td>
               <th className="text-center">
                 <Button
                   variant="primary"
@@ -100,7 +97,7 @@ const List: React.FC<Props> = () => {
                 <Modal.Component
                   title="Usuń"
                   message="Czy napewno chcesz usunąć punkt terenowy?"
-                  action={deleteTerrainPoint(terrainPoint.id.toString())}
+                  action={() => deleteTerrainPoint(terrainPoint.id)}
                   variant="danger"
                 />
               </th>

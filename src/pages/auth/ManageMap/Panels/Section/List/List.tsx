@@ -16,11 +16,11 @@ const List: React.FC<Props> = () => {
   const { id } = useParams()
   const [section, setSection] = useState<(Section | undefined)>()
   const [loading, setLoading] = useState<(boolean)>(true)
+  const [sectionService] = useState(apiService.mountainData.getSection(token))
 
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const sectionService = apiService.mountainData.getSection(token)
         setSection(
           await sectionService.getOneSection(id),
         )
@@ -28,7 +28,7 @@ const List: React.FC<Props> = () => {
       setLoading(false)
     }
     fetchData()
-  })
+  }, [id, sectionService])
 
   if (loading) {
     return (
@@ -147,19 +147,6 @@ const List: React.FC<Props> = () => {
                       Wysokość
                     </th>
 
-                    <th
-                      className="text-center"
-                      scope="col"
-                    >
-                      Edytuj
-                    </th>
-
-                    <th
-                      className="text-center"
-                      scope="col"
-                    >
-                      Usuń
-                    </th>
                   </tr>
                 </thead>
 
@@ -190,28 +177,6 @@ const List: React.FC<Props> = () => {
                     >
                       { section.terrainPointA?.sea_level_height }
                     </th>
-
-                    <th className="text-center">
-                      <Button
-                        variant="primary"
-                        href={getPath(PathNames.TERRAIN_POINT_EDIT, {
-                          id: section.terrainPointA?.id,
-                        })}
-                      >
-                        Edytuj
-                      </Button>
-                    </th>
-
-                    <th className="text-center">
-                      <Button
-                        variant="danger"
-                        href={getPath(PathNames.TERRAIN_POINT_DELETE, {
-                          id: section.terrainPointA?.id,
-                        })}
-                      >
-                        Usuń
-                      </Button>
-                    </th>
                   </tr>
 
                   <tr
@@ -239,28 +204,6 @@ const List: React.FC<Props> = () => {
                       scope="row"
                     >
                       { section.terrainPointB?.sea_level_height }
-                    </th>
-
-                    <th className="text-center">
-                      <Button
-                        variant="primary"
-                        href={getPath(PathNames.TERRAIN_POINT_EDIT, {
-                          id: section.terrainPointB?.id,
-                        })}
-                      >
-                        Edytuj
-                      </Button>
-                    </th>
-
-                    <th className="text-center">
-                      <Button
-                        variant="danger"
-                        href={getPath(PathNames.TERRAIN_POINT_DELETE, {
-                          id: section.terrainPointB?.id,
-                        })}
-                      >
-                        Usuń
-                      </Button>
                     </th>
                   </tr>
                 </tbody>

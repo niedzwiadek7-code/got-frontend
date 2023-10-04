@@ -18,17 +18,17 @@ const MountainGroupComponent: React.FC<Props> = () => {
 
   const [mountainGroups, setMountainGroup] = useState<MountainGroup[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+  const [mountainGroupService] = useState(apiService.mountainData.getMountainGroup(token))
 
   useEffect(() => {
     const fetchData = async () => {
-      const mountainGroupService = apiService.mountainData.getMountainGroup(token)
       setMountainGroup(
         await mountainGroupService.getMountainGroupsWithMountainRanges(),
       )
       setLoading(false)
     }
     fetchData()
-  }, [])
+  }, [mountainGroupService])
 
   if (loading) {
     return (

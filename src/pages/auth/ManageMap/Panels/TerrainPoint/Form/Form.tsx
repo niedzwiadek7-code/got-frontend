@@ -33,6 +33,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
   const { id } = useParams()
   const [terrainPoint, setTerrainPoint] = useState<(TerrainPoint | undefined)>()
   const [loading, setLoading] = useState<boolean>(true)
+  const [terrainPointService] = useState(apiService.mountainData.getTerrainPoint(token))
 
   const navigate = useNavigate()
   const {
@@ -52,7 +53,6 @@ const TerrainPointComponent: React.FC<Props> = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
-      const terrainPointService = apiService.mountainData.getTerrainPoint(token)
       if (id) {
         try {
           setTerrainPoint(
@@ -67,10 +67,9 @@ const TerrainPointComponent: React.FC<Props> = () => {
       setLoading(false)
     }
     fetchData()
-  }, [id])
+  }, [id, terrainPointService])
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const terrainPointService = apiService.mountainData.getTerrainPoint(token)
     try {
       if (id) {
         await terrainPointService.editTerrainPoint(id, data)
@@ -101,7 +100,6 @@ const TerrainPointComponent: React.FC<Props> = () => {
 
   const deleteTerrainPoint = async () => {
     try {
-      const terrainPointService = apiService.mountainData.getTerrainPoint(token)
       await terrainPointService.deleteTerrainPoint(id || '')
 
       toastUtils.Toast.showToast(
