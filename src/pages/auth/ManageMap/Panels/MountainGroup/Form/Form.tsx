@@ -143,7 +143,7 @@ const Form: React.FC<Props> = () => {
               type="submit"
               variant="success"
             >
-              Zapisz odcinek
+              Zapisz grupę górską
             </Button>
           )
         }
