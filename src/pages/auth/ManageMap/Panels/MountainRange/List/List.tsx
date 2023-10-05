@@ -6,17 +6,38 @@ import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
 import MountainRange from '../../../../../../models/MountainRange'
 import { getPath, PathNames } from '../../../../../../utils/defines'
+import * as Modal from '../../../../../../components/UI/Modal'
 
 interface Props {}
 
 const List: React.FC<Props> = () => {
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const toastUtils = getToastUtils()
 
   const [mountainRange, setMountainRange] = useState<(MountainRange | undefined)>(undefined)
   const { id } = useParams()
   const [loading, setLoading] = useState<boolean>(true)
+
+  const deleteSection = async (sectionId: string) => {
+    try {
+      const sectionService = apiService.mountainData.getSection(token)
+      await sectionService.deleteSection(sectionId)
+
+      toastUtils.Toast.showToast(
+        toastUtils.types.INFO,
+        'Usunięcie odcinka przebiegło pomyślnie',
+      )
+
+      window.location.reload()
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieocezekiwany błąd',
+      )
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -157,14 +178,12 @@ const List: React.FC<Props> = () => {
                         </th>
 
                         <th className="text-center">
-                          <Button
+                          <Modal.Component
+                            title="Usuń"
+                            message="Czy napewno chcesz usunąć odcinek?"
+                            action={() => deleteSection(section.id.toString() || '')}
                             variant="danger"
-                            href={getPath(PathNames.SECTION_DELETE, {
-                              id: section.id,
-                            })}
-                          >
-                            Usuń
-                          </Button>
+                          />
                         </th>
                       </tr>
                     ))
