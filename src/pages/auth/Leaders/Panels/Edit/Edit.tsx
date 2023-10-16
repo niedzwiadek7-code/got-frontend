@@ -39,18 +39,17 @@ const Edit: React.FC = () => {
         console.log(err)
       }
     }
-
     fetchData()
   }, [])
 
   if (loading) {
     return <Loading.Component />
   }
-
   return (
     <div>
       <h2 className="mb-4 w-50">
-        Edytuj uprawnienia
+        Edytuj uprawnienia:
+        {user && (` ${user.firstName} ${user.lastName}`)}
       </h2>
 
       <Table bordered responsive>

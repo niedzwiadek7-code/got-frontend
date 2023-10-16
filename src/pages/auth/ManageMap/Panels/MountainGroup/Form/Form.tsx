@@ -128,7 +128,7 @@ const Form: React.FC<Props> = () => {
                 variant="primary"
                 className="me-3"
               >
-                Edytuj odcinek
+                Edytuj grupę górską
               </Button>
 
               <Modal.Component
