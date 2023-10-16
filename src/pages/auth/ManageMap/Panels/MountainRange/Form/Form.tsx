@@ -37,12 +37,27 @@ const Form: React.FC<Props> = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const mountainRangeService = apiService.mountainData.getMountainRange(token)
-    await mountainRangeService.addMountainRange(data)
-    toastUtils.Toast.showToast(
-      toastUtils.types.SUCCESS,
-      'Dodanie pasma górskiego przebiegło pomyślnie',
-    )
-    navigate(getPath(PathNames.MOUNTAIN_GROUP))
+    try {
+      if (id) {
+        await mountainRangeService.editMountainRange(id, data)
+        toastUtils.Toast.showToast(
+          toastUtils.types.INFO,
+          'Edycja pasma górskiego przebiegła pomyślnie',
+        )
+      } else {
+        await mountainRangeService.addMountainRange(data)
+        toastUtils.Toast.showToast(
+          toastUtils.types.SUCCESS,
+          'Dodanie pasma górskiego przebiegło pomyślnie',
+        )
+        navigate(getPath(PathNames.MOUNTAIN_GROUP))
+      }
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieocezekiwany błąd',
+      )
+    }
   }
 
   const [options, setOptions] = useState<Record<number, string>>({})
