@@ -61,6 +61,7 @@ const Form: React.FC<Props> = () => {
   }
 
   const [options, setOptions] = useState<Record<number, string>>({})
+  const [sortedMountainGroups, setSortedGroups] = useState<Record<number, string>>({})
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,6 +91,12 @@ const Form: React.FC<Props> = () => {
 
     fetchData()
   }, [id])
+
+  useEffect(() => {
+    // Sort the allMountainGroups
+    const sortedGroups = Object.values(options).sort((a, b) => a.localeCompare(b))
+    setSortedGroups(sortedGroups)
+  }, [options])
 
   const deleteMountainRange = async () => {
     try {
@@ -138,7 +145,7 @@ const Form: React.FC<Props> = () => {
         <div className="mb-3">
           <Select.Component
             label="Wybierz grupę górską"
-            options={options}
+            options={sortedMountainGroups}
             register={register}
             name="mountain_group_id"
             errorMessage={errors?.mountain_group_id?.message || undefined}
