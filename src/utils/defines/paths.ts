@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 
 export enum PathNames {
+  WELCOME = 'Strona startowa',
   LOGIN = 'Logowanie',
   REGISTER = 'Rejestracja',
 
@@ -38,6 +39,7 @@ export enum PathNames {
 }
 
 export const PathLinkMap = new Map([
+  [PathNames.WELCOME, '/'],
   [PathNames.LOGIN, '/login'],
   [PathNames.REGISTER, '/register'],
 
