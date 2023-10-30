@@ -31,6 +31,10 @@ class User {
     return this.apiService.post<any>(`${this.userUrl}/revoke-mountain-group`, data)
   }
 
+  public async getUser() {
+    return this.apiService.get<any>('/user')
+  }
+
   constructor(token: string) {
     this.apiService = new ApiService(token)
   }

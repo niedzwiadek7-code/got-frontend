@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Styles from './Layout.module.scss'
 import PageInterface from '@/pages/auth/PageInterface'
@@ -6,6 +6,7 @@ import NavItem from './NavItem'
 import * as NavTop from './NavTop'
 import { useAuth } from '../../../context/auth'
 import { getPath, PathNames } from '../../../utils/defines'
+import { useDependencies } from '../../../context/dependencies'
 
 interface Props {
   paths: Record<string, PageInterface>,
@@ -15,6 +16,25 @@ interface Props {
 const Layout = (props: Props) => {
   const navigate = useNavigate()
   const auth = useAuth()
+  const { getApiService } = useDependencies()
+  const apiService = getApiService()
+  const [userService] = useState(apiService.getUser(auth.token))
+  const [userName, setUserName] = useState<string>('')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user = await userService.getUser()
+        console.log(user)
+        setUserName(`${user.first_name} ${user.last_name}`)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchData()
+  }, [userService])
+
+  console.log(auth.token)
 
   return (
     <>
@@ -57,7 +77,7 @@ const Layout = (props: Props) => {
               <figcaption
                 className="px-3 rounded-circle text-red"
               >
-                Użytkownik
+                { userName || 'Użytkownik' }
               </figcaption>
               <img
                 src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp"
