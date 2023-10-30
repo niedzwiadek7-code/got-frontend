@@ -75,7 +75,7 @@ const Layout = (props: Props) => {
                 auth.setToken(undefined)
                 auth.setLoggedIn(false)
                 auth.setRoles([])
-                navigate(getPath(PathNames.LOGIN))
+                navigate(getPath(PathNames.WELCOME))
               },
             },
           ]}
