@@ -11,17 +11,17 @@ const Leaders: React.FC = () => {
   const { getApiService } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const [usersService] = useState(apiService.getUser(token))
 
   useEffect(() => {
     const fetchData = async () => {
-      const usersService = apiService.getUser(token)
       setUsers(
         await usersService.getAllUsersWithRoles(),
       )
     }
 
     fetchData()
-  })
+  }, [usersService])
 
   useEffect(() => {
     setLoading(false)

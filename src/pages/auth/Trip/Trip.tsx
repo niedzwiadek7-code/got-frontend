@@ -13,10 +13,10 @@ const TripComponent: React.FC<Props> = () => {
   const { token } = useAuth()
   const [trips, setTrips] = useState<Trip[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+  const [tripService] = useState(apiService.getTrip(token))
 
   useEffect(() => {
     const fetchData = async () => {
-      const tripService = apiService.getTrip(token)
       setTrips(
         await tripService.getAllTrips(),
       )
@@ -24,7 +24,7 @@ const TripComponent: React.FC<Props> = () => {
     }
 
     fetchData()
-  }, [])
+  }, [tripService])
 
   if (loading) {
     return <Loading.Component />

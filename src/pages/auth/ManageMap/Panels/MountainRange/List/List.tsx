@@ -19,6 +19,7 @@ const List: React.FC<Props> = () => {
   const [mountainRange, setMountainRange] = useState<(MountainRange | undefined)>(undefined)
   const { id } = useParams()
   const [loading, setLoading] = useState<boolean>(true)
+  const [mountainRangeService] = useState(apiService.mountainData.getMountainRange(token))
 
   const deleteSection = async (sectionId: string) => {
     try {
@@ -42,7 +43,6 @@ const List: React.FC<Props> = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const mountainRangeService = apiService.mountainData.getMountainRange(token)
         setMountainRange(
           await mountainRangeService.getOneMountainRange(id),
         )
@@ -50,7 +50,7 @@ const List: React.FC<Props> = () => {
       setLoading(false)
     }
     fetchData()
-  }, [id])
+  }, [id, mountainRangeService])
 
   if (loading) {
     return (

@@ -25,6 +25,7 @@ const Form: React.FC<Props> = () => {
   const [mountainGroup, setMountainGroup] = useState<(MountainGroup | undefined)>()
   const navigate = useNavigate()
   const { id } = useParams()
+  const [mountainGroupService] = useState(apiService.mountainData.getMountainGroup(token))
 
   const {
     register, handleSubmit, formState: { errors },
@@ -34,7 +35,6 @@ const Form: React.FC<Props> = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const mountainGroupService = apiService.mountainData.getMountainGroup(token)
       if (id) {
         await mountainGroupService.editMountainGroup(id, data)
         toastUtils.Toast.showToast(
@@ -61,7 +61,6 @@ const Form: React.FC<Props> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const mountainGroupService = apiService.mountainData.getMountainGroup(token)
       if (id) {
         setMountainGroup(
           await mountainGroupService.getOneMountainGroup(id),
@@ -70,11 +69,10 @@ const Form: React.FC<Props> = () => {
       setLoading(false)
     }
     fetchData()
-  }, [id])
+  }, [id, mountainGroupService])
 
   const deleteMountainGroup = async () => {
     try {
-      const mountainGroupService = apiService.mountainData.getMountainGroup(token)
       await mountainGroupService.deleteMountainGroup(id || '')
 
       toastUtils.Toast.showToast(

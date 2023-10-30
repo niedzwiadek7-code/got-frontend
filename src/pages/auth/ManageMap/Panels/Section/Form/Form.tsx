@@ -50,17 +50,18 @@ const Form: React.FC<Props> = () => {
       1,
     ),
   )
+  const [sectionService] = useState(apiService.mountainData.getSection(token))
+  const [terrainPointsService] = useState(apiService.mountainData.getTerrainPoint(token))
+  const [mountainRangeService] = useState(apiService.mountainData.getMountainRange(token))
 
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const sectionService = apiService.mountainData.getSection(token)
         setSection(
           await sectionService.getOneSection(id),
         )
       }
 
-      const terrainPointsService = apiService.mountainData.getTerrainPoint(token)
       const terrainPoints = await terrainPointsService.getTerrainPoints()
       const allPointsTemp: Record<number, string> = {}
 
@@ -72,7 +73,6 @@ const Form: React.FC<Props> = () => {
         allPointsTemp,
       )
 
-      const mountainRangeService = apiService.mountainData.getMountainRange(token)
       const mountainRanges = await mountainRangeService.getMountainRanges()
       const allMountainRangesTemp: Record<number, string> = {}
 
@@ -86,11 +86,10 @@ const Form: React.FC<Props> = () => {
       setLoading(false)
     }
     fetchData()
-  }, [id])
+  }, [id, sectionService, terrainPointsService, mountainRangeService])
 
   useEffect(() => {
     const fetchData = async () => {
-      const terrainPointsService = apiService.mountainData.getTerrainPoint(token)
       const terrainPoints = await terrainPointsService.getTerrainPoints()
       const allPointsTemp: Record<number, string> = {}
 
@@ -102,7 +101,6 @@ const Form: React.FC<Props> = () => {
         allPointsTemp,
       )
 
-      const mountainRangeService = apiService.mountainData.getMountainRange(token)
       const mountainRanges = await mountainRangeService.getMountainRanges()
       const allMountainRangesTemp: Record<number, string> = {}
 
@@ -117,7 +115,7 @@ const Form: React.FC<Props> = () => {
       setDefaultMountainRangeId(rangeId)
     }
     fetchData()
-  }, [])
+  }, [terrainPointsService, mountainRangeService])
 
   useEffect(() => {
     // Sort the allMountainRanges
@@ -138,8 +136,6 @@ const Form: React.FC<Props> = () => {
   })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const sectionService = apiService.mountainData.getSection(token)
-
     const transformedData = {
       name: data.name,
       description: data.description,
@@ -178,7 +174,6 @@ const Form: React.FC<Props> = () => {
 
   const deleteSection = async () => {
     try {
-      const sectionService = apiService.mountainData.getSection(token)
       await sectionService.deleteSection(id || '')
 
       toastUtils.Toast.showToast(

@@ -48,17 +48,17 @@ const Modify: React.FC<Props> = () => {
   const [allSections, setAllSections] = useState<Record<number, SectionObj>>({})
   const [trip, setTrip] = useState<Trip | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
+  const [tripsService] = useState(apiService.getTrip(token))
+  const [sectionService] = useState(apiService.mountainData.getSection(token))
 
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const tripsService = apiService.getTrip(token)
         setTrip(
           await tripsService.getTrip(id),
         )
       }
 
-      const sectionService = apiService.mountainData.getSection(token)
       const sections = await sectionService.getSections()
 
       const allSectionsTemp: Record<number, SectionObj> = {}
@@ -79,7 +79,7 @@ const Modify: React.FC<Props> = () => {
     }
 
     fetchData()
-  }, [id])
+  }, [id, tripsService, sectionService])
 
   useEffect(() => {
     trip?.tripEntries.forEach((entry, index) => {

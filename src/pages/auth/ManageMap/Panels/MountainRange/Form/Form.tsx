@@ -28,6 +28,8 @@ const Form: React.FC<Props> = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const { groupId, id } = useParams()
   const navigate = useNavigate()
+  const [mountainRangeService] = useState(apiService.mountainData.getMountainRange(token))
+  const [mountainGroupService] = useState(apiService.mountainData.getMountainGroup(token))
 
   const {
     register, handleSubmit, formState: { errors },
@@ -36,7 +38,6 @@ const Form: React.FC<Props> = () => {
   })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const mountainRangeService = apiService.mountainData.getMountainRange(token)
     try {
       if (id) {
         await mountainRangeService.editMountainRange(id, data)
@@ -66,7 +67,6 @@ const Form: React.FC<Props> = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const mountainRangeService = apiService.mountainData.getMountainRange(token)
         setMountainRange(
           await mountainRangeService.getOneMountainRange(id),
         )
@@ -76,7 +76,6 @@ const Form: React.FC<Props> = () => {
         )
       }
 
-      const mountainGroupService = apiService.mountainData.getMountainGroup(token)
       const mountainGroups = await mountainGroupService.getMountainGroups()
 
       const tempOptions: Record<number, string> = {}
@@ -90,7 +89,7 @@ const Form: React.FC<Props> = () => {
     }
 
     fetchData()
-  }, [id])
+  }, [id, mountainRangeService, mountainGroupService])
 
   useEffect(() => {
     // Sort the allMountainGroups
@@ -100,7 +99,6 @@ const Form: React.FC<Props> = () => {
 
   const deleteMountainRange = async () => {
     try {
-      const mountainRangeService = apiService.mountainData.getMountainRange(token)
       await mountainRangeService.deleteMountainRange(id || '')
 
       toastUtils.Toast.showToast(

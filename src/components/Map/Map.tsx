@@ -31,6 +31,7 @@ const Map: React.FC<Props> = (props) => {
   const apiService = getApiService()
   const { token } = useAuth()
   const [lines, setLines] = useState<Elements.Line[]>([])
+  const [terrainPointService] = useState(apiService.mountainData.getTerrainPoint(token))
 
   const handleClick = (e: any) => {
     if (props.onMarkerPositionChange) {
@@ -60,8 +61,6 @@ const Map: React.FC<Props> = (props) => {
   )
 
   useEffect(() => {
-    const terrainPointService = apiService.mountainData.getTerrainPoint(token)
-
     const fetchData = async () => {
       for (const line of props.lines || []) {
         line.setPointA(
@@ -77,12 +76,15 @@ const Map: React.FC<Props> = (props) => {
     }
 
     fetchData()
-  }, [JSON.stringify(
-    (props.lines || []).map((line) => ({
-      pointAId: line.pointAId,
-      pointBId: line.pointBId,
-    })),
-  )])
+  }, [
+    JSON.stringify(
+      (props.lines || []).map((line) => ({
+        pointAId: line.pointAId,
+        pointBId: line.pointBId,
+      })),
+    ),
+    terrainPointService,
+  ])
 
   const customMarkerIcon = divIcon({
     html: iconMarkup,

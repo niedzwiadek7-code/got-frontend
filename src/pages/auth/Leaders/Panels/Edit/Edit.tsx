@@ -20,13 +20,13 @@ const Edit: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [mountainGroups, setMountainGroups] = useState<MountainGroup[]>([])
   const [user, setUser] = useState<User | undefined>()
+  const [mountainGroupService] = useState(apiService.mountainData.getMountainGroup(token))
+  const [usersService] = useState(apiService.getUser(token))
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true)
-        const mountainGroupService = apiService.mountainData.getMountainGroup(token)
-        const usersService = apiService.getUser(token)
         setMountainGroups(
           await mountainGroupService.getMountainGroups(),
         )
@@ -40,7 +40,7 @@ const Edit: React.FC = () => {
       }
     }
     fetchData()
-  }, [])
+  }, [mountainGroupService, usersService])
 
   if (loading) {
     return <Loading.Component />
