@@ -33,6 +33,7 @@ class TripService {
         sectionId: entry.section_id,
         date: entry.trip_date,
         oppositeDirection: Boolean(entry.b_to_a),
+        section: entry.section,
       })),
     )
 

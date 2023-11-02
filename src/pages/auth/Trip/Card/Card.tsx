@@ -69,6 +69,16 @@ const CardComponent: React.FC<Props> = (props) => {
 
         <div className="text-end mt-2">
           <Button
+            variant="success"
+            className="me-2"
+            href={getPath(PathNames.TRIP_MAP_TO_GOT, {
+              id: props.trip.id,
+            })}
+          >
+            Wpisz do książeczki GOT
+          </Button>
+
+          <Button
             variant="primary"
             className="me-2"
             href={getPath(PathNames.TRIP_EDIT, {

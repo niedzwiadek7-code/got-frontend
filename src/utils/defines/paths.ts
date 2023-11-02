@@ -39,7 +39,8 @@ export enum PathNames {
   TRIPS = 'Zarządzanie wycieczkami',
   TRIP_ADD = 'Dodaj wycieczkę',
   TRIP_EDIT = 'Modyfikuj wycieczkę',
-  TRIP_DELETE = 'Usuń wycieczkę'
+  TRIP_DELETE = 'Usuń wycieczkę',
+  TRIP_MAP_TO_GOT = 'Wpisz do książeczki GOT',
 }
 
 export const PathLinkMap = new Map([
@@ -81,6 +82,7 @@ export const PathLinkMap = new Map([
   [PathNames.TRIP_ADD, '/trip/add'],
   [PathNames.TRIP_EDIT, '/trip/edit/:id'],
   [PathNames.TRIP_DELETE, '/trip/delete/:id'],
+  [PathNames.TRIP_MAP_TO_GOT, '/trip/map-to-got/:id'],
 ])
 
 export const getPath = (

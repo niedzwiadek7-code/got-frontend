@@ -134,7 +134,7 @@ const Modify: React.FC<Props> = () => {
           'Edycja wycieczki przebiegła pomyślnie',
         )
       } else {
-        const tripRes = await tripService.createTrip(data)
+        await tripService.createTrip(data)
 
         toastUtils.Toast.showToast(
           toastUtils.types.SUCCESS,
@@ -142,9 +142,7 @@ const Modify: React.FC<Props> = () => {
         )
 
         navigate(
-          getPath(PathNames.TRIP_EDIT, {
-            id: tripRes.id,
-          }),
+          getPath(PathNames.TRIPS),
         )
       }
     } catch (err) {
