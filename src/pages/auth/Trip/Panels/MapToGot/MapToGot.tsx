@@ -80,7 +80,7 @@ const MapToGot: React.FC<Props> = () => {
             {
           trip.tripEntries.map((tripEntry, index) => (
             <tr key={tripEntry.id}>
-              <td>{index}</td>
+              <td>{index + 1}</td>
               <td>{tripEntry.section.name}</td>
               <td>
                 {
@@ -111,7 +111,7 @@ const MapToGot: React.FC<Props> = () => {
               </td>
             </tr>
           ))
-        }
+            }
           </tbody>
           <tfoot>
             <tr>

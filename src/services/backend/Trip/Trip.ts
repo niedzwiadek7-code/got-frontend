@@ -14,6 +14,7 @@ class TripService {
       tripBase.name,
       tripBase.description,
       (tripBase.trip_plan_entries || []).map((entry: any) => ({
+        id: entry.id,
         sectionId: entry.section_id,
         date: entry.trip_date,
         oppositeDirection: Boolean(entry.b_to_a),
@@ -30,6 +31,7 @@ class TripService {
       tripBase.name,
       tripBase.description,
       tripBase.trip_plan_entries.map((entry: any) => ({
+        id: entry.id,
         sectionId: entry.section_id,
         date: entry.trip_date,
         oppositeDirection: Boolean(entry.b_to_a),
