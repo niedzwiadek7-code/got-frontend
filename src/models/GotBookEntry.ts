@@ -14,13 +14,16 @@ class GotBookEntry {
 
   oppositeDirection: boolean
 
+  tripPlanEntryId: number
+
   constructor(
     id: number,
     sectionId: number,
     tripDate: Date,
     gotBookId: number,
-    oppositeDirection: boolean,
     badgeAwardId: number,
+    oppositeDirection: boolean,
+    tripPlanEntryId: number,
   ) {
     this.id = id
     this.sectionId = sectionId
@@ -28,6 +31,7 @@ class GotBookEntry {
     this.gotBookId = gotBookId
     this.oppositeDirection = oppositeDirection
     this.badgeAwardId = badgeAwardId
+    this.tripPlanEntryId = tripPlanEntryId
   }
 }
 

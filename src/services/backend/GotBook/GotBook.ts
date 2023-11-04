@@ -1,8 +1,8 @@
 import ApiService from '../ApiService'
-import GotBookEntry from '@/models/GotBookEntry'
 import TripEntry from '@/models/TripEntry'
 import GotBook from '@/models/GotBook'
 import BadgeAward from '@/models/BadgeAward'
+import GotBookEntry from '../../../models/GotBookEntry'
 
 class GotBookService {
   private gotBookUrl: string = '/got-books'
@@ -36,6 +36,19 @@ class GotBookService {
 
   public async getLatestBadgeAward() {
     return this.apiService.get<BadgeAward>(`${this.gotBookUrl}/badge-award`)
+  }
+
+  public async getGotBookEntries(gotBookId: number) {
+    const bookEntriesResponse = await this.apiService.get<any[]>(`${this.gotBookUrl}/${gotBookId}/entries`)
+    return bookEntriesResponse.map((entryBase) => new GotBookEntry(
+      entryBase.id,
+      entryBase.got_book_id,
+      entryBase.badge_award_id,
+      entryBase.section_id,
+      entryBase.trip_date,
+      Boolean(entryBase.b_to_a),
+      entryBase.trip_plan_entry_id,
+    ))
   }
 
   constructor(token: string) {

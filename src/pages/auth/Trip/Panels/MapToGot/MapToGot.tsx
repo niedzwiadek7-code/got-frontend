@@ -11,6 +11,7 @@ import * as Loading from '../../../../../components/UI/Loading'
 import GotBook from '@/models/GotBook'
 import BadgeAward from '@/models/BadgeAward'
 import { getPath, PathNames } from '../../../../../utils/defines'
+import TripEntry from '@/models/TripEntry'
 
 type Props = {}
 
@@ -27,15 +28,18 @@ const MapToGot: React.FC<Props> = () => {
   const [tripsService] = useState(apiService.getTrip(token))
   const [gotBookService] = useState(apiService.getGotBook(token))
   const [gotBook, setGotBook] = useState<GotBook | null>(null)
+  const [mappedEntries, setMappedEntries] = useState<TripEntry[] | undefined>([])
+  const [unmappedEntries, setUnmappedEntries] = useState<TripEntry[] | undefined>([])
   const [latestBadgeAward, setLatestBadgeAward] = useState<BadgeAward | null>(null)
 
   const [entriesToMap, setEntriesToMap] = useState<{ [key: number]: boolean }>({})
 
   const getTrip = async () => {
     if (id) {
-      setTrip(
-        await tripsService.getTrip(id),
-      )
+      const tmpTrip = await tripsService.getTrip(id)
+      setTrip(tmpTrip)
+      setMappedEntries(await tripsService.getMappedEntries(tmpTrip.id.toString()))
+      setUnmappedEntries(await tripsService.getUnmappedEntries(tmpTrip.id.toString()))
     }
   }
 
@@ -88,7 +92,7 @@ const MapToGot: React.FC<Props> = () => {
       .then(() => getLatestBadgeAward()
         .then(() => getTrip()
           .then(() => setLoading(false))))
-  }, [id, tripsService, gotBookService])
+  }, [tripsService, gotBookService])
 
   if (loading) {
     return <Loading.Component />
@@ -100,7 +104,71 @@ const MapToGot: React.FC<Props> = () => {
         { `Wpisywanie odcinków wycieczki '${trip?.name}' do GOT` }
       </h2>
       { trip && (
-      <Form>
+      <>
+        <Form>
+          <Table responsive>
+            <thead className="bg-light">
+              <tr>
+                <th> Lp. </th>
+                <th> Odcinek </th>
+                <th> Kierunek </th>
+                <th> Data </th>
+                <th className="text-center"> Punkty </th>
+                <th className="text-center"> Wpisz do GOT </th>
+              </tr>
+            </thead>
+            <tbody>
+              { unmappedEntries && unmappedEntries.map((tripEntry, index) => (
+                <tr key={tripEntry.id}>
+                  <td>{index + 1}</td>
+                  <td>{tripEntry.section.name}</td>
+                  <td>
+                    {
+                  tripEntry.oppositeDirection ? (
+                    <FontAwesomeIcon className="ms-4" icon={faArrowLeft} />
+                  ) : (
+                    <FontAwesomeIcon className="ms-4" icon={faArrowRight} />
+                  )
+                }
+                  </td>
+                  <td>
+                    {dayjs(tripEntry.date).format('DD.MM.YYYY')}
+                  </td>
+                  <td className="text-center">
+                    {
+                  tripEntry.oppositeDirection
+                    ? tripEntry.section.badge_points_b_to_a
+                    : tripEntry.section.badge_points_a_to_b
+                }
+                  </td>
+                  <td className="text-center">
+                    <Form.Check
+                      key={tripEntry.id}
+                      type="checkbox"
+                      checked={entriesToMap[tripEntry.id] || false}
+                      onChange={(e) => handleCheckboxChange(e, tripEntry.id)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={6} className="text-center">
+                  <Button
+                    className="me-2"
+                    type="submit"
+                    variant="success"
+                    onClick={(e) => onSubmit(e)}
+                  >
+                    Wpisz wybrane odcinki do książeczki GOT
+                  </Button>
+                </td>
+              </tr>
+            </tfoot>
+          </Table>
+        </Form>
+
         <Table responsive>
           <thead className="bg-light">
             <tr>
@@ -109,62 +177,37 @@ const MapToGot: React.FC<Props> = () => {
               <th> Kierunek </th>
               <th> Data </th>
               <th className="text-center"> Punkty </th>
-              <th className="text-center"> Wpisz do GOT </th>
             </tr>
           </thead>
           <tbody>
-            {
-          trip.tripEntries.map((tripEntry, index) => (
-            <tr key={tripEntry.id}>
-              <td>{index + 1}</td>
-              <td>{tripEntry.section.name}</td>
-              <td>
-                {
+            { mappedEntries && mappedEntries.map((tripEntry, index) => (
+              <tr key={tripEntry.id}>
+                <td>{index + 1}</td>
+                <td>{tripEntry.section.name}</td>
+                <td>
+                  {
                   tripEntry.oppositeDirection ? (
                     <FontAwesomeIcon className="ms-4" icon={faArrowLeft} />
                   ) : (
                     <FontAwesomeIcon className="ms-4" icon={faArrowRight} />
                   )
                 }
-              </td>
-              <td>
-                {dayjs(tripEntry.date).format('DD.MM.YYYY')}
-              </td>
-              <td className="text-center">
-                {
+                </td>
+                <td>
+                  {dayjs(tripEntry.date).format('DD.MM.YYYY')}
+                </td>
+                <td className="text-center">
+                  {
                   tripEntry.oppositeDirection
                     ? tripEntry.section.badge_points_b_to_a
                     : tripEntry.section.badge_points_a_to_b
                 }
-              </td>
-              <td className="text-center">
-                <Form.Check
-                  key={tripEntry.id}
-                  type="checkbox"
-                  checked={entriesToMap[tripEntry.id] || false}
-                  onChange={(e) => handleCheckboxChange(e, tripEntry.id)}
-                />
-              </td>
-            </tr>
-          ))
-            }
+                </td>
+              </tr>
+            ))}
           </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={6} className="text-center">
-                <Button
-                  className="me-2"
-                  type="submit"
-                  variant="success"
-                  onClick={(e) => onSubmit(e)}
-                >
-                  Wpisz wybrane odcinki do książeczki GOT
-                </Button>
-              </td>
-            </tr>
-          </tfoot>
         </Table>
-      </Form>
+      </>
       )}
     </div>
   )

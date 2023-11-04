@@ -1,5 +1,6 @@
 import ApiService from '../ApiService'
 import Trip from '../../../models/Trip'
+import TripEntry from '../../../models/TripEntry'
 
 class TripService {
   private tripUrl: string = '/plans'
@@ -26,7 +27,7 @@ class TripService {
   public async getTrip(tripId: string): Promise<Trip> {
     const tripBase = await this.apiService.get<any>(`${this.tripUrl}/${tripId}`)
 
-    const trip = new Trip(
+    return new Trip(
       tripBase.id,
       tripBase.name,
       tripBase.description,
@@ -38,8 +39,6 @@ class TripService {
         section: entry.section,
       })),
     )
-
-    return trip
   }
 
   public async createTrip(data?: any): Promise<Trip> {
@@ -72,6 +71,32 @@ class TripService {
 
   public async deleteTrip(tripId: string): Promise<void> {
     await this.apiService.delete<any>(`${this.tripUrl}/${tripId}`)
+  }
+
+  public async getMappedEntries(tripId: string): Promise<TripEntry[]> {
+    const tripEntriesResponse = await this.apiService.get<any[]>(`${this.tripUrl}/${tripId}/mapped`)
+
+    return tripEntriesResponse.map((entry: any) => new TripEntry(
+      entry.id,
+      entry.section_id,
+      entry.trip_date,
+      entry.status,
+      Boolean(entry.b_to_a),
+      entry.section,
+    ))
+  }
+
+  public async getUnmappedEntries(tripId: string): Promise<TripEntry[]> {
+    const tripEntriesResponse = await this.apiService.get<any[]>(`${this.tripUrl}/${tripId}/unmapped`)
+
+    return tripEntriesResponse.map((entry: any) => new TripEntry(
+      entry.id,
+      entry.section_id,
+      entry.trip_date,
+      entry.status,
+      Boolean(entry.b_to_a),
+      entry.section,
+    ))
   }
 
   constructor(token: string) {
