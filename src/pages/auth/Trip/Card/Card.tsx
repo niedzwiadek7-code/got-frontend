@@ -7,9 +7,11 @@ import { getPath, PathNames } from '../../../../utils/defines'
 import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
 import * as Modal from '../../../../components/UI/Modal'
+import GotBook from '@/models/GotBook'
 
 type Props = {
   trip: Trip
+  gotBook: GotBook | null
 }
 
 const CardComponent: React.FC<Props> = (props) => {
@@ -68,6 +70,7 @@ const CardComponent: React.FC<Props> = (props) => {
         />
 
         <div className="text-end mt-2">
+          { props.gotBook && (
           <Button
             variant="success"
             className="me-2"
@@ -77,7 +80,7 @@ const CardComponent: React.FC<Props> = (props) => {
           >
             Wpisz do książeczki GOT
           </Button>
-
+          )}
           <Button
             variant="primary"
             className="me-2"

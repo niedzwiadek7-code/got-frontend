@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Form, Table } from 'react-bootstrap'
 import dayjs from 'dayjs'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,19 +8,26 @@ import { useAuth } from '../../../../../context/auth'
 import { useDependencies } from '../../../../../context/dependencies'
 import Trip from '@/models/Trip'
 import * as Loading from '../../../../../components/UI/Loading'
+import GotBook from '@/models/GotBook'
+import BadgeAward from '@/models/BadgeAward'
+import { getPath, PathNames } from '../../../../../utils/defines'
 
 type Props = {}
 
 const MapToGot: React.FC<Props> = () => {
   const { id } = useParams()
   const { token } = useAuth()
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
+  const toastUtils = getToastUtils()
+  const navigate = useNavigate()
   const [trip, setTrip] = useState<Trip | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
 
   const [tripsService] = useState(apiService.getTrip(token))
   const [gotBookService] = useState(apiService.getGotBook(token))
+  const [gotBook, setGotBook] = useState<GotBook | null>(null)
+  const [latestBadgeAward, setLatestBadgeAward] = useState<BadgeAward | null>(null)
 
   const [entriesToMap, setEntriesToMap] = useState<{ [key: number]: boolean }>({})
 
@@ -30,6 +37,18 @@ const MapToGot: React.FC<Props> = () => {
         await tripsService.getTrip(id),
       )
     }
+  }
+
+  const getGotBook = async () => {
+    setGotBook(
+      await gotBookService.getGotBook(),
+    )
+  }
+
+  const getLatestBadgeAward = async () => {
+    setLatestBadgeAward(
+      await gotBookService.getLatestBadgeAward(),
+    )
   }
 
   // eslint-disable-next-line max-len
@@ -42,19 +61,34 @@ const MapToGot: React.FC<Props> = () => {
 
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
-    // eslint-disable-next-line array-callback-return
-    trip?.tripEntries.map(async (entry) => {
-      if (entriesToMap[entry.id]) {
-        await gotBookService.mapEntryToGot(1, 1, entry)
-      }
-    })
+    try {
+      // eslint-disable-next-line array-callback-return
+      trip?.tripEntries.map(async (entry) => {
+        if (gotBook && latestBadgeAward && entriesToMap[entry.id]) {
+          await gotBookService.mapEntryToGot(gotBook.id, latestBadgeAward.id, entry)
+        }
+      })
+
+      toastUtils.Toast.showToast(
+        toastUtils.types.SUCCESS,
+        'Pomyślnie wpisano wybrane odcinki do książeczki GOT',
+      )
+
+      navigate(getPath(PathNames.TRIPS))
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
+      )
+    }
   }
 
   useEffect(() => {
-    getTrip().then(() => {
-      setLoading(false)
-    })
-  }, [id, tripsService])
+    getGotBook()
+      .then(() => getLatestBadgeAward()
+        .then(() => getTrip()
+          .then(() => setLoading(false))))
+  }, [id, tripsService, gotBookService])
 
   if (loading) {
     return <Loading.Component />
@@ -62,7 +96,9 @@ const MapToGot: React.FC<Props> = () => {
 
   return (
     <div>
-      <h2 className="mb-4">Wpisywanie wycieczki do GOT</h2>
+      <h2 className="mb-4">
+        { `Wpisywanie odcinków wycieczki '${trip?.name}' do GOT` }
+      </h2>
       { trip && (
       <Form>
         <Table responsive>

@@ -1,6 +1,8 @@
 import ApiService from '../ApiService'
 import GotBookEntry from '@/models/GotBookEntry'
 import TripEntry from '@/models/TripEntry'
+import GotBook from '@/models/GotBook'
+import BadgeAward from '@/models/BadgeAward'
 
 class GotBookService {
   private gotBookUrl: string = '/got-books'
@@ -22,6 +24,18 @@ class GotBookService {
     }
 
     return this.apiService.put<GotBookEntry>(`${this.gotBookUrl}/map-entry`, tripRequest)
+  }
+
+  public async getGotBook() {
+    return this.apiService.get<GotBook>(`${this.gotBookUrl}`)
+  }
+
+  public async createGotBook() {
+    return this.apiService.post<GotBook>(`${this.gotBookUrl}`)
+  }
+
+  public async getLatestBadgeAward() {
+    return this.apiService.get<BadgeAward>(`${this.gotBookUrl}/badge-award`)
   }
 
   constructor(token: string) {
