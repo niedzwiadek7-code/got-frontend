@@ -29,6 +29,10 @@ export enum PathNames {
   MOUNTAIN_GROUP_DELETE = 'Usunięcie grupy górskiej',
 
   BADGES = 'Odznaki',
+  BADGES_ADD = 'Dodaj odznakę',
+  BADGES_EDIT = 'Edycja odznaki',
+  BADGES_DELETE = 'Usunięcie odznaki',
+
   LEADERS = 'Zarządzanie przodownikami',
   LEADER_EDIT = 'Edycja leadera',
 
@@ -66,6 +70,10 @@ export const PathLinkMap = new Map([
   [PathNames.MOUNTAIN_GROUP_DELETE, '/mountain-group/delete/:id'],
 
   [PathNames.BADGES, '/badges'],
+  [PathNames.BADGES_ADD, '/badges/add'],
+  [PathNames.BADGES_EDIT, '/badges/edit/:id'],
+  [PathNames.BADGES_DELETE, '/badges/delete/:id'],
+
   [PathNames.LEADERS, '/leaders'],
   [PathNames.LEADER_EDIT, '/leader/edit/:id'],
 
