@@ -132,11 +132,11 @@ const Row: React.FC<Props> = (props) => {
 
   return (
     <tr className="align-middle">
-      <td>{props.badge.id}</td>
-      <td>{props.badge.name}</td>
-      <td>{props.badge.point_threshold}</td>
-      <td>{props.badge.next_badge}</td>
-      <td>{props.badge.previous_badge}</td>
+      <td style={{ textAlign: 'center' }}>{props.badge.id}</td>
+      <td style={{ textAlign: 'center' }}>{props.badge.name}</td>
+      <td style={{ textAlign: 'center' }}>{props.badge.point_threshold}</td>
+      <td style={{ textAlign: 'center' }}>{props.badge.next_badge}</td>
+      <td style={{ textAlign: 'center' }}>{props.badge.previous_badge}</td>
       <td>
         <Button
           variant="success"
