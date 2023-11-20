@@ -7,9 +7,9 @@ type Props = {
 }
 
 const Layout: React.FC<Props> = (props) => (
-  <div className={Styles.content}>
-    <div className="row h-100">
-      <div className="col-6">
+  <div className={Styles.container}>
+    <div className={`${Styles.content} row`}>
+      <div className="col-12 col-lg-6">
         <img
           src={Theme}
           alt=""
@@ -17,8 +17,10 @@ const Layout: React.FC<Props> = (props) => (
         />
       </div>
 
-      <div className="col-6 p-4">
-        { props.children }
+      <div className={`${Styles.pageContent} col-12 col-lg-6 p-4`}>
+        <div className="w-100">
+          { props.children }
+        </div>
       </div>
     </div>
   </div>
