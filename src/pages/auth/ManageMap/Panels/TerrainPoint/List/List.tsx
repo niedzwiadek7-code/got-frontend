@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Table } from 'react-bootstrap'
+import { Button, Form, Table } from 'react-bootstrap'
 import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
 import * as Loading from '../../../../../../components/UI/Loading'
@@ -17,6 +17,7 @@ const List: React.FC<Props> = () => {
   const [loading, setLoading] = useState<(boolean)>(true)
   const toastUtils = getToastUtils()
   const [terrainPointService] = useState(apiService.mountainData.getTerrainPoint(token))
+  const [searchTerm, setSearchTerm] = useState<string>('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +52,11 @@ const List: React.FC<Props> = () => {
       <Loading.Component />
     )
   }
+
+  const filteredTerrainPoints = terrainPoints.filter(
+    (point) => (point.name.toLowerCase().includes(searchTerm.toLowerCase())),
+  )
+
   return (
     <div>
       <div
@@ -65,6 +71,15 @@ const List: React.FC<Props> = () => {
         </Button>
       </div>
 
+      <Form.Group controlId="searchForm" className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Szukaj punktu po nazwie..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Form.Group>
+
       <h2 className="mb-4"> Punkty terenowe: </h2>
 
       <Table responsive>
@@ -75,7 +90,7 @@ const List: React.FC<Props> = () => {
           <th>Wysokość (m n.p.m.)</th>
         </thead>
         <tbody>
-          {terrainPoints.map((terrainPoint) => (
+          {filteredTerrainPoints.map((terrainPoint) => (
             <tr key={terrainPoint.id}>
               <td>{terrainPoint.name}</td>
               <td>{terrainPoint.latitude}</td>
