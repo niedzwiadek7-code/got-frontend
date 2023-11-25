@@ -41,8 +41,6 @@ const Form: React.FC<Props> = () => {
   const [allMountainRanges, setAllMountainRanges] = useState<Record<number, string>>({})
   const [defaultMountainRangeId, setDefaultMountainRangeId] = useState<string | undefined>()
 
-  const [sortedMountainRanges, setSortedMountainRanges] = useState<Record<number, string>>({})
-  const [sortedPoints, setSortedPoints] = useState<Record<number, string>>({})
   const [mapLine, setMapLine] = useState<MapDefinition.Elements.Line>(
     new MapDefinition.Elements.Line(
       '',
@@ -116,18 +114,6 @@ const Form: React.FC<Props> = () => {
     }
     fetchData()
   }, [terrainPointsService, mountainRangeService])
-
-  useEffect(() => {
-    // Sort the allMountainRanges
-    const sortedRanges = Object.values(allMountainRanges).sort((a, b) => a.localeCompare(b))
-    setSortedMountainRanges(sortedRanges)
-  }, [allMountainRanges])
-
-  useEffect(() => {
-    // Sort the allPoints
-    const sortedPointsTemp = Object.values(allPoints).sort((a, b) => a.localeCompare(b))
-    setSortedPoints(sortedPointsTemp)
-  }, [allPoints])
 
   const {
     register, handleSubmit, formState: { errors },
@@ -244,16 +230,17 @@ const Form: React.FC<Props> = () => {
               />
             </div>
 
-            <div className="mb-3">
-              <Select.Component
-                label="Wybierz pasmo górskie"
-                default={defaultMountainRangeId || section?.mountain_range_id}
-                options={sortedMountainRanges}
-                register={register}
-                name="mountainRange"
-                errorMessage={errors?.mountainRange?.message || undefined}
-              />
-            </div>
+          <div className="mb-3">
+            <Select.Component
+              label="Wybierz pasmo górskie"
+              default={defaultMountainRangeId || section?.mountain_range_id}
+              options={allMountainRanges}
+              register={register}
+              name="mountainRange"
+              errorMessage={errors?.mountainRange?.message || undefined}
+              sortOptions
+            />
+          </div>
 
             <div className="mb-3">
               <Input.Component
@@ -277,45 +264,47 @@ const Form: React.FC<Props> = () => {
               />
             </div>
 
-            <div className="mb-3">
-              <Select.Component
-                label="Wybierz punkt A"
-                options={sortedPoints}
-                register={register}
-                name="terrainPoint_A"
-                errorMessage={errors?.terrainPoint_A?.message || undefined}
-                onChange={(e) => {
-                  setMapLine(
-                    new MapDefinition.Elements.Line(
-                      mapLine.name,
-                      e.target.value,
-                      mapLine.pointBId,
-                    ),
-                  )
-                }}
-                default={section?.terrain_point_a_id || mapLine.pointAId}
-              />
-            </div>
+          <div className="mb-3">
+            <Select.Component
+              label="Wybierz punkt A"
+              options={allPoints}
+              register={register}
+              name="terrainPoint_A"
+              errorMessage={errors?.terrainPoint_A?.message || undefined}
+              onChange={(e) => {
+                setMapLine(
+                  new MapDefinition.Elements.Line(
+                    mapLine.name,
+                    e.target.value,
+                    mapLine.pointBId,
+                  ),
+                )
+              }}
+              default={section?.terrain_point_a_id || mapLine.pointAId}
+              sortOptions
+            />
+          </div>
 
-            <div className="mb-3">
-              <Select.Component
-                label="Wybierz punkt B"
-                options={sortedPoints}
-                register={register}
-                name="terrainPoint_B"
-                errorMessage={errors?.terrainPoint_B?.message || undefined}
-                onChange={(e) => {
-                  setMapLine(
-                    new MapDefinition.Elements.Line(
-                      mapLine.name,
-                      mapLine.pointAId,
-                      e.target.value,
-                    ),
-                  )
-                }}
-                default={section?.terrain_point_b_id || mapLine.pointBId}
-              />
-            </div>
+          <div className="mb-3">
+            <Select.Component
+              label="Wybierz punkt B"
+              options={allPoints}
+              register={register}
+              name="terrainPoint_B"
+              errorMessage={errors?.terrainPoint_B?.message || undefined}
+              onChange={(e) => {
+                setMapLine(
+                  new MapDefinition.Elements.Line(
+                    mapLine.name,
+                    mapLine.pointAId,
+                    e.target.value,
+                  ),
+                )
+              }}
+              default={section?.terrain_point_b_id || mapLine.pointBId}
+              sortOptions
+            />
+           </div>
           </div>
 
           <div className="col-12 col-lg-6 mb-2" style={{ minHeight: '40vh' }}>
