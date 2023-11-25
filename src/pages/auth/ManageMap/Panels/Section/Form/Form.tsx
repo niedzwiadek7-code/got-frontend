@@ -134,7 +134,7 @@ const Form: React.FC<Props> = () => {
 
     try {
       if (id) {
-        const sectionResult = await sectionService.createSection(transformedData)
+        const sectionResult = await sectionService.editSection(id, transformedData)
         toastUtils.Toast.showToast(
           toastUtils.types.INFO,
           'Edycja odcinka przebiegła pomyślnie',
