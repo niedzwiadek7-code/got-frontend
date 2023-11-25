@@ -45,13 +45,14 @@ const Form: React.FC<Props> = () => {
           toastUtils.types.INFO,
           'Edycja pasma górskiego przebiegła pomyślnie',
         )
+        navigate(getPath(PathNames.MANAGE_MAP))
       } else {
         await mountainRangeService.addMountainRange(data)
         toastUtils.Toast.showToast(
           toastUtils.types.SUCCESS,
           'Dodanie pasma górskiego przebiegło pomyślnie',
         )
-        navigate(getPath(PathNames.MOUNTAIN_GROUP))
+        navigate(getPath(PathNames.MANAGE_MAP))
       }
     } catch (err) {
       toastUtils.Toast.showToast(
@@ -106,7 +107,7 @@ const Form: React.FC<Props> = () => {
         'Usunięcie pasma górskiego przebiegło pomyślnie',
       )
 
-      navigate(getPath(PathNames.MOUNTAIN_GROUP))
+      navigate(getPath(PathNames.MANAGE_MAP))
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -154,8 +155,8 @@ const Form: React.FC<Props> = () => {
         <Button
           type="submit"
           variant="secondary"
-          className="me-3 my-1"
-          href={getPath(PathNames.MOUNTAIN_GROUP)}
+          className="me-3"
+          href={getPath(PathNames.MANAGE_MAP)}
         >
           Powrót
         </Button>
