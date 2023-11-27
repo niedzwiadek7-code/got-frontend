@@ -230,17 +230,59 @@ const Form: React.FC<Props> = () => {
               />
             </div>
 
-          <div className="mb-3">
-            <Select.Component
-              label="Wybierz pasmo górskie"
-              default={defaultMountainRangeId || section?.mountain_range_id}
-              options={allMountainRanges}
-              register={register}
-              name="mountainRange"
-              errorMessage={errors?.mountainRange?.message || undefined}
-              sortOptions
-            />
-          </div>
+            <div className="mb-3">
+              <Select.Component
+                label="Wybierz pasmo górskie"
+                default={defaultMountainRangeId || section?.mountain_range_id}
+                options={allMountainRanges}
+                register={register}
+                name="mountainRange"
+                errorMessage={errors?.mountainRange?.message || undefined}
+                sortOptions
+              />
+            </div>
+
+            <div className="mb-3">
+              <Select.Component
+                label="Wybierz punkt A"
+                options={allPoints}
+                register={register}
+                name="terrainPoint_A"
+                errorMessage={errors?.terrainPoint_A?.message || undefined}
+                onChange={(e) => {
+                  setMapLine(
+                    new MapDefinition.Elements.Line(
+                      mapLine.name,
+                      e.target.value,
+                      mapLine.pointBId,
+                    ),
+                  )
+                }}
+                default={section?.terrain_point_a_id || mapLine.pointAId}
+                sortOptions
+              />
+            </div>
+
+            <div className="mb-3">
+              <Select.Component
+                label="Wybierz punkt B"
+                options={allPoints}
+                register={register}
+                name="terrainPoint_B"
+                errorMessage={errors?.terrainPoint_B?.message || undefined}
+                onChange={(e) => {
+                  setMapLine(
+                    new MapDefinition.Elements.Line(
+                      mapLine.name,
+                      mapLine.pointAId,
+                      e.target.value,
+                    ),
+                  )
+                }}
+                default={section?.terrain_point_b_id || mapLine.pointBId}
+                sortOptions
+              />
+            </div>
 
             <div className="mb-3">
               <Input.Component
@@ -263,48 +305,6 @@ const Form: React.FC<Props> = () => {
                 default={section?.badge_points_b_to_a}
               />
             </div>
-
-          <div className="mb-3">
-            <Select.Component
-              label="Wybierz punkt A"
-              options={allPoints}
-              register={register}
-              name="terrainPoint_A"
-              errorMessage={errors?.terrainPoint_A?.message || undefined}
-              onChange={(e) => {
-                setMapLine(
-                  new MapDefinition.Elements.Line(
-                    mapLine.name,
-                    e.target.value,
-                    mapLine.pointBId,
-                  ),
-                )
-              }}
-              default={section?.terrain_point_a_id || mapLine.pointAId}
-              sortOptions
-            />
-          </div>
-
-          <div className="mb-3">
-            <Select.Component
-              label="Wybierz punkt B"
-              options={allPoints}
-              register={register}
-              name="terrainPoint_B"
-              errorMessage={errors?.terrainPoint_B?.message || undefined}
-              onChange={(e) => {
-                setMapLine(
-                  new MapDefinition.Elements.Line(
-                    mapLine.name,
-                    mapLine.pointAId,
-                    e.target.value,
-                  ),
-                )
-              }}
-              default={section?.terrain_point_b_id || mapLine.pointBId}
-              sortOptions
-            />
-           </div>
           </div>
 
           <div className="col-12 col-lg-6 mb-2" style={{ minHeight: '40vh' }}>

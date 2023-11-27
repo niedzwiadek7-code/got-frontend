@@ -108,6 +108,7 @@ const MapToGot: React.FC<Props> = () => {
       { trip && (
       <>
         <Form>
+          <h4 className="mb-4">Odcinki niewpisane</h4>
           <Table responsive>
             <thead className="bg-light">
               <tr>
@@ -171,6 +172,7 @@ const MapToGot: React.FC<Props> = () => {
           </Table>
         </Form>
 
+        <h4 className="mb-4">Odcinki wpisane</h4>
         <Table responsive>
           <thead className="bg-light">
             <tr>
