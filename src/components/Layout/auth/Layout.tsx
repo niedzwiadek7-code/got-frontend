@@ -20,12 +20,12 @@ const Layout = (props: Props) => {
   const apiService = getApiService()
   const [userService] = useState(apiService.getUser(auth.token))
   const [userName, setUserName] = useState<string>('')
+  const [showMenu, setShowMenu] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const user = await userService.getUser()
-        console.log(user)
         setUserName(`${user.first_name} ${user.last_name}`)
       } catch (err) {
         console.log(err)
@@ -34,21 +34,18 @@ const Layout = (props: Props) => {
     fetchData()
   }, [userService])
 
-  console.log(auth.token)
-
   return (
     <>
       <header>
         <nav
           id="sidebarMenu"
-          className={`${Styles.sidebar} collapse d-lg-block bg-white`}
+          className={`${Styles.sidebar} ${showMenu ? 'd-block' : 'd-none'} collapse d-lg-block bg-white`}
         >
           <div className="position-sticky">
             <div className="list-group list-group-flush mx-2 mt-4">
               {
                 Object.entries(props.paths).map(([name, page]) => {
                   const requireRole = page.requireRole?.toString()
-                  console.log(auth.roles)
 
                   let hasRequiredRole: boolean | undefined
                   if (requireRole) {
@@ -99,6 +96,8 @@ const Layout = (props: Props) => {
               },
             },
           ]}
+          showMenu={showMenu}
+          toggleMenu={() => setShowMenu(!showMenu)}
         />
       </header>
 

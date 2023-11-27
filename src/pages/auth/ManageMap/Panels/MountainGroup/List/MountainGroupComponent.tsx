@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 // TODO: Import path should use '@/.'
-import { Button } from 'react-bootstrap'
+import { Button, Table } from 'react-bootstrap'
 import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
 import * as Loading from '../../../../../../components/UI/Loading'
@@ -52,9 +52,7 @@ const MountainGroupComponent: React.FC<Props> = () => {
 
       <h2 className="mb-4"> Grupy górskie: </h2>
 
-      <table
-        className="table"
-      >
+      <Table responsive>
         <tbody>
           {mountainGroups.map((mountainGroup) => (
             <>
@@ -75,7 +73,7 @@ const MountainGroupComponent: React.FC<Props> = () => {
 
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }

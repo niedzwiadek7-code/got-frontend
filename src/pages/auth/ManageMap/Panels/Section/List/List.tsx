@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button, Spinner, Table } from 'react-bootstrap'
 import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
 import Section from '../../../../../../models/Section'
@@ -118,9 +118,7 @@ const List: React.FC<Props> = () => {
                 </span>
               </p>
 
-              <table
-                className="table"
-              >
+              <Table responsive>
                 <thead>
                   <tr>
                     <th
@@ -207,7 +205,7 @@ const List: React.FC<Props> = () => {
                     </th>
                   </tr>
                 </tbody>
-              </table>
+              </Table>
 
               <Button
                 variant="primary"

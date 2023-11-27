@@ -73,7 +73,7 @@ const CardComponent: React.FC<Props> = (props) => {
           { props.gotBook && (
           <Button
             variant="success"
-            className="me-2"
+            className="me-2 mb-1"
             href={getPath(PathNames.TRIP_MAP_TO_GOT, {
               id: props.trip.id,
             })}
@@ -83,7 +83,7 @@ const CardComponent: React.FC<Props> = (props) => {
           )}
           <Button
             variant="primary"
-            className="me-2"
+            className="me-2 mb-1"
             href={getPath(PathNames.TRIP_EDIT, {
               id: props.trip.id,
             })}

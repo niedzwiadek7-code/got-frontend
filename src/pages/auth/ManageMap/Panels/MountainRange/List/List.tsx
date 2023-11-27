@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button, Spinner, Table } from 'react-bootstrap'
 import { v4 as uuidv4 } from 'uuid'
 import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
@@ -109,9 +109,7 @@ const List: React.FC<Props> = () => {
                 </span>
               </p>
 
-              <table
-                className="table"
-              >
+              <Table responsive>
                 <thead>
                   <tr>
                     <th
@@ -189,7 +187,7 @@ const List: React.FC<Props> = () => {
                     ))
                   }
                 </tbody>
-              </table>
+              </Table>
 
               <Button
                 className="me-2"

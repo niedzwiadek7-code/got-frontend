@@ -200,157 +200,158 @@ const Form: React.FC<Props> = () => {
         {section ? 'Edytuj odcinek' : 'Dodaj Odcinek'}
       </h2>
 
-      <div className="row">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="col-6"
-        >
-          <div className="mb-3">
-            <Input.Component
-              label="Nazwa odcinka"
-              type={Input.Type.TEXT}
-              register={register}
-              name="name"
-              errorMessage={errors?.name?.message || undefined}
-              onChange={(e) => {
-                setMapLine(
-                  new MapDefinition.Elements.Line(
-                    e.target.value,
-                    mapLine.pointAId,
-                    mapLine.pointBId,
-                  ),
-                )
-              }}
-              default={section?.name}
-              validation={['required', 'min:3']}
-            />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="row">
+          <div className="col-12 col-lg-6">
+            <div className="mb-3">
+              <Input.Component
+                label="Nazwa odcinka"
+                type={Input.Type.TEXT}
+                register={register}
+                name="name"
+                errorMessage={errors?.name?.message || undefined}
+                onChange={(e) => {
+                  setMapLine(
+                    new MapDefinition.Elements.Line(
+                      e.target.value,
+                      mapLine.pointAId,
+                      mapLine.pointBId,
+                    ),
+                  )
+                }}
+                default={section?.name}
+                validation={['required', 'min:3']}
+              />
+            </div>
+
+            <div className="mb-3">
+              <TextArea.Component
+                label="Opis odcinka"
+                height={150}
+                register={register}
+                name="description"
+                errorMessage={errors?.description?.message || undefined}
+                default={section?.description}
+              />
+            </div>
+
+            <div className="mb-3">
+              <Select.Component
+                label="Wybierz pasmo górskie"
+                default={defaultMountainRangeId || section?.mountain_range_id}
+                options={sortedMountainRanges}
+                register={register}
+                name="mountainRange"
+                errorMessage={errors?.mountainRange?.message || undefined}
+              />
+            </div>
+
+            <div className="mb-3">
+              <Input.Component
+                label="Punkty do uzyskania (od A do B)"
+                type={Input.Type.NUMBER}
+                register={register}
+                name="badgePoints_AtoB"
+                errorMessage={errors?.badgePoints_AtoB?.message || undefined}
+                default={section?.badge_points_a_to_b}
+              />
+            </div>
+
+            <div className="mb-3">
+              <Input.Component
+                label="Punkty do uzyskania (od B do A)"
+                type={Input.Type.NUMBER}
+                register={register}
+                name="badgePoints_BtoA"
+                errorMessage={errors?.badgePoints_BtoA?.message || undefined}
+                default={section?.badge_points_b_to_a}
+              />
+            </div>
+
+            <div className="mb-3">
+              <Select.Component
+                label="Wybierz punkt A"
+                options={sortedPoints}
+                register={register}
+                name="terrainPoint_A"
+                errorMessage={errors?.terrainPoint_A?.message || undefined}
+                onChange={(e) => {
+                  setMapLine(
+                    new MapDefinition.Elements.Line(
+                      mapLine.name,
+                      e.target.value,
+                      mapLine.pointBId,
+                    ),
+                  )
+                }}
+                default={section?.terrain_point_a_id || mapLine.pointAId}
+              />
+            </div>
+
+            <div className="mb-3">
+              <Select.Component
+                label="Wybierz punkt B"
+                options={sortedPoints}
+                register={register}
+                name="terrainPoint_B"
+                errorMessage={errors?.terrainPoint_B?.message || undefined}
+                onChange={(e) => {
+                  setMapLine(
+                    new MapDefinition.Elements.Line(
+                      mapLine.name,
+                      mapLine.pointAId,
+                      e.target.value,
+                    ),
+                  )
+                }}
+                default={section?.terrain_point_b_id || mapLine.pointBId}
+              />
+            </div>
           </div>
 
-          <div className="mb-3">
-            <TextArea.Component
-              label="Opis odcinka"
-              height={150}
-              register={register}
-              name="description"
-              errorMessage={errors?.description?.message || undefined}
-              default={section?.description}
+          <div className="col-12 col-lg-6 mb-2" style={{ minHeight: '40vh' }}>
+            <MapDefinition.Component
+              lines={[
+                (section) ? new MapDefinition.Elements.Line(
+                  section.name,
+                  section.terrain_point_a_id,
+                  section.terrain_point_b_id,
+                ) : mapLine,
+              ]}
             />
           </div>
+        </div>
 
-          <div className="mb-3">
-            <Select.Component
-              label="Wybierz pasmo górskie"
-              default={defaultMountainRangeId || section?.mountain_range_id}
-              options={sortedMountainRanges}
-              register={register}
-              name="mountainRange"
-              errorMessage={errors?.mountainRange?.message || undefined}
-            />
-          </div>
-
-          <div className="mb-3">
-            <Input.Component
-              label="Punkty do uzyskania (od A do B)"
-              type={Input.Type.NUMBER}
-              register={register}
-              name="badgePoints_AtoB"
-              errorMessage={errors?.badgePoints_AtoB?.message || undefined}
-              default={section?.badge_points_a_to_b}
-            />
-          </div>
-
-          <div className="mb-3">
-            <Input.Component
-              label="Punkty do uzyskania (od B do A)"
-              type={Input.Type.NUMBER}
-              register={register}
-              name="badgePoints_BtoA"
-              errorMessage={errors?.badgePoints_BtoA?.message || undefined}
-              default={section?.badge_points_b_to_a}
-            />
-          </div>
-
-          <div className="mb-3">
-            <Select.Component
-              label="Wybierz punkt A"
-              options={sortedPoints}
-              register={register}
-              name="terrainPoint_A"
-              errorMessage={errors?.terrainPoint_A?.message || undefined}
-              onChange={(e) => {
-                setMapLine(
-                  new MapDefinition.Elements.Line(
-                    mapLine.name,
-                    e.target.value,
-                    mapLine.pointBId,
-                  ),
-                )
-              }}
-              default={section?.terrain_point_a_id || mapLine.pointAId}
-            />
-          </div>
-
-          <div className="mb-3">
-            <Select.Component
-              label="Wybierz punkt B"
-              options={sortedPoints}
-              register={register}
-              name="terrainPoint_B"
-              errorMessage={errors?.terrainPoint_B?.message || undefined}
-              onChange={(e) => {
-                setMapLine(
-                  new MapDefinition.Elements.Line(
-                    mapLine.name,
-                    mapLine.pointAId,
-                    e.target.value,
-                  ),
-                )
-              }}
-              default={section?.terrain_point_b_id || mapLine.pointBId}
-            />
-          </div>
-
-          {
-            section ? (
-              <>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  className="me-3"
-                >
-                  Edytuj odcinek
-                </Button>
-
-                <Modal.Component
-                  title="Usuń odcinek"
-                  message="Czy napewno chcesz usunąć odcinek?"
-                  action={deleteSection}
-                  variant="danger"
-                />
-              </>
-            ) : (
+        {
+          section ? (
+            <>
               <Button
                 type="submit"
-                variant="success"
+                variant="primary"
+                className="me-3"
               >
-                Zapisz odcinek
+                Edytuj odcinek
               </Button>
-            )
-          }
-        </form>
 
-        <div className="col-6">
-          <MapDefinition.Component
-            lines={[
-              (section) ? new MapDefinition.Elements.Line(
-                section.name,
-                section.terrain_point_a_id,
-                section.terrain_point_b_id,
-              ) : mapLine,
-            ]}
-          />
-        </div>
-      </div>
+              <Modal.Component
+                title="Usuń odcinek"
+                message="Czy napewno chcesz usunąć odcinek?"
+                action={deleteSection}
+                variant="danger"
+              />
+            </>
+          ) : (
+            <Button
+              type="submit"
+              variant="success"
+            >
+              Zapisz odcinek
+            </Button>
+          )
+        }
+      </form>
     </div>
   )
 }

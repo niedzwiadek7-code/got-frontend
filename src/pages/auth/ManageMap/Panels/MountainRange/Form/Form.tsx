@@ -120,7 +120,7 @@ const Form: React.FC<Props> = () => {
   }
 
   return (
-    <div className="w-50">
+    <div style={{ maxWidth: '500px' }}>
       <h2 className="mb-4">
         {
           mountainRange ? 'Edytuj pasmo górskie' : 'Dodaj pasmo górskie'
@@ -154,7 +154,7 @@ const Form: React.FC<Props> = () => {
         <Button
           type="submit"
           variant="secondary"
-          className="me-3"
+          className="me-3 my-1"
           href={getPath(PathNames.MOUNTAIN_GROUP)}
         >
           Powrót
@@ -166,7 +166,7 @@ const Form: React.FC<Props> = () => {
               <Button
                 type="submit"
                 variant="primary"
-                className="me-3"
+                className="me-3 my-1"
               >
                 Edytuj pasmo
               </Button>
@@ -182,6 +182,7 @@ const Form: React.FC<Props> = () => {
             <Button
               type="submit"
               variant="success"
+              className="my-1"
             >
               Zapisz pasmo
             </Button>

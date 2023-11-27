@@ -94,7 +94,7 @@ const Form: React.FC<Props> = () => {
   }
 
   return (
-    <div className="w-50">
+    <div style={{ maxWidth: '500px' }}>
       <h2 className="mb-4"> Dodaj grupę górską </h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>

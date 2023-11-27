@@ -132,98 +132,121 @@ const TerrainPointComponent: React.FC<Props> = () => {
       <h2 className="mb-4">
         { terrainPoint ? 'Edytuj punkt' : 'Dodaj Punkt' }
       </h2>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="row">
+          <div
+            className="col-12 col-lg-6"
+          >
+            <div className="mb-3">
+              <Input.Component
+                label="Nazwa punktu"
+                type={Input.Type.TEXT}
+                register={register}
+                name="name"
+                onChange={(e) => {
+                  setMapPoint(
+                    new MapDefinition.Elements.Point(
+                      e.target.value,
+                      mapPoint.latitude,
+                      mapPoint.longitude,
+                    ),
+                  )
+                }}
+                errorMessage={errors?.name?.message || undefined}
+                default={terrainPoint?.name}
+                validation={['required', 'min:3']}
+              />
+            </div>
 
-      <div className="row">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="col-6"
-        >
-          <div className="mb-3">
-            <Input.Component
-              label="Nazwa punktu"
-              type={Input.Type.TEXT}
-              register={register}
-              name="name"
-              onChange={(e) => {
-                setMapPoint(
-                  new MapDefinition.Elements.Point(
-                    e.target.value,
-                    mapPoint.latitude,
-                    mapPoint.longitude,
-                  ),
-                )
-              }}
-              errorMessage={errors?.name?.message || undefined}
-              default={terrainPoint?.name}
-              validation={['required', 'min:3']}
-            />
+            <div className="mb-3">
+              <TextArea.Component
+                label="Opis"
+                height={150}
+                register={register}
+                name="description"
+                errorMessage={errors?.description?.message || undefined}
+                default={terrainPoint?.description}
+              />
+            </div>
+
+            <div className="mb-3">
+              <Input.Component
+                label="Wysokość nad poziomem morza"
+                type={Input.Type.NUMBER}
+                register={register}
+                name="sea_level_height"
+                errorMessage={errors?.sea_level_height?.message || undefined}
+                default={terrainPoint?.sea_level_height}
+              />
+            </div>
+
+            <div className="mb-3">
+              <Input.Component
+                label="Szerokość geograficzna"
+                type={Input.Type.TEXT}
+                register={register}
+                name="latitude"
+                errorMessage={errors?.latitude?.message || undefined}
+                onChange={(e) => {
+                  setMapPoint(
+                    new MapDefinition.Elements.Point(
+                      mapPoint.name,
+                      e.target.value || mapPoint.longitude,
+                      mapPoint.longitude,
+                    ),
+                  )
+                }}
+                default={terrainPoint?.latitude}
+                validation={['required', 'pattern:^-?([1-8]?[0-9](\\.\\d+)?|90(\\.0+)?)$']}
+              />
+            </div>
+
+            <div className="mb-3">
+              <Input.Component
+                label="Długość geograficzna"
+                type={Input.Type.TEXT}
+                register={register}
+                name="longitude"
+                errorMessage={errors?.longitude?.message || undefined}
+                onChange={(e) => {
+                  setMapPoint(
+                    new MapDefinition.Elements.Point(
+                      mapPoint.name,
+                      mapPoint.latitude,
+                      e.target.value || mapPoint.longitude,
+                    ),
+                  )
+                }}
+                default={terrainPoint?.longitude}
+                validation={['required', 'pattern:^-?((1[0-7]|[1-9])?\\d(\\.\\d+)?|180(\\.0+)?)$']}
+              />
+            </div>
           </div>
 
-          <div className="mb-3">
-            <TextArea.Component
-              label="Opis"
-              height={150}
-              register={register}
-              name="description"
-              errorMessage={errors?.description?.message || undefined}
-              default={terrainPoint?.description}
+          <div
+            className="col-12 col-lg-6 mb-2"
+            style={{ minHeight: '40vh' }}
+          >
+            <MapDefinition.Component
+              points={(terrainPoint) ? [new MapDefinition.Elements.Point(
+                terrainPoint.name,
+                terrainPoint.latitude,
+                terrainPoint.longitude,
+              )] : [mapPoint]}
+              center={(terrainPoint) ? new MapDefinition.Elements.Point(
+                terrainPoint.name,
+                terrainPoint.latitude,
+                terrainPoint.longitude,
+              ) : mapPoint}
+              onMarkerPositionChange={handleMarkerPositionChange}
+              zoom={(terrainPoint) ? 13 : 6}
             />
           </div>
+        </div>
 
-          <div className="mb-3">
-            <Input.Component
-              label="Wysokość nad poziomem morza"
-              type={Input.Type.NUMBER}
-              register={register}
-              name="sea_level_height"
-              errorMessage={errors?.sea_level_height?.message || undefined}
-              default={terrainPoint?.sea_level_height}
-            />
-          </div>
-
-          <div className="mb-3">
-            <Input.Component
-              label="Szerokość geograficzna"
-              type={Input.Type.TEXT}
-              register={register}
-              name="latitude"
-              errorMessage={errors?.latitude?.message || undefined}
-              onChange={(e) => {
-                setMapPoint(
-                  new MapDefinition.Elements.Point(
-                    mapPoint.name,
-                    e.target.value || mapPoint.longitude,
-                    mapPoint.longitude,
-                  ),
-                )
-              }}
-              default={terrainPoint?.latitude}
-              validation={['required', 'pattern:^-?([1-8]?[0-9](\\.\\d+)?|90(\\.0+)?)$']}
-            />
-          </div>
-
-          <div className="mb-3">
-            <Input.Component
-              label="Długość geograficzna"
-              type={Input.Type.TEXT}
-              register={register}
-              name="longitude"
-              errorMessage={errors?.longitude?.message || undefined}
-              onChange={(e) => {
-                setMapPoint(
-                  new MapDefinition.Elements.Point(
-                    mapPoint.name,
-                    mapPoint.latitude,
-                    e.target.value || mapPoint.longitude,
-                  ),
-                )
-              }}
-              default={terrainPoint?.longitude}
-              validation={['required', 'pattern:^-?((1[0-7]|[1-9])?\\d(\\.\\d+)?|180(\\.0+)?)$']}
-            />
-          </div>
-
-          {
+        {
             terrainPoint ? (
               <>
                 <Button
@@ -250,29 +273,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
               </Button>
             )
           }
-
-        </form>
-
-        <div
-          className="col-6"
-          style={{ height: '60vh' }}
-        >
-          <MapDefinition.Component
-            points={(terrainPoint) ? [new MapDefinition.Elements.Point(
-              terrainPoint.name,
-              terrainPoint.latitude,
-              terrainPoint.longitude,
-            )] : [mapPoint]}
-            center={(terrainPoint) ? new MapDefinition.Elements.Point(
-              terrainPoint.name,
-              terrainPoint.latitude,
-              terrainPoint.longitude,
-            ) : mapPoint}
-            onMarkerPositionChange={handleMarkerPositionChange}
-            zoom={(terrainPoint) ? 13 : 6}
-          />
-        </div>
-      </div>
+      </form>
     </div>
   )
 }

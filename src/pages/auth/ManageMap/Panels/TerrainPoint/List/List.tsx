@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Table } from 'react-bootstrap'
 import { useDependencies } from '../../../../../../context/dependencies'
 import { useAuth } from '../../../../../../context/auth'
 import * as Loading from '../../../../../../components/UI/Loading'
@@ -67,9 +67,7 @@ const List: React.FC<Props> = () => {
 
       <h2 className="mb-4"> Punkty terenowe: </h2>
 
-      <table
-        className="table"
-      >
+      <Table responsive>
         <thead>
           <th>Nazwa</th>
           <th>Szerokość geograficzna</th>
@@ -104,7 +102,7 @@ const List: React.FC<Props> = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }
