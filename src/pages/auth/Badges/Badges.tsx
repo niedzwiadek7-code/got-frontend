@@ -15,11 +15,13 @@ const Badges: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       setBadges(await badgeService.getAllBadges())
+      setLoading(false)
     }
 
     fetchData()
-  }, [badgeService])
+  }, [])
 
   const refreshBadgesList = async () => {
     const fetchData = async () => {
@@ -28,10 +30,6 @@ const Badges: React.FC = () => {
     setLoading(true)
     await fetchData()
   }
-
-  useEffect(() => {
-    setLoading(false)
-  }, [badges])
 
   if (loading) {
     return (
