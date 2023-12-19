@@ -6,6 +6,7 @@ import Trip from './Trip/Trip'
 import User from './User/User'
 import GotBook from './GotBook/GotBook'
 import Badge from './Badge/Badge'
+import BadgeAward from './BadgeAward/BadgeAward'
 
 export interface BackendInterface {
   mountainData: MountainDataInterface
@@ -14,4 +15,5 @@ export interface BackendInterface {
   getBadge: (token: string | undefined) => Badge,
   getUser: (token: string | undefined) => User
   getGotBook: (token: string | undefined) => GotBook,
+  getBadgeAward: (token: string | undefined) => BadgeAward
 }

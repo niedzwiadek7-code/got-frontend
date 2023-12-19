@@ -45,9 +45,11 @@ class GotBookService {
       entryBase.got_book_id,
       entryBase.badge_award_id,
       entryBase.section_id,
+      entryBase.section,
       entryBase.trip_date,
       Boolean(entryBase.b_to_a),
       entryBase.trip_plan_entry_id,
+      entryBase.points,
     ))
   }
 

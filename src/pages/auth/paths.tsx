@@ -2,7 +2,7 @@ import React from 'react'
 // TODO: Import path should use '@/.'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faAward, faMap, faPeopleRoof, faPersonFalling,
+  faAward, faMap, faPeopleRoof, faPersonFalling, faBook,
 } from '@fortawesome/free-solid-svg-icons'
 import { PathLinkMap, PathNames } from '../../utils/defines'
 import ManageMap from './ManageMap'
@@ -11,6 +11,7 @@ import Leaders from './Leaders'
 import PageInterface from '@/pages/auth/PageInterface'
 import * as Trip from './Trip'
 import { Roles } from '../../pages/auth/Roles'
+import GotBook from '../../pages/auth/GotBook'
 
 export default {
   [PathNames.MANAGE_MAP]: {
@@ -32,6 +33,12 @@ export default {
     component: <Leaders.Component />,
     panels: Leaders.Panels,
     requireRole: Roles.ADMIN,
+  },
+  [PathNames.GOT_BOOK]: {
+    link: PathLinkMap.get(PathNames.GOT_BOOK),
+    icon: <FontAwesomeIcon icon={faBook} />,
+    component: <GotBook.Component />,
+    requireRole: Roles.USER,
   },
   [PathNames.TRIPS]: {
     link: PathLinkMap.get(PathNames.TRIPS),
