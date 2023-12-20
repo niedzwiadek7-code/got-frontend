@@ -35,15 +35,17 @@ const GotBookComponent: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    const foundBadgeAward = badgeAwards.find((award) => award.grant_date === null)
-    if (foundBadgeAward) {
-      setCurrentBadgeAward(foundBadgeAward)
-      setLoading(false)
-    }
+    if (gotBook) {
+      const foundBadgeAward = badgeAwards.find((award) => award.grant_date === null)
+      if (foundBadgeAward) {
+        setCurrentBadgeAward(foundBadgeAward)
+      }
 
-    const filteredBadgeAwards = badgeAwards.filter((award) => award.grant_date !== null)
-    setPreviousBadgeAwards(filteredBadgeAwards)
-  }, [badgeAwards])
+      const filteredBadgeAwards = badgeAwards.filter((award) => award.grant_date !== null)
+      setPreviousBadgeAwards(filteredBadgeAwards)
+    }
+    setLoading(false)
+  }, [gotBook, badgeAwards])
 
   const summarizeBadgePoints = (award: BadgeAward) => {
     let sum = 0
