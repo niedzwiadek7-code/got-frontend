@@ -316,6 +316,7 @@ const Form: React.FC<Props> = () => {
                   section.terrain_point_b_id,
                 ) : mapLine,
               ]}
+              zoom={13}
             />
           </div>
         </div>

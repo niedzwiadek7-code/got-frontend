@@ -315,6 +315,7 @@ const Modify: React.FC<Props> = () => {
                   return undefined
                 }).filter((e) => e) as MapDefinition.Elements.Line[]
               }
+              zoom={watch('tripElements').length > 0 ? 13 : 6}
             />
           </div>
         </div>
