@@ -45,6 +45,35 @@ const GotBookComponent: React.FC = () => {
     setPreviousBadgeAwards(filteredBadgeAwards)
   }, [badgeAwards])
 
+  const summarizeBadgePoints = (award: BadgeAward) => {
+    let sum = 0
+    // eslint-disable-next-line array-callback-return
+    award.entries.map((entry) => {
+      sum += entry.points
+    })
+    sum += award.points_from_previous_badge
+    return sum
+  }
+
+  const translateBadgeAwardStatus = (award: BadgeAward) => {
+    let translatedBadgeAwardStatus = ''
+    switch (award.badge_award_status) {
+      case 'COLLECTING_POINTS':
+        translatedBadgeAwardStatus = 'ZBIERANIE PUNKTÓW'
+        break
+      case 'WAITING_FOR_LEADER_VERIFICATION':
+        translatedBadgeAwardStatus = 'OCZEKUJE NA WERYFIKACJE PRZEZ PRZODOWNIKA'
+        break
+      case 'VERIFIED_BY_LEADER':
+        translatedBadgeAwardStatus = 'ZWERYFIKOWANA PRZEZ PRZODOWNIKA'
+        break
+      default:
+        translatedBadgeAwardStatus = ''
+    }
+
+    return translatedBadgeAwardStatus
+  }
+
   const createGotBook = async () => {
     try {
       gotBookService.createGotBook()
@@ -75,9 +104,9 @@ const GotBookComponent: React.FC = () => {
 
   return (
     <div>
-      <h3 className="mb-4">
+      <h1 className="mb-4">
         Książeczka GOT
-      </h3>
+      </h1>
       { !gotBook ? (
         <div className="alert alert-warning" role="alert">
           <h4>Nie masz jeszcze założonej książeczki GOT</h4>
@@ -98,7 +127,13 @@ const GotBookComponent: React.FC = () => {
           >
             <thead>
               <tr className="text-warning">
-                <th colSpan={5}>{currentBadgeAward.badge.name}</th>
+                <th colSpan={5}>
+                  {currentBadgeAward.badge.name}
+                  {' '}
+                  [
+                  {translateBadgeAwardStatus(currentBadgeAward)}
+                  ]
+                </th>
               </tr>
               <tr>
                 <th>Lp.</th>
@@ -134,7 +169,7 @@ const GotBookComponent: React.FC = () => {
                   </tr>
                   <tr>
                     <th colSpan={4}>Suma</th>
-                    <td>{}</td>
+                    <td>{summarizeBadgePoints(currentBadgeAward)}</td>
                   </tr>
                 </tfoot>
               </>
@@ -152,7 +187,13 @@ const GotBookComponent: React.FC = () => {
             <Table key={uuidv4()} responsive hover>
               <thead>
                 <tr className="text-success">
-                  <th colSpan={5}>{award.badge.name}</th>
+                  <th colSpan={5}>
+                    {award.badge.name}
+                    {' '}
+                    [
+                    {translateBadgeAwardStatus(award)}
+                    ]
+                  </th>
                 </tr>
                 <tr>
                   <th>Lp.</th>
@@ -188,7 +229,7 @@ const GotBookComponent: React.FC = () => {
                     </tr>
                     <tr>
                       <th colSpan={4}>Suma</th>
-                      <td>{}</td>
+                      <td>{summarizeBadgePoints(award)}</td>
                     </tr>
                   </tfoot>
                 </>
