@@ -3,6 +3,7 @@ import { FloatingLabel, Form } from 'react-bootstrap'
 import { Type } from './Type'
 import { Errors } from './Errors'
 import Styles from './Input.module.scss'
+import { useTheme } from '../../../context/theme'
 
 type Props = {
   label: string,
@@ -38,6 +39,8 @@ const Input: React.FC<Props> = (props) => {
     }
   })
 
+  const theme = useTheme()
+
   return (
     <div>
       <FloatingLabel
@@ -49,6 +52,10 @@ const Input: React.FC<Props> = (props) => {
           defaultValue={props?.default ? props.default : ''}
           type={props.type}
           placeholder={props.label}
+          style={{
+            backgroundColor: theme.colors.background,
+            color: theme.colors.color,
+          }}
           {...props.register(props.name, {
             onChange: props.onChange,
             ...errorsObj,
