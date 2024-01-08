@@ -26,7 +26,6 @@ const App = () => (
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme="light"
           />
         </BrowserRouter>
       </ThemeProvider>

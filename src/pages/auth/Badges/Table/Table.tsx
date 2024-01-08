@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Table, Form } from 'react-bootstrap'
 import Row from './Row'
 import Badge from '../../../../models/Badge'
+import { useTheme } from '../../../../context/theme'
 
 type Props = {
   badges: Badge[]
@@ -11,6 +12,7 @@ type Props = {
 const TableComponent: React.FC<Props> = (props) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [searchId, setSearchId] = useState('')
+  const theme = useTheme()
 
   const filteredBadges = props.badges.filter(
     (badge) => badge.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -25,16 +27,30 @@ const TableComponent: React.FC<Props> = (props) => {
           placeholder="Szukaj odznaki..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            backgroundColor: theme.colors.background,
+            color: theme.colors.color,
+          }}
         />
         <Form.Control
           type="text"
           placeholder="Szukaj po Kodzie odznaki..."
           value={searchId}
           onChange={(e) => setSearchId(e.target.value)}
-          className="mt-2"
+          className="mt-2 mb-3"
+          style={{
+            backgroundColor: theme.colors.background,
+            color: theme.colors.color,
+          }}
         />
       </Form.Group>
-      <Table responsive>
+      <Table
+        responsive
+        style={{
+          backgroundColor: theme.colors.background,
+          color: theme.colors.color,
+        }}
+      >
         <thead>
           <tr>
             <th>Kod odznaki</th>

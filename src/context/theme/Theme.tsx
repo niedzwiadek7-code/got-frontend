@@ -1,6 +1,7 @@
 import React, {
   createContext, ReactNode, useContext, useMemo, useState,
 } from 'react'
+import { useCookies } from 'react-cookie'
 import { Colors, Theme, ThemeColors } from './Colors'
 
 class ThemeClass {
@@ -29,13 +30,16 @@ type ProviderProps = {
 }
 
 export const ThemeProvider: React.FC<ProviderProps> = (props) => {
-  const [theme, setTheme] = useState<Theme>(Theme.LIGHT)
+  const [cookies, setCookie] = useCookies(['theme'])
+  const [theme, setTheme] = useState<Theme>(cookies.theme || Theme.LIGHT)
 
   const changeTheme = () => {
     if (theme === Theme.LIGHT) {
       setTheme(Theme.DARK)
+      setCookie('theme', Theme.DARK)
     } else {
       setTheme(Theme.LIGHT)
+      setCookie('theme', Theme.LIGHT)
     }
   }
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { FloatingLabel, Form } from 'react-bootstrap'
+import { useTheme } from '../../../context/theme'
 
 type Props = {
   label: string,
@@ -20,6 +21,8 @@ const Select: React.FC<Props> = (props) => {
     ? Object.entries(props.options).sort((a, b) => String(a[1]).localeCompare(String(b[1])))
     : Object.entries(props.options)
 
+  const theme = useTheme()
+
   return (
     <div>
       <FloatingLabel controlId="floatingSelect" label={props.label}>
@@ -29,6 +32,10 @@ const Select: React.FC<Props> = (props) => {
           {...props.register(props.name, {
             onChange: props.onChange,
           })}
+          style={{
+            backgroundColor: theme.colors.background,
+            color: theme.colors.color,
+          }}
         >
           {sortedOptions.map(([key, value]) => (
             <option

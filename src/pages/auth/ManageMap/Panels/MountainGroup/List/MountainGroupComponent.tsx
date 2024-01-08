@@ -8,6 +8,7 @@ import * as Loading from '../../../../../../components/UI/Loading'
 import MountainGroup from '@/models/MountainGroup'
 import MountainRow from './MountainRow'
 import MountainRangeRow from './MountainRangeRow'
+import { useTheme } from '../../../../../../context/theme'
 
 type Props = {}
 
@@ -15,6 +16,7 @@ const MountainGroupComponent: React.FC<Props> = () => {
   const { getApiService } = useDependencies()
   const { token } = useAuth()
   const apiService = getApiService()
+  const theme = useTheme()
 
   const [mountainGroups, setMountainGroup] = useState<MountainGroup[]>([])
   const [loading, setLoading] = useState<boolean>(true)
@@ -52,7 +54,13 @@ const MountainGroupComponent: React.FC<Props> = () => {
 
       <h2 className="mb-4"> Grupy górskie: </h2>
 
-      <Table responsive>
+      <Table
+        responsive
+        style={{
+          backgroundColor: theme.colors.background,
+          color: theme.colors.color,
+        }}
+      >
         <tbody>
           {mountainGroups.map((mountainGroup) => (
             <>

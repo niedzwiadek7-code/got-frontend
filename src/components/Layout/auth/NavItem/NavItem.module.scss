@@ -6,8 +6,8 @@
   }
 
   &.active {
-    background-color: $main-color;
-    color: $secondary-color;
+    background-color: $main-color !important;
+    color: $secondary-color !important;
     border-radius: 5px;
 
     &:hover {

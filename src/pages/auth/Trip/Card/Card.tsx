@@ -8,6 +8,7 @@ import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
 import * as Modal from '../../../../components/UI/Modal'
 import GotBook from '@/models/GotBook'
+import { useTheme } from '../../../../context/theme'
 
 type Props = {
   trip: Trip
@@ -20,6 +21,8 @@ const CardComponent: React.FC<Props> = (props) => {
   const apiService = getApiService()
   const toastUtils = getToastUtils()
   const [deleted, setDeleted] = useState<boolean>(false)
+  const theme = useTheme()
+  console.log(theme)
 
   const deleteTrip = async () => {
     try {
@@ -47,6 +50,10 @@ const CardComponent: React.FC<Props> = (props) => {
   return (
     <Card
       className={`${Styles.content} mb-3`}
+      style={{
+        backgroundColor: theme.colors.background,
+        color: theme.colors.color,
+      }}
     >
       <Card.Header
         className={Styles.header}

@@ -12,6 +12,7 @@ import GotBook from '@/models/GotBook'
 import BadgeAward from '@/models/BadgeAward'
 import { getPath, PathNames } from '../../../../../utils/defines'
 import TripEntry from '@/models/TripEntry'
+import { useTheme } from '../../../../../context/theme'
 
 type Props = {}
 
@@ -33,6 +34,7 @@ const MapToGot: React.FC<Props> = () => {
   const [latestBadgeAward, setLatestBadgeAward] = useState<BadgeAward | null>(null)
 
   const [entriesToMap, setEntriesToMap] = useState<{ [key: number]: boolean }>({})
+  const theme = useTheme()
 
   const getTrip = async () => {
     if (id) {
@@ -109,8 +111,20 @@ const MapToGot: React.FC<Props> = () => {
       <>
         <Form>
           <h4 className="mb-4">Odcinki niewpisane</h4>
-          <Table responsive>
-            <thead className="bg-light">
+          <Table
+            responsive
+            style={{
+              backgroundColor: theme.colors.background,
+              color: theme.colors.color,
+            }}
+          >
+            <thead
+              style={{
+                backgroundColor: theme.colors.background,
+                filter: 'brightness(85%)',
+                color: theme.colors.color,
+              }}
+            >
               <tr>
                 <th> Lp. </th>
                 <th> Odcinek </th>
@@ -173,8 +187,20 @@ const MapToGot: React.FC<Props> = () => {
         </Form>
 
         <h4 className="mb-4">Odcinki wpisane</h4>
-        <Table responsive>
-          <thead className="bg-light">
+        <Table
+          responsive
+          style={{
+            backgroundColor: theme.colors.background,
+            color: theme.colors.color,
+          }}
+        >
+          <thead
+            style={{
+              backgroundColor: theme.colors.background,
+              filter: 'brightness(85%)',
+              color: theme.colors.color,
+            }}
+          >
             <tr>
               <th> Lp. </th>
               <th> Odcinek </th>

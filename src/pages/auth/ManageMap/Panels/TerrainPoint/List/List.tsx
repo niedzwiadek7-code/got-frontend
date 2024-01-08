@@ -6,6 +6,7 @@ import * as Loading from '../../../../../../components/UI/Loading'
 import TerrainPoint from '@/models/TerrainPoint'
 import { getPath, PathNames } from '../../../../../../utils/defines'
 import * as Modal from '../../../../../../components/UI/Modal'
+import { useTheme } from '../../../../../../context/theme'
 
 type Props = {}
 
@@ -18,6 +19,7 @@ const List: React.FC<Props> = () => {
   const toastUtils = getToastUtils()
   const [terrainPointService] = useState(apiService.mountainData.getTerrainPoint(token))
   const [searchTerm, setSearchTerm] = useState<string>('')
+  const theme = useTheme()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,13 +78,23 @@ const List: React.FC<Props> = () => {
           type="text"
           placeholder="Szukaj punktu po nazwie..."
           value={searchTerm}
+          style={{
+            backgroundColor: theme.colors.background,
+            color: theme.colors.color,
+          }}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </Form.Group>
 
       <h2 className="mb-4"> Punkty terenowe: </h2>
 
-      <Table responsive>
+      <Table
+        responsive
+        style={{
+          backgroundColor: theme.colors.background,
+          color: theme.colors.color,
+        }}
+      >
         <thead>
           <th>Nazwa</th>
           <th>Szerokość geograficzna</th>

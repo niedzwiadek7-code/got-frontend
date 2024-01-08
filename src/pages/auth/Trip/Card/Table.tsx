@@ -2,6 +2,7 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 import TripEntry from '@/models/TripEntry'
 import Row from './Row'
+import { useTheme } from '../../../../context/theme'
 
 type Props = {
   tripEntries: TripEntry[]
@@ -14,10 +15,23 @@ const TableComponent: React.FC<Props> = (props) => {
       : entry.section.badge_points_a_to_b
     return sum + points
   }, 0)
+  const theme = useTheme()
 
   return (
-    <Table responsive>
-      <thead className="bg-light">
+    <Table
+      responsive
+      style={{
+        backgroundColor: theme.colors.background,
+        color: theme.colors.color,
+      }}
+    >
+      <thead
+        style={{
+          backgroundColor: theme.colors.background,
+          filter: 'brightness(85%)',
+          color: theme.colors.color,
+        }}
+      >
         <tr>
           <th> Lp. </th>
           <th> Odcinek </th>
@@ -39,7 +53,13 @@ const TableComponent: React.FC<Props> = (props) => {
         }
       </tbody>
 
-      <tfoot className="bg-light">
+      <tfoot
+        style={{
+          backgroundColor: theme.colors.background,
+          filter: 'brightness(85%)',
+          color: theme.colors.color,
+        }}
+      >
         <tr>
           <th />
           <th />

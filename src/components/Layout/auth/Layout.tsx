@@ -7,6 +7,7 @@ import * as NavTop from './NavTop'
 import { useAuth } from '../../../context/auth'
 import { getPath, PathNames } from '../../../utils/defines'
 import { useDependencies } from '../../../context/dependencies'
+import { useTheme } from '../../../context/theme'
 
 interface Props {
   paths: Record<string, PageInterface>,
@@ -21,6 +22,7 @@ const Layout = (props: Props) => {
   const [userService] = useState(apiService.getUser(auth.token))
   const [userName, setUserName] = useState<string>('')
   const [showMenu, setShowMenu] = useState<boolean>(false)
+  const theme = useTheme()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,11 +37,20 @@ const Layout = (props: Props) => {
   }, [userService])
 
   return (
-    <>
+    <div
+      style={{
+        background: theme.colors.background,
+        color: theme.colors.color,
+        minHeight: '100vh',
+      }}
+    >
       <header>
         <nav
           id="sidebarMenu"
-          className={`${Styles.sidebar} ${showMenu ? 'd-block' : 'd-none'} collapse d-lg-block bg-white`}
+          className={`${Styles.sidebar} ${showMenu ? 'd-block' : 'd-none'} collapse d-lg-block`}
+          style={{
+            backgroundColor: `lighten(${theme.colors.background}, 40%)`,
+          }}
         >
           <div className="position-sticky">
             <div className="list-group list-group-flush mx-2 mt-4">
@@ -72,7 +83,10 @@ const Layout = (props: Props) => {
           mainComponent={(
             <>
               <figcaption
-                className="px-3 rounded-circle text-red"
+                className="px-3 rounded-circle"
+                style={{
+                  color: theme.colors.color,
+                }}
               >
                 { userName || 'Użytkownik' }
               </figcaption>
@@ -111,7 +125,7 @@ const Layout = (props: Props) => {
           { props.children }
         </div>
       </main>
-    </>
+    </div>
   )
 }
 

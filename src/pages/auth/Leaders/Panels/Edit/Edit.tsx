@@ -10,6 +10,7 @@ import {
   getPath, PathNames,
 } from '../../../../../utils/defines'
 import * as Row from './Row'
+import { useTheme } from '../../../../../context/theme'
 
 const Edit: React.FC = () => {
   const { getApiService } = useDependencies()
@@ -22,6 +23,7 @@ const Edit: React.FC = () => {
   const [user, setUser] = useState<User | undefined>()
   const [mountainGroupService] = useState(apiService.mountainData.getMountainGroup(token))
   const [usersService] = useState(apiService.getUser(token))
+  const theme = useTheme()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +54,14 @@ const Edit: React.FC = () => {
         {user && (` ${user.firstName} ${user.lastName}`)}
       </h2>
 
-      <Table bordered responsive>
+      <Table
+        bordered
+        responsive
+        style={{
+          backgroundColor: theme.colors.background,
+          color: theme.colors.color,
+        }}
+      >
         {
           mountainGroups.map((mountainGroup) => {
             const role = user?.mountainGroupRoles?.find((e) => mountainGroup.id === e.id)
