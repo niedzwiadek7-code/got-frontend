@@ -6,6 +6,7 @@ import { useAuth } from '../../../../../../context/auth'
 import Section from '../../../../../../models/Section'
 import { getPath, PathNames } from '../../../../../../utils/defines'
 import * as Modal from '../../../../../../components/UI/Modal'
+import { useTheme } from '../../../../../../context/theme'
 
 type Props = {}
 
@@ -20,6 +21,7 @@ const List: React.FC<Props> = () => {
   const [sectionService] = useState(apiService.mountainData.getSection(token))
   const toastUtils = getToastUtils()
   const navigate = useNavigate()
+  const theme = useTheme()
 
   const deleteSection = async () => {
     try {
@@ -142,7 +144,13 @@ const List: React.FC<Props> = () => {
                 </span>
               </p>
 
-              <Table responsive>
+              <Table
+                responsive
+                style={{
+                  backgroundColor: theme.colors.background,
+                  color: theme.colors.color,
+                }}
+              >
                 <thead>
                   <tr>
                     <th

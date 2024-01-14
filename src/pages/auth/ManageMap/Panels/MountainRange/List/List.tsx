@@ -7,6 +7,7 @@ import { useAuth } from '../../../../../../context/auth'
 import MountainRange from '../../../../../../models/MountainRange'
 import { getPath, PathNames } from '../../../../../../utils/defines'
 import * as Modal from '../../../../../../components/UI/Modal'
+import { useTheme } from '../../../../../../context/theme'
 
 interface Props {}
 
@@ -16,6 +17,7 @@ const List: React.FC<Props> = () => {
   const { token } = useAuth()
   const toastUtils = getToastUtils()
   const navigate = useNavigate()
+  const theme = useTheme()
 
   const [mountainRange, setMountainRange] = useState<(MountainRange | undefined)>(undefined)
   const { id } = useParams()
@@ -126,7 +128,13 @@ const List: React.FC<Props> = () => {
                 </span>
               </p>
 
-              <Table responsive>
+              <Table
+                responsive
+                style={{
+                  backgroundColor: theme.colors.background,
+                  color: theme.colors.color,
+                }}
+              >
                 <thead>
                   <tr>
                     <th
