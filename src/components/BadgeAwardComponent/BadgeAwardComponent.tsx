@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 import BadgeAward from '../../models/BadgeAward'
 import { useDependencies } from '../../context/dependencies'
 import { useAuth } from '../../context/auth'
+import { useTheme } from '../../context/theme'
 
 type BadgeAwardFormWrapperProps = {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -41,6 +42,8 @@ const BadgeAwardComponent: React.FC<Props> = (props) => {
   const apiService = getApiService()
   const { token } = useAuth()
   const badgeAwardService = apiService.getBadgeAward(token)
+
+  const theme = useTheme()
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, entryId: number) => {
     setEntriesToVerify((prevCheckedItems) => ({
@@ -125,6 +128,10 @@ const BadgeAwardComponent: React.FC<Props> = (props) => {
       <Table
         responsive
         hover
+        style={{
+          backgroundColor: theme.colors.background,
+          color: theme.colors.color,
+        }}
       >
         <thead>
           <tr className={`text-${props.variant}`}>
