@@ -104,6 +104,7 @@ const Map: React.FC<Props> = (props) => {
   }, [
     JSON.stringify(
       (props.lines || []).map((line) => ({
+        name: line.name,
         pointAId: line.pointAId,
         pointBId: line.pointBId,
       })),

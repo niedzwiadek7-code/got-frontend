@@ -55,9 +55,18 @@ const Form: React.FC<Props> = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        setSection(
-          await sectionService.getOneSection(id),
-        )
+        const localSection: Section = await sectionService.getOneSection(id)
+
+        if (localSection) {
+          setSection(localSection)
+          setMapLine(
+            new MapDefinition.Elements.Line(
+              localSection.name || '',
+              localSection.terrain_point_a_id,
+              localSection.terrain_point_b_id,
+            ),
+          )
+        }
       }
 
       const terrainPoints = await terrainPointsService.getTerrainPoints()
@@ -310,11 +319,7 @@ const Form: React.FC<Props> = () => {
           <div className="col-12 col-lg-6 mb-2" style={{ minHeight: '40vh' }}>
             <MapDefinition.Component
               lines={[
-                (section) ? new MapDefinition.Elements.Line(
-                  section.name,
-                  section.terrain_point_a_id,
-                  section.terrain_point_b_id,
-                ) : mapLine,
+                mapLine,
               ]}
               zoom={13}
             />
