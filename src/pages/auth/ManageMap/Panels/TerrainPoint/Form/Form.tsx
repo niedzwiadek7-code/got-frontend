@@ -31,6 +31,7 @@ const TerrainPointComponent: React.FC<Props> = () => {
   const apiService = getApiService()
   const toastUtils = getToastUtils()
   const { id } = useParams()
+  console.log(id)
   const [terrainPoint, setTerrainPoint] = useState<(TerrainPoint | undefined)>()
   const [loading, setLoading] = useState<boolean>(true)
   const [terrainPointService] = useState(apiService.mountainData.getTerrainPoint(token))
